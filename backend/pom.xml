@@ -10,8 +10,78 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>backend</artifactId>
-
     <name>AL Team 5 :: Priority Rules System :: Backend</name>
 
+    <packaging>war</packaging>
 
+    <properties>
+        <versions.javaee>6.0-6</versions.javaee>
+        <versions.openjpa>2.4.1</versions.openjpa>
+        <versions.openejb>4.7.4</versions.openejb>
+        <versions.tomee>1.7.3</versions.tomee>
+        <versions.tomee.embedded>1.7.3</versions.tomee.embedded>
+        <versions.myface>2.2.10</versions.myface>
+    </properties>
+
+    <dependencies>
+        <!-- Dependencies for the OpenEJB framework (provided at runtime by the app server) -->
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${versions.javaee}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>openejb-core</artifactId>
+            <version>${versions.openejb}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>tomee-embedded</artifactId>
+            <version>${versions.tomee}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Dependency to integrate REST clients (order matters for CXF) (provided) -->
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>openejb-cxf</artifactId>
+            <version>${versions.openejb}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>openejb-cxf-rs</artifactId>
+            <version>${versions.openejb}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>priority-rules-backend</finalName>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.openejb.maven</groupId>
+                <artifactId>tomee-maven-plugin</artifactId>
+                <version>${versions.tomee.embedded}</version>
+                <configuration>
+                    <!-- From TomEE to TomEE+ to support the web services stack -->
+                    <tomeeClassifier>plus</tomeeClassifier>
+                    <args>-Xmx512m -XX:PermSize=256m</args>
+                    <deployOpenEjbApplication>true</deployOpenEjbApplication>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

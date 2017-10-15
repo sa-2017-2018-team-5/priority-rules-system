@@ -7,5 +7,5 @@ import fr.polytech.al.five.entities.CarType;
 //@Local
 public interface PriorityReading {
 
-    void getPriority(CarType uncompleteType);
+    void getPriority(CarType uncompletedType);
 }
