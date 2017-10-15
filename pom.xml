@@ -24,5 +24,6 @@
         <module>driver-client</module>
         <module>traffic-light-behaviour</module>
         <module>traffic-light-orchestration</module>
+        <module>backend</module>
     </modules>
 </project>
