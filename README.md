@@ -1,6 +1,6 @@
 # Priority Rules System
 
-![Build status](https://travis-ci.org/sa-2017-2018-team-5/priority-rules-system.svg?branch=master)
+[![Build status](https://travis-ci.org/sa-2017-2018-team-5/priority-rules-system.svg?branch=master)](https://travis-ci.org/sa-2017-2018-team-5/priority-rules-system)
 
 Project of Software Architecture @ Polytech Nice
 
