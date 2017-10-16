@@ -14,7 +14,7 @@ public class AdministrationWebServiceImplementation
 
     @Override
     public void registerPriority(CarType carType) {
-        throw new NotImplementedException();
+        System.out.println("ADD NEW CAR TYPE : " + carType.getName());
     }
 
     @Override
