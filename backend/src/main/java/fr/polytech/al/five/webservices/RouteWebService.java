@@ -7,7 +7,7 @@ import fr.polytech.al.five.entities.Route;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService
+@WebService(targetNamespace = "http://www.polytech.fr/al/five/route")
 public interface RouteWebService {
 
     @WebMethod

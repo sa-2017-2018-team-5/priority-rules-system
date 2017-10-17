@@ -5,7 +5,7 @@ import fr.polytech.al.five.entities.CarType;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService
+@WebService(targetNamespace = "http://www.polytech.fr/al/five/administration")
 public interface AdministrationWebService {
 
     @WebMethod

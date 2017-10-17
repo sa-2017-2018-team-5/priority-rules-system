@@ -9,7 +9,7 @@ import org.apache.commons.lang.NotImplementedException;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
-@WebService
+@WebService(targetNamespace = "http://www.polytech.fr/al/five/route")
 @Stateless(name = "RouteWS")
 public class RouteWebServiceImplementation implements RouteWebService {
 

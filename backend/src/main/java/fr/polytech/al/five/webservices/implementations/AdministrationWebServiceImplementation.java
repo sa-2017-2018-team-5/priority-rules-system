@@ -7,7 +7,7 @@ import org.apache.commons.lang.NotImplementedException;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
-@WebService
+@WebService(targetNamespace = "http://www.polytech.fr/al/five/administration")
 @Stateless(name = "AdministrationWS")
 public class AdministrationWebServiceImplementation
         implements AdministrationWebService {
