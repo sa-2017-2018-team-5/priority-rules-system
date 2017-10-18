@@ -12,5 +12,13 @@
     <artifactId>traffic-light-behaviour</artifactId>
 
     <name>AL Team 5 :: Priority Rules System :: Traffic Light Behaviour</name>
-
+    
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+    </dependencies>
 </project>
