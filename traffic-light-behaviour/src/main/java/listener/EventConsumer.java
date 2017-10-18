@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class EventConsumer extends DefaultConsumer{
 
-    private String message;
     private TrafficLightController controller;
 
     public EventConsumer(Channel channel) {
@@ -22,6 +21,9 @@ public class EventConsumer extends DefaultConsumer{
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope,
                                AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+        // We assume at the moment that the message receive
+        // contains only one word from the following RED, GREEN and  YELLOW
         controller.switchColour(TrafficLightColour.valueOf(new String(body, "UTF-8")));
 
     }
