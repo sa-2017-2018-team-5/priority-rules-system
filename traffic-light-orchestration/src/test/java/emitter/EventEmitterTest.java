@@ -18,12 +18,12 @@ public class EventEmitterTest {
 
     @Before
     public void setUp(){
-        this.emitter = new EventEmitter();
+        //this.emitter = new EventEmitter();
     }
 
     @After
     public void cleanUp(){
-        this.emitter.close();
+//        this.emitter.close();
     }
 
     @Test
