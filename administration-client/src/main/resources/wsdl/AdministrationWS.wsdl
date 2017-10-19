@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.polytech.fr/al/five/administration" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="AdministrationWebServiceImplementationService" targetNamespace="http://www.polytech.fr/al/five/administration">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.polytech.fr/al/five/administration" elementFormDefault="unqualified" targetNamespace="http://www.polytech.fr/al/five/administration" version="1.0">
+
+  <xs:element name="modifyPriority" type="tns:modifyPriority"/>
+
+  <xs:element name="modifyPriorityResponse" type="tns:modifyPriorityResponse"/>
+
+  <xs:element name="registerPriority" type="tns:registerPriority"/>
+
+  <xs:element name="registerPriorityResponse" type="tns:registerPriorityResponse"/>
+
+  <xs:complexType name="registerPriority">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:carType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="carType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="priority" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registerPriorityResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="modifyPriority">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:carType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="modifyPriorityResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="registerPriority">
+    <wsdl:part element="tns:registerPriority" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyPriority">
+    <wsdl:part element="tns:modifyPriority" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerPriorityResponse">
+    <wsdl:part element="tns:registerPriorityResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyPriorityResponse">
+    <wsdl:part element="tns:modifyPriorityResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AdministrationWebService">
+    <wsdl:operation name="registerPriority">
+      <wsdl:input message="tns:registerPriority" name="registerPriority">
+    </wsdl:input>
+      <wsdl:output message="tns:registerPriorityResponse" name="registerPriorityResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modifyPriority">
+      <wsdl:input message="tns:modifyPriority" name="modifyPriority">
+    </wsdl:input>
+      <wsdl:output message="tns:modifyPriorityResponse" name="modifyPriorityResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AdministrationWebServiceImplementationServiceSoapBinding" type="tns:AdministrationWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="registerPriority">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="registerPriority">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="registerPriorityResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modifyPriority">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="modifyPriority">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="modifyPriorityResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdministrationWebServiceImplementationService">
+    <wsdl:port binding="tns:AdministrationWebServiceImplementationServiceSoapBinding" name="AdministrationWebServiceImplementationPort">
+      <soap:address location="http://localhost:8080/priority-rules-backend/webservices/AdministrationWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

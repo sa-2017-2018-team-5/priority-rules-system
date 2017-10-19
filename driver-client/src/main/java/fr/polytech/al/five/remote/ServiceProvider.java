@@ -6,8 +6,10 @@ import stubs.route.RouteWebServiceImplementationService;
 public class ServiceProvider {
 
     public static RouteWebService getRouteService() {
-        RouteWebServiceImplementationService factory = new RouteWebServiceImplementationService();
-        RouteWebService webService = factory.getRouteWebServiceImplementationPort();
+        RouteWebServiceImplementationService factory =
+                new RouteWebServiceImplementationService();
+        RouteWebService webService =
+                factory.getRouteWebServiceImplementationPort();
 
         return webService;
     }

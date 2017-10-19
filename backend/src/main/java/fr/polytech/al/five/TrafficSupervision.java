@@ -1,9 +1,9 @@
 package fr.polytech.al.five;
 
-//import javax.ejb.Local;
+import javax.ejb.Local;
 import fr.polytech.al.five.entities.TrafficInformation;
 
-//@Local
+@Local
 public interface TrafficSupervision {
 
     TrafficInformation getTraffic();

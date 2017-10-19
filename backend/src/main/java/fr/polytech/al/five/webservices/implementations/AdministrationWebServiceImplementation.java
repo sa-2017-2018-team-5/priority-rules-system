@@ -1,9 +1,11 @@
 package fr.polytech.al.five.webservices.implementations;
 
+import fr.polytech.al.five.components.PriorityRegister;
 import fr.polytech.al.five.entities.CarType;
 import fr.polytech.al.five.webservices.AdministrationWebService;
 import org.apache.commons.lang.NotImplementedException;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
@@ -12,13 +14,15 @@ import javax.jws.WebService;
 public class AdministrationWebServiceImplementation
         implements AdministrationWebService {
 
+    @EJB private PriorityRegister priorityRegister;
+
     @Override
     public void registerPriority(CarType carType) {
-        System.out.println("ADD NEW CAR TYPE : " + carType.getName());
+        priorityRegister.registerPriority(carType);
     }
 
     @Override
     public void modifyPriority(CarType carType) {
-        throw new NotImplementedException();
+        priorityRegister.modifyPriority(carType, carType.getPriority());
     }
 }

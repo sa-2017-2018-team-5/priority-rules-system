@@ -29,9 +29,13 @@ public class Runner {
         myCar.setCurrentPosition(from);
         myCar.setType(carType);
 
-        Route route = routeWebService.getRoute(myCar, to);
-
-        System.out.println("[i] Route ID: " + route.getId());
-        route.getInstructions().forEach(instruction -> System.out.println("[r] " + instruction));
+        try {
+            Route route = routeWebService.getRoute(myCar, to);
+            System.out.println("[i] Route ID: " + route.getId());
+            route.getInstructions().forEach(instruction ->
+                    System.out.println("[r] " + instruction));
+        } catch (NotAuthorizedCarException_Exception e) {
+            System.out.println("[error] Error while querying the backend.");
+        }
     }
 }
