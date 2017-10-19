@@ -8,9 +8,7 @@ public class ServiceProvider {
     public static RouteWebService getRouteService() {
         RouteWebServiceImplementationService factory =
                 new RouteWebServiceImplementationService();
-        RouteWebService webService =
-                factory.getRouteWebServiceImplementationPort();
 
-        return webService;
+        return factory.getRouteWebServiceImplementationPort();
     }
 }
