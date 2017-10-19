@@ -5,6 +5,10 @@ public class TrafficLight {
     private Integer id;
     private Position position;
 
+    public TrafficLight() {
+
+    }
+
     public TrafficLight(Integer id, Position position) {
         this.id = id;
         this.position = position;

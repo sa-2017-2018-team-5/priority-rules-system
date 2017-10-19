@@ -5,6 +5,10 @@ public class Position {
     private Float longitude;
     private Float latitude;
 
+    public Position() {
+
+    }
+
     public Position(Float longitude, Float latitude) {
         this.longitude = longitude;
         this.latitude = latitude;

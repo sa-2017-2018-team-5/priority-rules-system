@@ -10,6 +10,10 @@ public class Route {
     private List<TrafficLight> encounteredLights;
     private Date departure;
 
+    public Route() {
+
+    }
+
     public Route(Integer id, List<String> instructions, List<TrafficLight> encounteredLights, Date departure) {
         this.id = id;
         this.instructions = instructions;

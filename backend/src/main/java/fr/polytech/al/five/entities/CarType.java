@@ -6,8 +6,7 @@ public class CarType {
     private Integer priority;
 
     public CarType() {
-        this.name = "DEFAULT_CAR_TYPE";
-        this.priority = 0;
+
     }
 
     public CarType(String name, Integer priority) {

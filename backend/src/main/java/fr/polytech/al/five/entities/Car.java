@@ -6,6 +6,10 @@ public class Car {
     private Position currentPosition;
     private CarType type;
 
+    public Car() {
+
+    }
+
     public Car(Integer id, Position currentPosition, CarType type) {
         this.id = id;
         this.currentPosition = currentPosition;
