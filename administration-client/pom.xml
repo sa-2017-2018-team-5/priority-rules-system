@@ -55,7 +55,7 @@
                                     <wsdl>${basedir}/src/main/resources/wsdl/AdministrationWS.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://www.polytech.fr/al/five/route=stubs.administration</extraarg>
+                                        <extraarg>http://www.polytech.fr/al/five/administration=stubs.administration</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                             </wsdlOptions>
