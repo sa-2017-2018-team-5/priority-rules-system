@@ -2,6 +2,7 @@ package fr.polytech.al.five.webservices.implementations;
 
 import fr.polytech.al.five.PriorityReader;
 import fr.polytech.al.five.RouteBuilder;
+import fr.polytech.al.five.RouteRegisterer;
 import fr.polytech.al.five.entities.Car;
 import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
@@ -22,6 +23,7 @@ public class RouteWebServiceImplementation implements RouteWebService {
 
     @EJB private RouteBuilder routeBuilder;
     @EJB private PriorityReader priorityReader;
+    @EJB private RouteRegisterer routeRegisterer;
 
     @Override
     public Route getRoute(Car car, Position destination)
@@ -34,7 +36,9 @@ public class RouteWebServiceImplementation implements RouteWebService {
                         new Date()));
 
         if (optionalRoute.isPresent()) {
-            return optionalRoute.get();
+            Route route = optionalRoute.get();
+            routeRegisterer.sendRoute(car, route);
+            return route;
         } else {
             throw new NotAuthorizedCarException();
         }

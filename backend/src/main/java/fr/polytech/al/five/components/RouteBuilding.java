@@ -1,7 +1,7 @@
 package fr.polytech.al.five.components;
 
 import fr.polytech.al.five.RouteBuilder;
-import fr.polytech.al.five.TrafficSupervision;
+import fr.polytech.al.five.TrafficSupervisor;
 import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.entities.TrafficInformation;
@@ -15,11 +15,11 @@ import java.util.List;
 @Stateless
 public class RouteBuilding implements RouteBuilder {
 
-    @EJB private TrafficSupervision trafficSupervision;
+    @EJB private TrafficSupervisor trafficSupervisor;
 
     @Override
     public Route getRoute(Position from, Position to, Date departureDate) {
-        TrafficInformation information = trafficSupervision.getTraffic();
+        TrafficInformation information = trafficSupervisor.getTraffic();
 
         List<String> instructions = new ArrayList<>();
         instructions.add("Tournez à gauche.");

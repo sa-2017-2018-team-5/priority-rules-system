@@ -4,7 +4,7 @@ import javax.ejb.Local;
 import fr.polytech.al.five.entities.TrafficInformation;
 
 @Local
-public interface TrafficSupervision {
+public interface TrafficSupervisor {
 
     TrafficInformation getTraffic();
 }

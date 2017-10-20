@@ -1,12 +1,12 @@
 package fr.polytech.al.five.components;
 
-import fr.polytech.al.five.TrafficSupervision;
+import fr.polytech.al.five.TrafficSupervisor;
 import fr.polytech.al.five.entities.TrafficInformation;
 
 import javax.ejb.Stateless;
 
 @Stateless
-public class TrafficSupervisionClient implements TrafficSupervision {
+public class TrafficSupervisionClient implements TrafficSupervisor {
 
     @Override
     public TrafficInformation getTraffic() {
