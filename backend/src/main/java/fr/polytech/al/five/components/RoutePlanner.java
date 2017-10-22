@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Stateless
-public class RouteBuilding implements RouteBuilder {
+public class RoutePlanner implements RouteBuilder {
 
     @EJB private TrafficSupervisor trafficSupervisor;
 

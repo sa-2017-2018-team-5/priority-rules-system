@@ -8,5 +8,10 @@ import javax.ejb.Local;
 @Local
 public interface RouteRegisterer {
 
+    /**
+     * Send a route in the whole traffic lights network to prevent a car arrival.
+     * @param car The car which queried the route.
+     * @param route The sent route.
+     */
     void sendRoute(Car car, Route route);
 }
