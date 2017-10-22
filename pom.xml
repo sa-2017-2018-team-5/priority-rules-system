@@ -22,8 +22,9 @@
     <modules>
         <module>administration-client</module>
         <module>driver-client</module>
-        <module>traffic-light-behaviour</module>
-        <module>traffic-light-orchestration</module>
+        <module>traffic-light</module>
+        <module>traffic-lights-group-orchestration</module>
         <module>backend</module>
+        <module>city-traffic-lights-orchestration</module>
     </modules>
 </project>

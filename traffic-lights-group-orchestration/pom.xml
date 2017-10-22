@@ -11,7 +11,7 @@
 
     <artifactId>traffic-light-orchestration</artifactId>
 
-    <name>AL Team 5 :: Priority Rules System :: Traffic Light Orchestration</name>
+    <name>AL Team 5 :: Priority Rules System :: Traffic Lights Group Orchestration</name>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
