@@ -11,6 +11,7 @@ import fr.polytech.al.five.webservices.RouteWebService;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jms.JMSException;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,12 @@ public class RouteWebServiceImplementation implements RouteWebService {
 
         if (optionalRoute.isPresent()) {
             Route route = optionalRoute.get();
-            routeRegisterer.sendRoute(car, route);
+            try {
+                routeRegisterer.sendRoute(car, route);
+            } catch (JMSException e) {
+                // TODO: Add logger instead of print.
+                System.out.println(e.getMessage());
+            }
             return route;
         } else {
             throw new NotAuthorizedCarException();

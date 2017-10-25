@@ -5,12 +5,13 @@ import fr.polytech.al.five.entities.Car;
 import fr.polytech.al.five.entities.Route;
 
 import javax.ejb.Stateless;
+import javax.jms.JMSException;
 
 @Stateless
 public class RouteRegister implements RouteRegisterer {
 
     @Override
-    public void sendRoute(Car car, Route route) {
-        // TODO: Implement the message bus.
+    public void sendRoute(Car car, Route route) throws JMSException {
+
     }
 }
