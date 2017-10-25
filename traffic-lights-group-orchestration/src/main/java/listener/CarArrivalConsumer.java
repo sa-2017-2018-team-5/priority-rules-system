@@ -5,23 +5,27 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import engine.MessageProcessImpl;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import stubs.route.Car;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CarArrivalConsumer extends DefaultConsumer{
+
+    final static Logger logger = Logger.getLogger(CarArrivalConsumer.class);
 
     private final static String ID = "Group-40096";
 
     private MessageProcessImpl process  = new MessageProcessImpl();
-    private List<Integer> mytraffic;
+    private Set<Car> myCars;
 
     public CarArrivalConsumer(Channel channel, String exchange) {
         super(channel);
-        this.mytraffic = new ArrayList<>();
+        this.myCars = new HashSet<>();
     }
 
     @Override
@@ -31,18 +35,15 @@ public class CarArrivalConsumer extends DefaultConsumer{
 
 
         if (process.isCorrectID(ID,jsonObject)){
-            System.out.println("receive : " + jsonObject.toString());
+            logger.info("Received message ["+consumerTag+"] : " + jsonObject.toString());
 
-            mytraffic.add(process.getCar(jsonObject).getId());
-            System.out.println("Waiting for these vehicles to pass : " + mytraffic.toString());
+            myCars.add(process.getCar(jsonObject));
+
+            Set<Integer> carsID = new HashSet<>();
+            myCars.forEach(e -> { carsID.add(e.getId());});
+            logger.info("Waiting for vehicles : " + carsID);
         }
     }
 
-    public List<Integer> getMytraffic() {
-        return mytraffic;
-    }
 
-    public void setMytraffic(List<Integer> mytraffic) {
-        this.mytraffic = mytraffic;
-    }
 }

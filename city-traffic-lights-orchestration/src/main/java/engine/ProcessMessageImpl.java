@@ -16,8 +16,6 @@ public class ProcessMessageImpl implements ProcessMessage{
 
     @Override
     public boolean isCorrectID(String id, JSONObject object) {
-        System.out.println(object.toString());
-
         return object.get("id").equals(id);
     }
 
