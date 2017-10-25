@@ -1,55 +1,43 @@
-package emitter;
+package fr.polytech.al.five.util;
 
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultConsumer;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
-public class EventEmitter {
+public class EventListener {
 
     private final static String HOST = "localhost";
     private final static String EXCHANGE = "trafficExchange";
 
-
     private Connection connection;
     private Channel channel;
+    private String queueName;
 
-    public EventEmitter(){
+    public EventListener(){
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(HOST);
+
         try {
             this.connection = factory.newConnection();
             this.channel = connection.createChannel();
-            this.channel.exchangeDeclare(EXCHANGE, "direct");
+            this.channel.exchangeDeclare(EXCHANGE, "fanout");
+            this.queueName = channel.queueDeclare().getQueue();
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }
     }
 
-
     /**
-     * Publish a message to a destination (Key)
-     * @param key the recipient id
-     * @param message the message
      * @throws IOException
      */
-    public void publish(String key, String message) throws IOException {
-        channel.basicPublish(EXCHANGE, key, null, message.getBytes("UTF-8"));
-    }
+    public void bind() throws IOException {
+        channel.queueBind(queueName, EXCHANGE, "");
 
-    /**
-     * Close the channel and connection
-     */
-    public void close() {
-        try {
-            channel.close();
-            connection.close();
-        } catch (IOException | TimeoutException e) {
-            e.printStackTrace();
-        }
+//        channel.basicConsume(queueName, true, consumer);
     }
 
 
@@ -72,6 +60,11 @@ public class EventEmitter {
         this.channel = channel;
     }
 
+    public String getQueueName() {
+        return queueName;
+    }
 
-
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
+    }
 }
