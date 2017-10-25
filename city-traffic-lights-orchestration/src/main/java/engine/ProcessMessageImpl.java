@@ -1,7 +1,6 @@
 package engine;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import stubs.route.Car;
 import stubs.route.Route;
