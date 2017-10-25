@@ -27,6 +27,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="name" type="xs:string"/>
       <xs:element minOccurs="0" name="priority" type="xs:int"/>
+      <xs:element minOccurs="0" name="status" type="tns:carStatus"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="getRouteResponse">
@@ -48,6 +49,12 @@
       <xs:element minOccurs="0" name="position" type="tns:position"/>
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="carStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EMERGENCY"/>
+      <xs:enumeration value="PRIVILEGED"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="NotAuthorizedCarException" type="tns:NotAuthorizedCarException"/>
   <xs:complexType name="NotAuthorizedCarException">
     <xs:sequence>

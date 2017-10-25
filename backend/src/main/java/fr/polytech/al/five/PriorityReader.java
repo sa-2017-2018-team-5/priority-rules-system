@@ -10,8 +10,8 @@ public interface PriorityReader {
 
     /**
      * Search a car type in the register.
-     * @param uncompletedType At least the name of the car type for identification purpose.
+     * @param typeName The name of the car type for identification purpose.
      * @return The complete car type.
      */
-    Optional<CarType> getPriority(CarType uncompletedType);
+    Optional<CarType> getPriority(String typeName);
 }

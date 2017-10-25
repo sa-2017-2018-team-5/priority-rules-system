@@ -13,9 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.JMSException;
 import javax.jws.WebService;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @WebService(targetNamespace = "http://www.polytech.fr/al/five/route")
@@ -30,7 +28,7 @@ public class RouteWebServiceImplementation implements RouteWebService {
     public Route getRoute(Car car, Position destination)
             throws NotAuthorizedCarException {
         Optional<Route> optionalRoute = priorityReader
-                .getPriority(car.getType())
+                .getPriority(car.getType().getName())
                 .map(carType -> routeBuilder.getRoute(
                         car.getCurrentPosition(),
                         destination,

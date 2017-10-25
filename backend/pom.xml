@@ -36,7 +36,6 @@
             <version>20170516</version>
         </dependency>
 
-
         <!-- Dependencies for the OpenEJB framework (provided at runtime by the app server) -->
         <dependency>
             <groupId>org.apache.tomee</groupId>
@@ -75,18 +74,31 @@
             <artifactId>amqp-client</artifactId>
             <version>5.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160810</version>
-        </dependency>
     </dependencies>
 
     <build>
         <finalName>priority-rules-backend</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
+            <plugin>
+                <groupId>org.apache.openjpa</groupId>
+                <artifactId>openjpa-maven-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <includes>**/entities/*.class</includes>
+                    <addDefaultConstructor>true</addDefaultConstructor>
+                    <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enhancer</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
