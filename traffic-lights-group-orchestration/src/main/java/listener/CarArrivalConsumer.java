@@ -6,6 +6,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import engine.MessageProcessImpl;
 import org.json.JSONObject;
+import stubs.route.Car;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class CarArrivalConsumer extends DefaultConsumer{
     private final static String ID = "Group-40096";
 
     private MessageProcessImpl process  = new MessageProcessImpl();
-    private List<JSONObject> mytraffic;
+    private List<Integer> mytraffic;
 
     public CarArrivalConsumer(Channel channel, String exchange) {
         super(channel);
@@ -32,9 +33,16 @@ public class CarArrivalConsumer extends DefaultConsumer{
         if (process.isCorrectID(ID,jsonObject)){
             System.out.println("receive : " + jsonObject.toString());
 
-            mytraffic.add(process.getCar(jsonObject));
-            System.out.println("Waiting for these cars to pass : " + mytraffic.toString());
+            mytraffic.add(process.getCar(jsonObject).getId());
+            System.out.println("Waiting for these vehicles to pass : " + mytraffic.toString());
         }
     }
 
+    public List<Integer> getMytraffic() {
+        return mytraffic;
+    }
+
+    public void setMytraffic(List<Integer> mytraffic) {
+        this.mytraffic = mytraffic;
+    }
 }

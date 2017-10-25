@@ -1,5 +1,5 @@
-import listener.CarArrivalConsumer;
 import util.EventListener;
+import listener.CarArrivalConsumer;
 
 import java.io.IOException;
 

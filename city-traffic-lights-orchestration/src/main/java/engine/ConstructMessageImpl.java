@@ -6,23 +6,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConstructMessageImpl implements ConstructMessage {
 
     @Override
-    public List<JSONObject> construct(Map<String, List<String>> object) {
+    public List<JSONObject> construct(Set<String> object) {
         List<JSONObject> result = new ArrayList<>();
-        object.forEach((k,v) ->{
-            JSONObject item = new JSONObject();
-            JSONArray array = new JSONArray();
-            item.put("id", k);
-            v.forEach(e ->{
-                JSONObject light = new JSONObject();
-                light.put("trafficID", e);
-                array.put(light);
-            });
-            item.put("trafficLights",array);
-            result.add(item);
+        object.forEach(item->{
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id",item);
+            result.add(jsonObject);
         });
         return result;
     }

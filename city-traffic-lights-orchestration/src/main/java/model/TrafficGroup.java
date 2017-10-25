@@ -1,9 +1,14 @@
 package model;
 
+import stubs.route.TrafficLight;
+
+import java.util.List;
+
 public class TrafficGroup {
 
     private String id;
     private String trafficLight;
+    private List<TrafficLight> trafficLights;
 
     public TrafficGroup(){
 
@@ -28,5 +33,13 @@ public class TrafficGroup {
 
     public void setTrafficLight(String trafficLight) {
         this.trafficLight = trafficLight;
+    }
+
+    public List<TrafficLight> getTrafficLights() {
+        return trafficLights;
+    }
+
+    public void setTrafficLights(List<TrafficLight> trafficLights) {
+        this.trafficLights = trafficLights;
     }
 }

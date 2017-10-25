@@ -4,8 +4,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ConstructMessage {
 
-    List<JSONObject> construct(Map<String,List<String>> object);
+    public List<JSONObject> construct(Set<String> object);
 }
