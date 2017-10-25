@@ -3,8 +3,6 @@ package fr.polytech.al.five;
 import fr.polytech.al.five.remote.ServiceProvider;
 import stubs.administration.*;
 
-import java.util.Optional;
-
 import static stubs.administration.CarStatus.EMERGENCY;
 
 public class Runner {
@@ -42,7 +40,7 @@ public class Runner {
         try {
             ADMINISTRATION_WS.registerPriority(CAR_TYPE);
             System.out.println("[s] Type '" + name + "' registered!");
-        } catch (AlreadyExistingCarTypeException_Exception e) {
+        } catch (AlreadyExistingCarTypeException e) {
             System.err.println("[e] Could not register the type '" + name + "'.");
         }
 
@@ -56,7 +54,7 @@ public class Runner {
             CAR_TYPE = ADMINISTRATION_WS.findPriorityByName(name);
             System.out.println("[f] Type '" + name + "' fetched!");
             System.out.println("[f] '" + name + "' ; priority: " + CAR_TYPE.getPriority() + ".");
-        } catch (NotExistingCarTypeException_Exception e) {
+        } catch (NotExistingCarTypeException e) {
             System.err.println("[e] Could not fetch the car type '" + name + "'.");
         }
 
@@ -72,7 +70,7 @@ public class Runner {
         try {
             ADMINISTRATION_WS.modifyPriority(CAR_TYPE);
             System.out.println("[s] Type '" + name + "' updated!");
-        } catch (NotExistingCarTypeException_Exception e) {
+        } catch (NotExistingCarTypeException e) {
             System.err.println("[e] Could not update the type '" + name + "'.");
         }
 
