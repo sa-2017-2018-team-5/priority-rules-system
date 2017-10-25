@@ -33,8 +33,15 @@ public class CarArrivalConsumer extends DefaultConsumer{
             System.out.println("receive : " + jsonObject.toString());
 
             mytraffic.add(process.getCar(jsonObject));
-            System.out.println("Waiting for these cars to pass : " + mytraffic.toString());
+            System.out.println("Waiting for these vehicles to pass : " + mytraffic.toString());
         }
     }
 
+    public List<JSONObject> getMytraffic() {
+        return mytraffic;
+    }
+
+    public void setMytraffic(List<JSONObject> mytraffic) {
+        this.mytraffic = mytraffic;
+    }
 }

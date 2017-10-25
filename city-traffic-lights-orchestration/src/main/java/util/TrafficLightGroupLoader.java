@@ -54,13 +54,12 @@ public class TrafficLightGroupLoader {
         }
     }
 
-    public static Map<String,List<String>> findGroup(List<String> traffics){
-        Map<String,List<String>> groups = new HashMap<>();
-
+    public static Set<String> findGroup(List<String> traffics){
+        Set<String> groups = new HashSet<>();
         for (String key: trafficLightgroup.keySet()) {
             for (String traffic : traffics) {
                 if (trafficLightgroup.get(key).contains(traffic)) {
-                    groups.put(key,trafficLightgroup.get(key));
+                    groups.add(key);
                 }
             }
         }

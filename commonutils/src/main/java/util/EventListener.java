@@ -1,9 +1,8 @@
-package fr.polytech.al.five.util;
+package util;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DefaultConsumer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -11,20 +10,22 @@ import java.util.concurrent.TimeoutException;
 public class EventListener {
 
     private final static String HOST = "localhost";
-    private final static String EXCHANGE = "trafficExchange";
 
+    private String exchange;
     private Connection connection;
     private Channel channel;
     private String queueName;
 
-    public EventListener(){
+    public EventListener(String exchange){
+
+        this.exchange = exchange;
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(HOST);
 
         try {
             this.connection = factory.newConnection();
             this.channel = connection.createChannel();
-            this.channel.exchangeDeclare(EXCHANGE, "fanout");
+            this.channel.exchangeDeclare(this.exchange, "fanout");
             this.queueName = channel.queueDeclare().getQueue();
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
@@ -35,7 +36,7 @@ public class EventListener {
      * @throws IOException
      */
     public void bind() throws IOException {
-        channel.queueBind(queueName, EXCHANGE, "");
+        channel.queueBind(queueName, this.exchange, "");
 
 //        channel.basicConsume(queueName, true, consumer);
     }
@@ -66,5 +67,13 @@ public class EventListener {
 
     public void setQueueName(String queueName) {
         this.queueName = queueName;
+    }
+
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
     }
 }
