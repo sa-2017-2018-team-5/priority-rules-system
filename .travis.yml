@@ -9,7 +9,13 @@ services:
 cache:
   directories:
   - "$HOME/.m2"
+addons:
+  sonarcloud:
+    organization: "al-team-5"
+    token:
+      secure: $SONAR_TOKEN
 script:
+- sonar-scanner
 - mvn clean package
 after_script:
 - docker login --username $DOCKER_USER --password $DOCKER_PASS
