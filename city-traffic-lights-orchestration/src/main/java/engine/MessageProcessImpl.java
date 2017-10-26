@@ -7,13 +7,14 @@ import util.MessageProcess;
 
 import java.io.IOException;
 
-public class MessageProcessImpl implements MessageProcess {
+
+public class MessageProcessImpl implements MessageProcess{
 
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public boolean isCorrectID(String id, JSONObject object) {
-        return object.getString("id").equals(id);
+        return object.get("id").equals(id);
     }
 
     @Override
@@ -25,5 +26,6 @@ public class MessageProcessImpl implements MessageProcess {
         }
         return null;
     }
+
 
 }

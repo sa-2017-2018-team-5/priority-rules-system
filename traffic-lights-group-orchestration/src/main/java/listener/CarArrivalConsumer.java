@@ -5,9 +5,9 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import engine.MessageProcessImpl;
+import message.CarInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import stubs.route.Car;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class CarArrivalConsumer extends DefaultConsumer{
     private final static String ID = "Group-40096";
 
     private MessageProcessImpl process  = new MessageProcessImpl();
-    private Set<Car> myCars;
+    private Set<CarInfo> myCars;
 
     public CarArrivalConsumer(Channel channel, String exchange) {
         super(channel);
@@ -37,7 +37,7 @@ public class CarArrivalConsumer extends DefaultConsumer{
         if (process.isCorrectID(ID,jsonObject)){
             logger.info("Received message ["+consumerTag+"] : " + jsonObject.toString());
 
-            myCars.add(process.getCar(jsonObject));
+            myCars.add(process.getMessage(jsonObject).getCar());
 
             Set<Integer> carsID = new HashSet<>();
             myCars.forEach(e -> { carsID.add(e.getId());});

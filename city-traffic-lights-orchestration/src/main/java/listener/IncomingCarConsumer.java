@@ -4,17 +4,17 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import message.TrafficMessage;
 import org.apache.log4j.Logger;
-import stubs.route.Route;
 import util.EventEmitter;
 import engine.ConstructMessageImpl;
-import engine.ProcessMessageImpl;
+import engine.MessageProcessImpl;
 import org.json.JSONObject;
 import util.TrafficLightGroupLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class IncomingCarConsumer extends DefaultConsumer{
@@ -23,7 +23,7 @@ public class IncomingCarConsumer extends DefaultConsumer{
 
     private static final String ID = "City";
 
-    private ProcessMessageImpl processMessage  = new ProcessMessageImpl();
+    private MessageProcessImpl processMessage  = new MessageProcessImpl();
     private ConstructMessageImpl constructMessage = new ConstructMessageImpl();
 
     private EventEmitter emitter;
@@ -42,17 +42,20 @@ public class IncomingCarConsumer extends DefaultConsumer{
         if (processMessage.isCorrectID(ID,jsonObject)){
             logger.info("Received message ["+consumerTag+ "] : " + jsonObject.toString());
 
-            Route route = processMessage.getRoute(jsonObject);
+            TrafficMessage message = processMessage.getMessage(jsonObject);
             // Associate each traffic lights to its Group
+            List<Integer> trafficID = new ArrayList<>();
+            message.getTrafficLights().forEach(trafficLightInfo -> {
+                trafficID.add(trafficLightInfo.getId());
+            });
             Set<String> groups =
-                    TrafficLightGroupLoader.findGroup(processMessage.getLightsID(route));
+                    TrafficLightGroupLoader.findGroup(trafficID);
 
             // Construct th reply message
             List<JSONObject> result = constructMessage.construct(groups);
 
             result.forEach((reply)->{
-                reply.put("car",jsonObject.get("car"));
-                reply.put("route",jsonObject.get("route"));
+                reply.put("message",jsonObject.get("message"));
 
                 logger.info("Reply message to ["+reply.getString("id")+ "] : " + reply.toString());
                 try {

@@ -1,11 +1,10 @@
 package engine;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+import util.ConstructMessage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class ConstructMessageImpl implements ConstructMessage {

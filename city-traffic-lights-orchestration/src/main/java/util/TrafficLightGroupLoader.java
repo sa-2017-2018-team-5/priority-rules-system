@@ -11,14 +11,14 @@ import java.util.*;
 
 public class TrafficLightGroupLoader {
 
-    private static Map<String, List<String>> trafficLightgroup = new HashMap<>();
+    private static Map<String, List<Integer>> trafficLightgroup = new HashMap<>();
 
     /**
      * temporary method to fill the car list
      * @param trafficGroup
      */
     private static void build(TrafficGroup trafficGroup){
-        List<String> tmp = new ArrayList<>();
+        List<Integer> tmp = new ArrayList<>();
         if (trafficLightgroup.containsKey(trafficGroup.getId())) {
             tmp = trafficLightgroup.get(trafficGroup.getId());
             tmp.add(trafficGroup.getTrafficLight());
@@ -41,7 +41,7 @@ public class TrafficLightGroupLoader {
             parser.forEach(item->{
                 TrafficGroup trafficGroup = new TrafficGroup(
                         item.get("Group"),
-                        item.get("Traffic-lights")
+                        Integer.parseInt(item.get("Traffic-lights"))
                 );
 
                 build(trafficGroup);
@@ -54,10 +54,10 @@ public class TrafficLightGroupLoader {
         }
     }
 
-    public static Set<String> findGroup(List<String> traffics){
+    public static Set<String> findGroup(List<Integer> traffics){
         Set<String> groups = new HashSet<>();
         for (String key: trafficLightgroup.keySet()) {
-            for (String traffic : traffics) {
+            for (int traffic : traffics) {
                 if (trafficLightgroup.get(key).contains(traffic)) {
                     groups.add(key);
                 }
