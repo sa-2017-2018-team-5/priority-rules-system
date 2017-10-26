@@ -5,6 +5,9 @@ import fr.polytech.al.five.entities.TrafficInformation;
 
 import javax.ejb.Stateless;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @Stateless
 public class TrafficSupervisionClient implements TrafficSupervisor {
 

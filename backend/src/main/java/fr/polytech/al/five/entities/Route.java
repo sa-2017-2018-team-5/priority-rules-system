@@ -3,6 +3,9 @@ package fr.polytech.al.five.entities;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 public class Route {
 
     private Integer id;

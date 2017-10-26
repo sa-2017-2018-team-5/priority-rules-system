@@ -9,6 +9,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.util.Optional;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @WebService(targetNamespace = "http://www.polytech.fr/al/five/route")
 public interface RouteWebService {
 

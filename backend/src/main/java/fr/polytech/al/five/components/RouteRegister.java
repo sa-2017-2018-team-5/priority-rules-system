@@ -12,6 +12,9 @@ import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @Stateless
 public class RouteRegister implements RouteRegisterer {
 

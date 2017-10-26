@@ -7,6 +7,9 @@ import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @WebService(targetNamespace = "http://www.polytech.fr/al/five/administration")
 public interface AdministrationWebService {
 

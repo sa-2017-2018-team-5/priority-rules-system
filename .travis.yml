@@ -1,22 +1,24 @@
 language: java
+sudo: required
 env:
   global:
   - secure: WpTpYt2cO1Wt9OfQy5R721MJHdjLqbhT0z4XxNM8nj6oagGXHj+jZwO6DnDV3md46hFLXz3KNhCM88Qyh8kI8YkQhG8NPoX4kg8L46qNc0U3vNoun3uF33BuaCn+sLQQYUYYG8OB0R7T96xhDlxmbH1q4uoiMEtOZTUzOZz1zJly33qRHnIIJ0ua+ipkoxRJtWFtOpCZLRuScQzH4gHaQ+LpBptAzuR6BYNhrMe1HwcIRYJ9ERsLs7jNToruB46GTfKIb3DZ+BBMbeakvpnhjiy7QSl3BaESiTbv9p8iP0ZbuZblZvwu1Fwcoy9GW+TcAOTPPLz4DRBRXMfiN3da467CD9F4zUyB5dsBh7SKc5x3HOxJSLBbBV1GP2vCgUpU/xwwnkwhKXYyl5YsfloAKjntPSKo0Ewr3ojtmttR5dhTIs0gzkFoTKag7OKPiw/8HYifYKy6fVaprESBfO0nKisixI2sq7IrgYt1eIhbGx1J95qdP/hqMg7QfhbwlT7Jr3GdqArWu7XlVr64oiHj6LcWLLbArw8drZIQznaGkGkpsTxU/HDwfp3Tx7kyLfmE+32oNOxMis4K9tW5t2RW3hEi+Fjyublx09oH/w45itJIRud/h6MwWybAX5oqnzHMc6NObhiHKmJP7WMouTI9nQ4/ElpTXWKt8PvR9vAfTFU=
   - secure: OcvpzwVhK68pq215eqhJESzfQHOHNhM7hinRUQCCBMHiHp3cVB0fNiwLESv+eqMwnFVKvY4PDtwjL0UhNGXq+vqgGqpXeJ2xNF4IdM+b4CGlVqY84QVDmEyW1pCqbR3nFFvzzFchG+zkDoY1uQt4NH1r6pNol/5xDNb2wqWnn6b2lFvaRQzh+Sr9my8AvupO7A/NSrPQ8rXg3yw0fjoV4hrgtKgvBIv4BBspSo6abWcG5E21O2IWNlz5ii85OS2dF9ZZbJOL+6Gi9hZTMK5gCdVDyLLzzayHmn2SGDqmaf/uGAMAUi5R/G8hV/LSj4/M3V7oBzutHGFZN2qPyvU9DOLlZQWZoLQj19kYGGMhLi97PBZ5WwLKTR6X9uZy0cHa15KE4qmJkhJcljKQm4A3YkrahW2JBJMHeywzmNfPe29WuqsvvP1FF4snM5Mc7UgAZuhh6MnqktWY4iFagn8FjcsL8Midv2wQp2NjUOf1N5iT4L6WFZfc0zAITpoPnjZYQWsomgK5WgGKjvOmyjm+cXkuQA3aazYgcojRbIPIoNXsVxbm4q8IhziLL31hItDgTR2uUYCPv8DU0vlDFSLbdpxb+UsconSxN91oJzLxD4dWvcsa1nmZGq2YnPyMTwnKTLApmwqMB8hkc7g7W8nEIOxTWQVUgkotjGBB9FE0JmA=
-sudo: required
-services:
-- docker
-cache:
-  directories:
-  - "$HOME/.m2"
 addons:
   sonarcloud:
     organization: "al-team-5"
     token:
       secure: $SONAR_TOKEN
+services:
+- docker
+cache:
+  directories:
+  - '$HOME/.m2/repository'
+  - '$HOME/.sonar/cache'
+jdk:
+- oraclejdk8
 script:
-- sonar-scanner
-- mvn clean package
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 after_script:
 - docker login --username $DOCKER_USER --password $DOCKER_PASS
 - "./build-and-push-all.sh"

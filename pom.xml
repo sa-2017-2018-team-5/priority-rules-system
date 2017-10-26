@@ -20,12 +20,12 @@
     </properties>
 
     <modules>
+        <module>common-utils</module>
         <module>administration-client</module>
         <module>driver-client</module>
         <module>traffic-light</module>
         <module>traffic-lights-group-orchestration</module>
         <module>backend</module>
         <module>city-traffic-lights-orchestration</module>
-        <module>commonutils</module>
     </modules>
 </project>

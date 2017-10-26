@@ -16,6 +16,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Optional;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @Stateless
 public class PriorityRegister implements PriorityRegisterer, PriorityReader {
 

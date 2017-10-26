@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @Stateless
 public class RoutePlanner implements RouteBuilder {
 

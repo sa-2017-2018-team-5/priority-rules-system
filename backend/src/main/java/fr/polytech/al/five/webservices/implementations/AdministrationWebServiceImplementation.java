@@ -12,6 +12,9 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import java.util.Optional;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @WebService(targetNamespace = "http://www.polytech.fr/al/five/administration")
 @Stateless(name = "AdministrationWS")
 public class AdministrationWebServiceImplementation

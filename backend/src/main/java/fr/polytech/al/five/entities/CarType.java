@@ -3,6 +3,9 @@ package fr.polytech.al.five.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author Antoine Aubé (aube.antoine@protonmail.com)
+ */
 @Entity
 @Table(name = "car_type")
 public class CarType {
