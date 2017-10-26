@@ -24,4 +24,29 @@ cd backend/docker
 echo ""
 cd ../..
 
+# Traffic Light
+cd traffic-light/docker
+./build.sh
+./publish.sh
+
+echo ""
+cd ../..
+
+# Traffic lights group orchestration
+cd traffic-lights-group-orchestration/docker
+./build.sh
+./publish.sh
+
+echo ""
+cd ../..
+
+# City traffic lights orchestration
+cd city-traffic-lights-orchestration/docker
+./build.sh
+./publish.sh
+
+echo ""
+cd ../..
+
+
 echo "Build finished"

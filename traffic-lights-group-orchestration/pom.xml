@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>traffic-light-orchestration</artifactId>
+    <artifactId>traffic-lights-group-orchestration</artifactId>
 
     <name>AL Team 5 :: Priority Rules System :: Traffic Lights Group Orchestration</name>
 
@@ -61,7 +61,20 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>Main</mainClass>
+                    <mainClass>fr.polytech.al.five.runner.TrafficLightsGroupRunner</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>fr.polytech.al.five.runner.TrafficLightsGroupRunner</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
             </plugin>
         </plugins>
