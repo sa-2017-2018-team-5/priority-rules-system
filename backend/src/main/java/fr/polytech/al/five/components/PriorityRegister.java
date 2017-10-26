@@ -3,8 +3,8 @@ package fr.polytech.al.five.components;
 import fr.polytech.al.five.PriorityReader;
 import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarType;
-import fr.polytech.al.five.exceptions.AlreadyExistingCarTypeException;
-import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
+import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
+import fr.polytech.al.five.exceptions.NotExistingCarType;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,16 +43,16 @@ public class PriorityRegister implements PriorityRegisterer, PriorityReader {
     }
 
     @Override
-    public void registerPriority(CarType type) throws AlreadyExistingCarTypeException {
+    public void registerPriority(CarType type) throws AlreadyExistingCarType {
         if (getPriority(type.getName()).isPresent()) {
-            throw new AlreadyExistingCarTypeException();
+            throw new AlreadyExistingCarType();
         } else {
             manager.persist(type);
         }
     }
 
     @Override
-    public void modifyPriority(CarType type, Integer priority) throws NotExistingCarTypeException {
+    public void modifyPriority(CarType type, Integer priority) throws NotExistingCarType {
         Optional<CarType> optionalCarType = getPriority(type.getName());
 
         if (optionalCarType.isPresent()) {
@@ -61,7 +61,7 @@ public class PriorityRegister implements PriorityRegisterer, PriorityReader {
 
             manager.persist(carType);
         } else {
-            throw new NotExistingCarTypeException();
+            throw new NotExistingCarType();
         }
     }
 }

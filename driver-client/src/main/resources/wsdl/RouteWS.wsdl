@@ -55,8 +55,8 @@
       <xs:enumeration value="PRIVILEGED"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="NotAuthorizedCarException" type="tns:NotAuthorizedCarException"/>
-  <xs:complexType name="NotAuthorizedCarException">
+  <xs:element name="NotAuthorizedCar" type="tns:NotAuthorizedCar"/>
+  <xs:complexType name="NotAuthorizedCar">
     <xs:sequence>
       <xs:element minOccurs="0" name="message" type="xs:string"/>
     </xs:sequence>
@@ -67,12 +67,12 @@
     <wsdl:part element="tns:getRoute" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getRouteResponse">
-    <wsdl:part element="tns:getRouteResponse" name="parameters">
+  <wsdl:message name="NotAuthorizedCar">
+    <wsdl:part element="tns:NotAuthorizedCar" name="NotAuthorizedCar">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="NotAuthorizedCarException">
-    <wsdl:part element="tns:NotAuthorizedCarException" name="NotAuthorizedCarException">
+  <wsdl:message name="getRouteResponse">
+    <wsdl:part element="tns:getRouteResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="RouteWebService">
@@ -81,7 +81,7 @@
     </wsdl:input>
       <wsdl:output message="tns:getRouteResponse" name="getRouteResponse">
     </wsdl:output>
-      <wsdl:fault message="tns:NotAuthorizedCarException" name="NotAuthorizedCarException">
+      <wsdl:fault message="tns:NotAuthorizedCar" name="NotAuthorizedCar">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
@@ -95,8 +95,8 @@
       <wsdl:output name="getRouteResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="NotAuthorizedCarException">
-        <soap:fault name="NotAuthorizedCarException" use="literal"/>
+      <wsdl:fault name="NotAuthorizedCar">
+        <soap:fault name="NotAuthorizedCar" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>

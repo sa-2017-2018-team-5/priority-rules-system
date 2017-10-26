@@ -1,8 +1,8 @@
 package fr.polytech.al.five.webservices;
 
 import fr.polytech.al.five.entities.CarType;
-import fr.polytech.al.five.exceptions.AlreadyExistingCarTypeException;
-import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
+import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
+import fr.polytech.al.five.exceptions.NotExistingCarType;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -18,14 +18,14 @@ public interface AdministrationWebService {
      * @param carType Descriptor of the car type.
      */
     @WebMethod
-    void registerPriority(CarType carType) throws AlreadyExistingCarTypeException;
+    void registerPriority(CarType carType) throws AlreadyExistingCarType;
 
     /**
      * Modifies the details of a car priority type.
      * @param carType Modified descriptor of the car type.
      */
     @WebMethod
-    void modifyPriority(CarType carType) throws NotExistingCarTypeException;
+    void modifyPriority(CarType carType) throws NotExistingCarType;
 
     /**
      * Retrieves a car type by its name.
@@ -33,5 +33,5 @@ public interface AdministrationWebService {
      * @return A car type or nothing.
      */
     @WebMethod
-    CarType findPriorityByName(String typeName) throws NotExistingCarTypeException;
+    CarType findPriorityByName(String typeName) throws NotExistingCarType;
 }

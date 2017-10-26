@@ -6,7 +6,7 @@ import fr.polytech.al.five.RouteRegisterer;
 import fr.polytech.al.five.entities.Car;
 import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
-import fr.polytech.al.five.exceptions.NotAuthorizedCarException;
+import fr.polytech.al.five.exceptions.NotAuthorizedCar;
 import fr.polytech.al.five.webservices.RouteWebService;
 import org.apache.log4j.Logger;
 
@@ -32,7 +32,7 @@ public class RouteWebServiceImplementation implements RouteWebService {
 
     @Override
     public Route getRoute(Car car, Position destination)
-            throws NotAuthorizedCarException {
+            throws NotAuthorizedCar {
         Optional<Route> optionalRoute = priorityReader
                 .getPriority(car.getType().getName())
                 .map(carType -> routeBuilder.getRoute(
@@ -52,7 +52,7 @@ public class RouteWebServiceImplementation implements RouteWebService {
             return route;
         } else {
             LOGGER.info("The car #" + car.getId() + " is not authorized to use the route service.");
-            throw new NotAuthorizedCarException();
+            throw new NotAuthorizedCar();
         }
     }
 }

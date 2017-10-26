@@ -37,7 +37,7 @@ public class Runner {
             LOGGER.info("[i] Route ID: " + route.getId());
             route.getInstructions().forEach(instruction ->
                     LOGGER.info("[r] " + instruction));
-        } catch (NotAuthorizedCarException_Exception e) {
+        } catch (NotAuthorizedCar_Exception e) {
             LOGGER.error("[e] Error while querying the backend.");
         }
     }

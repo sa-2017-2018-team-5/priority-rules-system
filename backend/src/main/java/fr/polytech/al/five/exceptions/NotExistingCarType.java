@@ -5,6 +5,6 @@ import javax.xml.ws.WebFault;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-@WebFault(targetNamespace = "http://www.polytech.fr/al/five/car")
-public class NotExistingCarTypeException extends Exception {
+@WebFault
+public class NotExistingCarType extends Exception {
 }

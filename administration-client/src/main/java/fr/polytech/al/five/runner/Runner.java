@@ -42,7 +42,7 @@ public class Runner {
         try {
             ADMINISTRATION_WS.registerPriority(CAR_TYPE);
             LOGGER.info("[s] Type '" + name + "' registered!");
-        } catch (AlreadyExistingCarTypeException e) {
+        } catch (AlreadyExistingCarType_Exception e) {
             LOGGER.error("[e] Could not register the type '" + name + "'.");
         }
     }
@@ -54,7 +54,7 @@ public class Runner {
             CAR_TYPE = ADMINISTRATION_WS.findPriorityByName(name);
             LOGGER.info("[f] Type '" + name + "' fetched!");
             LOGGER.info("[f] '" + name + "' ; priority: " + CAR_TYPE.getPriority() + ".");
-        } catch (NotExistingCarTypeException e) {
+        } catch (NotExistingCarType_Exception e) {
             LOGGER.error("[e] Could not fetch the car type '" + name + "'.");
         }
     }
@@ -68,7 +68,7 @@ public class Runner {
         try {
             ADMINISTRATION_WS.modifyPriority(CAR_TYPE);
             LOGGER.info("[s] Type '" + name + "' updated!");
-        } catch (NotExistingCarTypeException e) {
+        } catch (NotExistingCarType_Exception e) {
             LOGGER.error("[e] Could not update the type '" + name + "'.");
         }
     }

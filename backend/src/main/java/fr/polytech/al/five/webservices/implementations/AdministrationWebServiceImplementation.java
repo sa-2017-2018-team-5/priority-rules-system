@@ -3,8 +3,8 @@ package fr.polytech.al.five.webservices.implementations;
 import fr.polytech.al.five.PriorityReader;
 import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarType;
-import fr.polytech.al.five.exceptions.AlreadyExistingCarTypeException;
-import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
+import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
+import fr.polytech.al.five.exceptions.NotExistingCarType;
 import fr.polytech.al.five.webservices.AdministrationWebService;
 import org.apache.log4j.Logger;
 
@@ -30,24 +30,24 @@ public class AdministrationWebServiceImplementation
     private PriorityReader priorityReader;
 
     @Override
-    public void registerPriority(CarType carType) throws AlreadyExistingCarTypeException {
+    public void registerPriority(CarType carType) throws AlreadyExistingCarType {
         priorityRegister.registerPriority(carType);
     }
 
     @Override
-    public void modifyPriority(CarType carType) throws NotExistingCarTypeException {
+    public void modifyPriority(CarType carType) throws NotExistingCarType {
         priorityRegister.modifyPriority(carType, carType.getPriority());
     }
 
     @Override
-    public CarType findPriorityByName(String typeName) throws NotExistingCarTypeException {
+    public CarType findPriorityByName(String typeName) throws NotExistingCarType {
         Optional<CarType> optional = priorityReader.getPriority(typeName);
 
         if (optional.isPresent()) {
             return optional.get();
         } else {
             LOGGER.info("Could not find a car type named '" + typeName + "'.");
-            throw new NotExistingCarTypeException();
+            throw new NotExistingCarType();
         }
     }
 }

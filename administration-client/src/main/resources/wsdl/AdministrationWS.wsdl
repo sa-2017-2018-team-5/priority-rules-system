@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.polytech.fr/al/five/administration" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.polytech.fr/al/five/car" name="AdministrationWebServiceImplementationService" targetNamespace="http://www.polytech.fr/al/five/administration">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.polytech.fr/al/five/administration" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="AdministrationWebServiceImplementationService" targetNamespace="http://www.polytech.fr/al/five/administration">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.polytech.fr/al/five/administration" elementFormDefault="unqualified" targetNamespace="http://www.polytech.fr/al/five/administration" version="1.0">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.polytech.fr/al/five/administration" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.polytech.fr/al/five/administration">
   <xs:element name="findPriorityByName" type="tns:findPriorityByName"/>
-
   <xs:element name="findPriorityByNameResponse" type="tns:findPriorityByNameResponse"/>
-
   <xs:element name="modifyPriority" type="tns:modifyPriority"/>
-
   <xs:element name="modifyPriorityResponse" type="tns:modifyPriorityResponse"/>
-
   <xs:element name="registerPriority" type="tns:registerPriority"/>
-
   <xs:element name="registerPriorityResponse" type="tns:registerPriorityResponse"/>
-
   <xs:complexType name="findPriorityByName">
     <xs:sequence>
       <xs:element minOccurs="0" name="arg0" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="findPriorityByNameResponse">
     <xs:sequence>
       <xs:element minOccurs="0" name="return" type="tns:carType"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="carType">
     <xs:sequence>
       <xs:element minOccurs="0" name="name" type="xs:string"/>
@@ -34,49 +25,41 @@
       <xs:element minOccurs="0" name="status" type="tns:carStatus"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="registerPriority">
     <xs:sequence>
       <xs:element minOccurs="0" name="arg0" type="tns:carType"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="registerPriorityResponse">
     <xs:sequence/>
   </xs:complexType>
-
   <xs:complexType name="modifyPriority">
     <xs:sequence>
       <xs:element minOccurs="0" name="arg0" type="tns:carType"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="modifyPriorityResponse">
     <xs:sequence/>
   </xs:complexType>
-
   <xs:simpleType name="carStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="EMERGENCY"/>
       <xs:enumeration value="PRIVILEGED"/>
     </xs:restriction>
   </xs:simpleType>
-
+  <xs:element name="NotExistingCarType" type="tns:NotExistingCarType"/>
+  <xs:complexType name="NotExistingCarType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AlreadyExistingCarType" type="tns:AlreadyExistingCarType"/>
+  <xs:complexType name="AlreadyExistingCarType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.polytech.fr/al/five/car" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.polytech.fr/al/five/car">
-  <xsd:element name="NotExistingCarTypeException" type="tns:NotExistingCarTypeException"/>
-  <xsd:complexType name="NotExistingCarTypeException">
-    <xsd:sequence>
-      <xsd:element minOccurs="0" name="message" type="xsd:string"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:element name="AlreadyExistingCarTypeException" type="tns:AlreadyExistingCarTypeException"/>
-  <xsd:complexType name="AlreadyExistingCarTypeException">
-    <xsd:sequence>
-      <xsd:element minOccurs="0" name="message" type="xsd:string"/>
-    </xsd:sequence>
-  </xsd:complexType>
-</xsd:schema>
   </wsdl:types>
   <wsdl:message name="findPriorityByNameResponse">
     <wsdl:part element="tns:findPriorityByNameResponse" name="parameters">
@@ -90,12 +73,16 @@
     <wsdl:part element="tns:registerPriority" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="NotExistingCarTypeException">
-    <wsdl:part element="ns1:NotExistingCarTypeException" name="NotExistingCarTypeException">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="modifyPriority">
     <wsdl:part element="tns:modifyPriority" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NotExistingCarType">
+    <wsdl:part element="tns:NotExistingCarType" name="NotExistingCarType">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AlreadyExistingCarType">
+    <wsdl:part element="tns:AlreadyExistingCarType" name="AlreadyExistingCarType">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="registerPriorityResponse">
@@ -106,17 +93,13 @@
     <wsdl:part element="tns:modifyPriorityResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="AlreadyExistingCarTypeException">
-    <wsdl:part element="ns1:AlreadyExistingCarTypeException" name="AlreadyExistingCarTypeException">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:portType name="AdministrationWebService">
     <wsdl:operation name="findPriorityByName">
       <wsdl:input message="tns:findPriorityByName" name="findPriorityByName">
     </wsdl:input>
       <wsdl:output message="tns:findPriorityByNameResponse" name="findPriorityByNameResponse">
     </wsdl:output>
-      <wsdl:fault message="tns:NotExistingCarTypeException" name="NotExistingCarTypeException">
+      <wsdl:fault message="tns:NotExistingCarType" name="NotExistingCarType">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="registerPriority">
@@ -124,7 +107,7 @@
     </wsdl:input>
       <wsdl:output message="tns:registerPriorityResponse" name="registerPriorityResponse">
     </wsdl:output>
-      <wsdl:fault message="tns:AlreadyExistingCarTypeException" name="AlreadyExistingCarTypeException">
+      <wsdl:fault message="tns:AlreadyExistingCarType" name="AlreadyExistingCarType">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="modifyPriority">
@@ -132,7 +115,7 @@
     </wsdl:input>
       <wsdl:output message="tns:modifyPriorityResponse" name="modifyPriorityResponse">
     </wsdl:output>
-      <wsdl:fault message="tns:NotExistingCarTypeException" name="NotExistingCarTypeException">
+      <wsdl:fault message="tns:NotExistingCarType" name="NotExistingCarType">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
@@ -146,8 +129,8 @@
       <wsdl:output name="findPriorityByNameResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="NotExistingCarTypeException">
-        <soap:fault name="NotExistingCarTypeException" use="literal"/>
+      <wsdl:fault name="NotExistingCarType">
+        <soap:fault name="NotExistingCarType" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="registerPriority">
@@ -158,8 +141,8 @@
       <wsdl:output name="registerPriorityResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="AlreadyExistingCarTypeException">
-        <soap:fault name="AlreadyExistingCarTypeException" use="literal"/>
+      <wsdl:fault name="AlreadyExistingCarType">
+        <soap:fault name="AlreadyExistingCarType" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="modifyPriority">
@@ -170,8 +153,8 @@
       <wsdl:output name="modifyPriorityResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="NotExistingCarTypeException">
-        <soap:fault name="NotExistingCarTypeException" use="literal"/>
+      <wsdl:fault name="NotExistingCarType">
+        <soap:fault name="NotExistingCarType" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>

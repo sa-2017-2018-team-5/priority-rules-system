@@ -10,8 +10,8 @@ import fr.polytech.al.five.PriorityReader;
 import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarStatus;
 import fr.polytech.al.five.entities.CarType;
-import fr.polytech.al.five.exceptions.AlreadyExistingCarTypeException;
-import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
+import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
+import fr.polytech.al.five.exceptions.NotExistingCarType;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
@@ -34,7 +34,7 @@ public class RegisteringCarTypeTest extends AbstractPRSTest {
     private CarType carType;
 
     @Given("^an? (emergency|privileged) car type named (.*) which priority is (\\d+)$")
-    public void registerCarType(String status, String name, int priority) throws AlreadyExistingCarTypeException {
+    public void registerCarType(String status, String name, int priority) throws AlreadyExistingCarType {
         CarType newCarType = new CarType(name, priority, CarStatus.valueOf(status.toUpperCase()));
 
         priorityRegisterer.registerPriority(newCarType);
@@ -46,7 +46,7 @@ public class RegisteringCarTypeTest extends AbstractPRSTest {
     }
 
     @When("^the priority of the type (.*) is changed to (\\d+)")
-    public void updateCarType(String name, int priority) throws NotExistingCarTypeException {
+    public void updateCarType(String name, int priority) throws NotExistingCarType {
         CarType toUpdate = new CarType();
         toUpdate.setName(name);
 
