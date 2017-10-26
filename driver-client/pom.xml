@@ -15,6 +15,7 @@
 
     <properties>
         <cxf.version>3.1.10</cxf.version>
+        <sonar.exclusions>**/stubs/**/*</sonar.exclusions>
     </properties>
 
     <build>
