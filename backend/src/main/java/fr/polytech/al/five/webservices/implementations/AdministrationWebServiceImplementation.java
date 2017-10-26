@@ -6,6 +6,7 @@ import fr.polytech.al.five.entities.CarType;
 import fr.polytech.al.five.exceptions.AlreadyExistingCarTypeException;
 import fr.polytech.al.five.exceptions.NotExistingCarTypeException;
 import fr.polytech.al.five.webservices.AdministrationWebService;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,6 +20,8 @@ import java.util.Optional;
 @Stateless(name = "AdministrationWS")
 public class AdministrationWebServiceImplementation
         implements AdministrationWebService {
+
+    private static Logger LOGGER = Logger.getLogger(AdministrationWebServiceImplementation.class);
 
     @EJB
     private PriorityRegisterer priorityRegister;
@@ -43,6 +46,7 @@ public class AdministrationWebServiceImplementation
         if (optional.isPresent()) {
             return optional.get();
         } else {
+            LOGGER.info("Could not find a car type named '" + typeName + "'.");
             throw new NotExistingCarTypeException();
         }
     }

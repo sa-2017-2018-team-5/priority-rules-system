@@ -1,14 +1,17 @@
-package fr.polytech.al.five;
+package fr.polytech.al.five.runner;
 
 import fr.polytech.al.five.remote.ServiceProvider;
+import org.apache.log4j.Logger;
 import stubs.route.*;
 
 public class Runner {
+    
+    private static Logger LOGGER = Logger.getLogger(Runner.class);
 
     public static void main(String... args) {
-        System.out.println("[x] Asking for a route.");
-        System.out.println("[x] From: [43.641127, 7.134966]");
-        System.out.println("[x] To: [43.6155793, 7.071874799999932]\n");
+        LOGGER.info("[x] Asking for a route.");
+        LOGGER.info("[x] From: [43.641127, 7.134966]");
+        LOGGER.info("[x] To: [43.6155793, 7.071874799999932]\n");
 
         RouteWebService routeWebService = ServiceProvider.getRouteService();
 
@@ -31,11 +34,11 @@ public class Runner {
 
         try {
             Route route = routeWebService.getRoute(myCar, to);
-            System.out.println("[i] Route ID: " + route.getId());
+            LOGGER.info("[i] Route ID: " + route.getId());
             route.getInstructions().forEach(instruction ->
-                    System.out.println("[r] " + instruction));
+                    LOGGER.info("[r] " + instruction));
         } catch (NotAuthorizedCarException_Exception e) {
-            System.out.println("[error] Error while querying the backend.");
+            LOGGER.error("[e] Error while querying the backend.");
         }
     }
 }

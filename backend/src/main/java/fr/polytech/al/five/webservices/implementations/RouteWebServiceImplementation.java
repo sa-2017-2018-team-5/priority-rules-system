@@ -8,6 +8,7 @@ import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.exceptions.NotAuthorizedCarException;
 import fr.polytech.al.five.webservices.RouteWebService;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,6 +23,8 @@ import java.util.Optional;
 @WebService(targetNamespace = "http://www.polytech.fr/al/five/route")
 @Stateless(name = "RouteWS")
 public class RouteWebServiceImplementation implements RouteWebService {
+
+    private static Logger LOGGER = Logger.getLogger(RouteWebServiceImplementation.class);
 
     @EJB private RouteBuilder routeBuilder;
     @EJB private PriorityReader priorityReader;
@@ -39,14 +42,16 @@ public class RouteWebServiceImplementation implements RouteWebService {
 
         if (optionalRoute.isPresent()) {
             Route route = optionalRoute.get();
+            
             try {
                 routeRegisterer.sendRoute(car, route);
             } catch (JMSException e) {
-                // TODO: Add logger instead of print.
-                System.out.println(e.getMessage());
+                LOGGER.error("An error occurred while sending the route.", e);
             }
+
             return route;
         } else {
+            LOGGER.info("The car #" + car.getId() + " is not authorized to use the route service.");
             throw new NotAuthorizedCarException();
         }
     }

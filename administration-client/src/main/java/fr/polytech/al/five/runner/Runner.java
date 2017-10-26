@@ -1,11 +1,14 @@
-package fr.polytech.al.five;
+package fr.polytech.al.five.runner;
 
 import fr.polytech.al.five.remote.ServiceProvider;
+import org.apache.log4j.Logger;
 import stubs.administration.*;
 
 import static stubs.administration.CarStatus.EMERGENCY;
 
 public class Runner {
+
+    private static Logger LOGGER = Logger.getLogger(Runner.class);
 
     private static CarType CAR_TYPE;
     private static AdministrationWebService ADMINISTRATION_WS;
@@ -26,11 +29,10 @@ public class Runner {
     }
 
     private static void create(String name, int priority, CarStatus status) {
-        System.out.println("[x] Creating a new car type.");
-        System.out.println("[x] * Name: " + name);
-        System.out.println("[x] * Priority: " + priority);
-        System.out.println("[x] * Status: " + status);
-        System.out.println();
+        LOGGER.info("[x] Creating a new car type.");
+        LOGGER.info("[x] * Name: " + name);
+        LOGGER.info("[x] * Priority: " + priority);
+        LOGGER.info("[x] * Status: " + status);
 
         CAR_TYPE = new CarType();
         CAR_TYPE.setName(name);
@@ -39,41 +41,35 @@ public class Runner {
 
         try {
             ADMINISTRATION_WS.registerPriority(CAR_TYPE);
-            System.out.println("[s] Type '" + name + "' registered!");
+            LOGGER.info("[s] Type '" + name + "' registered!");
         } catch (AlreadyExistingCarTypeException e) {
-            System.err.println("[e] Could not register the type '" + name + "'.");
+            LOGGER.error("[e] Could not register the type '" + name + "'.");
         }
-
-        System.out.println();
     }
 
     private static void fetch(String name) {
-        System.out.println("[f] Fetching the car type '" + name + "'.");
+        LOGGER.info("[f] Fetching the car type '" + name + "'.");
 
         try {
             CAR_TYPE = ADMINISTRATION_WS.findPriorityByName(name);
-            System.out.println("[f] Type '" + name + "' fetched!");
-            System.out.println("[f] '" + name + "' ; priority: " + CAR_TYPE.getPriority() + ".");
+            LOGGER.info("[f] Type '" + name + "' fetched!");
+            LOGGER.info("[f] '" + name + "' ; priority: " + CAR_TYPE.getPriority() + ".");
         } catch (NotExistingCarTypeException e) {
-            System.err.println("[e] Could not fetch the car type '" + name + "'.");
+            LOGGER.error("[e] Could not fetch the car type '" + name + "'.");
         }
-
-        System.out.println();
     }
 
     private static void update(String name, int updatedPriority) {
-        System.out.println("[x] Updating type '" + name + "'.");
-        System.out.println("[x] * Priority: " + updatedPriority);
+        LOGGER.info("[x] Updating type '" + name + "'.");
+        LOGGER.info("[x] * Priority: " + updatedPriority);
 
         CAR_TYPE.setPriority(updatedPriority);
 
         try {
             ADMINISTRATION_WS.modifyPriority(CAR_TYPE);
-            System.out.println("[s] Type '" + name + "' updated!");
+            LOGGER.info("[s] Type '" + name + "' updated!");
         } catch (NotExistingCarTypeException e) {
-            System.err.println("[e] Could not update the type '" + name + "'.");
+            LOGGER.error("[e] Could not update the type '" + name + "'.");
         }
-
-        System.out.println();
     }
 }
