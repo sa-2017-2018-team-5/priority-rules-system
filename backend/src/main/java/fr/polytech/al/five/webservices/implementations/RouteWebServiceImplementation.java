@@ -43,11 +43,11 @@ public class RouteWebServiceImplementation implements RouteWebService {
         if (optionalRoute.isPresent()) {
             Route route = optionalRoute.get();
             
-            try {
+            /*try {
                 routeRegisterer.sendRoute(car, route);
             } catch (JMSException e) {
                 LOGGER.error("An error occurred while sending the route.", e);
-            }
+            }*/
 
             return route;
         } else {

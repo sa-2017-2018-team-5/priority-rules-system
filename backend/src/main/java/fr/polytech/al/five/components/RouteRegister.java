@@ -1,22 +1,19 @@
 package fr.polytech.al.five.components;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.polytech.al.five.RouteRegisterer;
+import fr.polytech.al.five.entities.Car;
+import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.message.TrafficLightInfo;
 import fr.polytech.al.five.message.TrafficMessage;
 import fr.polytech.al.five.util.EventEmitter;
-import fr.polytech.al.five.RouteRegisterer;
-import fr.polytech.al.five.entities.Car;
-import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.util.MessageMarshaller;
-import org.json.JSONObject;
 
 import javax.ejb.Stateless;
 import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
