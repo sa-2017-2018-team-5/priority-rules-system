@@ -5,6 +5,6 @@ import javax.xml.ws.WebFault;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-@WebFault
+@WebFault(name = "NotAuthorizedCar")
 public class NotAuthorizedCar extends Exception {
 }
