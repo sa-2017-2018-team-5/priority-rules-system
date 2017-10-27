@@ -1,19 +1,14 @@
-package fr.polytech.al.five.listener;
+package fr.polytech.al.five.consumers;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import fr.polytech.al.five.message.TrafficMessage;
 import org.apache.log4j.Logger;
 import fr.polytech.al.five.util.EventEmitter;
 import org.json.JSONObject;
-import fr.polytech.al.five.util.TrafficLightGroupLoader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class IncomingCarConsumer extends DefaultConsumer{
 
