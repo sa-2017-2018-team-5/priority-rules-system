@@ -1,4 +1,4 @@
-package fr.polytech.al.five.listener;
+package fr.polytech.al.five.consumers;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

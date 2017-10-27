@@ -1,6 +1,5 @@
-package fr.polytech.al.five.listener;
+package fr.polytech.al.five.consumers;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -15,11 +14,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class TrafficLightConsumer extends DefaultConsumer {
+public class TrafficLightCommandsConsumer extends DefaultConsumer {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    public TrafficLightConsumer(Channel channel) {
+    public TrafficLightCommandsConsumer(Channel channel) {
         super(channel);
     }
 
@@ -28,7 +27,6 @@ public class TrafficLightConsumer extends DefaultConsumer {
                                AMQP.BasicProperties properties, byte[] body) throws IOException {
 
         String message = new String(body, "UTF-8");
-        System.out.println("Receive: " + message);
 
         TrafficMessage trafficMessage = mapper.readValue(message, TrafficMessage.class);
 

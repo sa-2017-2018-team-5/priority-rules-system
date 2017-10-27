@@ -1,7 +1,8 @@
 package fr.polytech.al.five.runner;
 
 import fr.polytech.al.five.commands.TrafficLightCommands;
-import fr.polytech.al.five.listener.TrafficLightConsumer;
+import fr.polytech.al.five.consumers.TrafficLightCommandsConsumer;
+import fr.polytech.al.five.consumers.TrafficLightRoutesConsumer;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.util.EventListener;
 import asg.cliche.ShellFactory;
@@ -18,12 +19,20 @@ public class TrafficLightRunner {
     public static ArrayList<CarInfo> cars = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        EventListener listener = new EventListener("Routes");
-
+        EventListener routesListener = new EventListener("Routes");
         try {
-            listener.bind();
-            TrafficLightConsumer trafficLightConsumer = new TrafficLightConsumer(listener.getChannel());
-            listener.getChannel().basicConsume(listener.getQueueName(), true, trafficLightConsumer);
+            routesListener.bind();
+            TrafficLightRoutesConsumer trafficLightRoutesConsumer = new TrafficLightRoutesConsumer(routesListener.getChannel());
+            routesListener.getChannel().basicConsume(routesListener.getQueueName(), true, trafficLightRoutesConsumer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        EventListener TLActivityListener = new EventListener("TLActivity");
+        try {
+            TLActivityListener.bind();
+            TrafficLightCommandsConsumer trafficLightCommandsConsumer = new TrafficLightCommandsConsumer(TLActivityListener.getChannel());
+            TLActivityListener.getChannel().basicConsume(TLActivityListener.getQueueName(), true, trafficLightCommandsConsumer);
         } catch (IOException e) {
             e.printStackTrace();
         }
