@@ -7,7 +7,7 @@ public class CarInfo implements Serializable {
     private Integer id;
     private String name;
     private Integer priority;
-    private String CarStatus;
+    private String carStatus;
 
     public CarInfo() {
     }
@@ -16,7 +16,7 @@ public class CarInfo implements Serializable {
         this.id = id;
         this.name = name;
         this.priority = priority;
-        CarStatus = carStatus;
+        this.carStatus = carStatus;
     }
 
     public Integer getId() {
@@ -44,11 +44,11 @@ public class CarInfo implements Serializable {
     }
 
     public String getCarStatus() {
-        return CarStatus;
+        return carStatus;
     }
 
     public void setCarStatus(String carStatus) {
-        CarStatus = carStatus;
+        this.carStatus = carStatus;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CarInfo implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", priority=" + priority +
-                ", CarStatus='" + CarStatus + '\'' +
+                ", CarPosition='" + carStatus + '\'' +
                 '}';
     }
 }
