@@ -50,4 +50,14 @@ public class CarInfo implements Serializable {
     public void setCarStatus(String carStatus) {
         CarStatus = carStatus;
     }
+
+    @Override
+    public String toString() {
+        return "CarInfo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priority=" + priority +
+                ", CarStatus='" + CarStatus + '\'' +
+                '}';
+    }
 }

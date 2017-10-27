@@ -8,6 +8,7 @@ import fr.polytech.al.five.util.EventEmitter;
 import fr.polytech.al.five.RouteRegisterer;
 import fr.polytech.al.five.entities.Car;
 import fr.polytech.al.five.entities.Route;
+import fr.polytech.al.five.util.MessageMarshaller;
 import org.json.JSONObject;
 
 import javax.ejb.Stateless;
@@ -24,9 +25,7 @@ import java.util.Map;
 public class RouteRegister implements RouteRegisterer {
 
     public void sendRoute(Car car, Route route) throws JMSException {
-        EventEmitter eventEmitter = new EventEmitter("CityExchange");
-        ObjectMapper mapper = new ObjectMapper();
-        JSONObject message = new JSONObject();
+        EventEmitter eventEmitter = new EventEmitter("Routes");
 
         CarInfo carInfo = new CarInfo(
                 car.getId(),
@@ -47,12 +46,8 @@ public class RouteRegister implements RouteRegisterer {
                 route.getDeparture()
         );
 
-
-        message.put("id", "City");
-        message.put("message", mapper.convertValue(trafficMessage, Map.class));
-
         try {
-            eventEmitter.publish(message.toString().getBytes("UTF-8"));
+            eventEmitter.publish(MessageMarshaller.construct(trafficMessage).getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
