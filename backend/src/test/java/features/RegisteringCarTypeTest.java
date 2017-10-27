@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
+import java.util.List;
+import java.util.Optional;
 
 @RunWith(CukeSpace.class)
 @CucumberOptions(features = "src/test/resources")
@@ -32,6 +34,7 @@ public class RegisteringCarTypeTest extends AbstractPRSTest {
     private PriorityReader priorityReader;
 
     private CarType carType;
+    private List<CarType> carTypes;
 
     @Given("^an? (emergency|privileged) car type named (.*) which priority is (\\d+)$")
     public void registerCarType(String status, String name, int priority) throws AlreadyExistingCarType {
@@ -40,17 +43,37 @@ public class RegisteringCarTypeTest extends AbstractPRSTest {
         priorityRegisterer.registerPriority(newCarType);
     }
 
+    @When("^all car types are fetched$")
+    public void fetchAllCarTypes() {
+        carTypes = priorityReader.getPriorities();
+    }
+
     @When("^the car type (.*) is fetched$")
     public void fetchCarType(String name) {
         carType = priorityReader.getPriority(name).orElse(null);
     }
 
-    @When("^the priority of the type (.*) is changed to (\\d+)")
+    @When("^the priority of the type (.*) is changed to (\\d+)$")
     public void updateCarType(String name, int priority) throws NotExistingCarType {
         CarType toUpdate = new CarType();
         toUpdate.setName(name);
 
         priorityRegisterer.modifyPriority(toUpdate, priority);
+    }
+
+    @Then("^the car type (.*) should exist$")
+    public void shouldExist(String name) {
+        if (carTypes == null) {
+            fail();
+        } else {
+            Optional<CarType> optionalCarType = carTypes.stream().filter(type -> name.equals(type.getName())).findFirst();
+
+            if (optionalCarType.isPresent()) {
+                carType = optionalCarType.get();
+            } else {
+                fail("The car type named '" + name + "' should exist but it does not.");
+            }
+        }
     }
 
     @Then("^the car type priority should be (\\d+)$")
@@ -62,7 +85,7 @@ public class RegisteringCarTypeTest extends AbstractPRSTest {
         }
     }
 
-    @Then("^the cars of this type should be (emergency|privileged) ones")
+    @Then("^the cars of this type should be (emergency|privileged) ones$")
     public void checkStatus(String expected) {
         if (carType == null) {
             fail();

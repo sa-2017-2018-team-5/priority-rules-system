@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,6 +41,19 @@ public class PriorityRegister implements PriorityRegisterer, PriorityReader {
             // TODO Log something.
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<CarType> getPriorities() {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<CarType> criteria = builder.createQuery(CarType.class);
+        Root<CarType> root = criteria.from(CarType.class);
+
+        // Not supposed to be a problem: there should not be a lot of car types.
+        criteria.select(root);
+        TypedQuery<CarType> query = manager.createQuery(criteria);
+
+        return query.getResultList();
     }
 
     @Override

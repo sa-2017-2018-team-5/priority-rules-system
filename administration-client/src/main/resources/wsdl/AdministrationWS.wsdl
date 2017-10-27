@@ -2,6 +2,8 @@
 <wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.polytech.fr/al/five/administration" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="AdministrationWebServiceImplementationService" targetNamespace="http://www.polytech.fr/al/five/administration">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.polytech.fr/al/five/administration" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.polytech.fr/al/five/administration">
+  <xs:element name="findAllPriorities" type="tns:findAllPriorities"/>
+  <xs:element name="findAllPrioritiesResponse" type="tns:findAllPrioritiesResponse"/>
   <xs:element name="findPriorityByName" type="tns:findPriorityByName"/>
   <xs:element name="findPriorityByNameResponse" type="tns:findPriorityByNameResponse"/>
   <xs:element name="modifyPriority" type="tns:modifyPriority"/>
@@ -32,6 +34,14 @@
   </xs:complexType>
   <xs:complexType name="registerPriorityResponse">
     <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="findAllPriorities">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="findAllPrioritiesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:carType"/>
+    </xs:sequence>
   </xs:complexType>
   <xs:complexType name="modifyPriority">
     <xs:sequence>
@@ -85,12 +95,20 @@
     <wsdl:part element="tns:AlreadyExistingCarType" name="AlreadyExistingCarType">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="findAllPrioritiesResponse">
+    <wsdl:part element="tns:findAllPrioritiesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="registerPriorityResponse">
     <wsdl:part element="tns:registerPriorityResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="modifyPriorityResponse">
     <wsdl:part element="tns:modifyPriorityResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="findAllPriorities">
+    <wsdl:part element="tns:findAllPriorities" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="AdministrationWebService">
@@ -109,6 +127,12 @@
     </wsdl:output>
       <wsdl:fault message="tns:AlreadyExistingCarType" name="AlreadyExistingCarType">
     </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="findAllPriorities">
+      <wsdl:input message="tns:findAllPriorities" name="findAllPriorities">
+    </wsdl:input>
+      <wsdl:output message="tns:findAllPrioritiesResponse" name="findAllPrioritiesResponse">
+    </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="modifyPriority">
       <wsdl:input message="tns:modifyPriority" name="modifyPriority">
@@ -144,6 +168,15 @@
       <wsdl:fault name="AlreadyExistingCarType">
         <soap:fault name="AlreadyExistingCarType" use="literal"/>
       </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="findAllPriorities">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="findAllPriorities">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="findAllPrioritiesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="modifyPriority">
       <soap:operation soapAction="" style="document"/>
