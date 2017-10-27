@@ -22,7 +22,7 @@ import java.util.Optional;
 public class AdministrationWebServiceImplementation
         implements AdministrationWebService {
 
-    private static Logger LOGGER = Logger.getLogger(AdministrationWebServiceImplementation.class);
+    private static final Logger LOGGER = Logger.getLogger(AdministrationWebServiceImplementation.class);
 
     @EJB
     private PriorityRegisterer priorityRegister;

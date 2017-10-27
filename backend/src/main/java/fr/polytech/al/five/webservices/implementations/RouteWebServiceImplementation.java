@@ -24,7 +24,7 @@ import java.util.Optional;
 @Stateless(name = "RouteWS")
 public class RouteWebServiceImplementation implements RouteWebService {
 
-    private static Logger LOGGER = Logger.getLogger(RouteWebServiceImplementation.class);
+    private static final Logger LOGGER = Logger.getLogger(RouteWebServiceImplementation.class);
 
     @EJB private RouteBuilder routeBuilder;
     @EJB private PriorityReader priorityReader;
@@ -43,11 +43,11 @@ public class RouteWebServiceImplementation implements RouteWebService {
         if (optionalRoute.isPresent()) {
             Route route = optionalRoute.get();
             
-            /*try {
+            try {
                 routeRegisterer.sendRoute(car, route);
             } catch (JMSException e) {
                 LOGGER.error("An error occurred while sending the route.", e);
-            }*/
+            }
 
             return route;
         } else {

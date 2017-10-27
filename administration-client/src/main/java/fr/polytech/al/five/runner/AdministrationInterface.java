@@ -25,7 +25,7 @@ public class AdministrationInterface {
 
         String headers = String.format("%-15s %-10s %-10s",
                 "Name", "Priority", "Status");
-        String separator = headers.replaceAll(".", "―");
+        String separator = headers.replaceAll("(?s).", "―");
 
         LOGGER.info(headers);
         LOGGER.info(separator);
