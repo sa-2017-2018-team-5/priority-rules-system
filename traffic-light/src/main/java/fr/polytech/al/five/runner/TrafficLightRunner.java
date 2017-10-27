@@ -1,8 +1,8 @@
 package fr.polytech.al.five.runner;
 
 import fr.polytech.al.five.commands.TrafficLightCommands;
-import fr.polytech.al.five.consumers.TrafficLightCommandsConsumer;
 import fr.polytech.al.five.consumers.TrafficLightRoutesConsumer;
+import fr.polytech.al.five.consumers.TrafficLightCommandsConsumer;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.util.EventListener;
 import asg.cliche.ShellFactory;
@@ -15,23 +15,23 @@ import java.util.ArrayList;
  */
 public class TrafficLightRunner {
 
-    public static final Integer ID = 60521;
+    public static final Integer ID = 1111;
     public static ArrayList<CarInfo> cars = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        EventListener routesListener = new EventListener("Routes");
+        EventListener routesListener = new EventListener("TLActivity");
         try {
             routesListener.bind();
-            TrafficLightRoutesConsumer trafficLightRoutesConsumer = new TrafficLightRoutesConsumer(routesListener.getChannel());
+            TrafficLightCommandsConsumer trafficLightRoutesConsumer = new TrafficLightCommandsConsumer(routesListener.getChannel());
             routesListener.getChannel().basicConsume(routesListener.getQueueName(), true, trafficLightRoutesConsumer);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        EventListener TLActivityListener = new EventListener("TLActivity");
+        EventListener TLActivityListener = new EventListener("Routes");
         try {
             TLActivityListener.bind();
-            TrafficLightCommandsConsumer trafficLightCommandsConsumer = new TrafficLightCommandsConsumer(TLActivityListener.getChannel());
+            TrafficLightRoutesConsumer trafficLightCommandsConsumer = new TrafficLightRoutesConsumer(TLActivityListener.getChannel());
             TLActivityListener.getChannel().basicConsume(TLActivityListener.getQueueName(), true, trafficLightCommandsConsumer);
         } catch (IOException e) {
             e.printStackTrace();

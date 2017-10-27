@@ -12,6 +12,10 @@ public class CarInfo implements Serializable {
     public CarInfo() {
     }
 
+    public CarInfo(Integer id){
+        this.id = id;
+    }
+
     public CarInfo(Integer id, String name, Integer priority, String carStatus) {
         this.id = id;
         this.name = name;

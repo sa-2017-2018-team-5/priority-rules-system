@@ -5,16 +5,20 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import fr.polytech.al.five.message.TrafficLightCommand;
 import fr.polytech.al.five.message.TrafficLightInfo;
+import fr.polytech.al.five.message.TrafficMessage;
 import fr.polytech.al.five.runner.TrafficLightRunner;
+import fr.polytech.al.five.util.MessageUnmarshaller;
+import org.apache.log4j.Logger;
+
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class TrafficLightRoutesConsumer extends DefaultConsumer {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final static Logger logger = Logger.getLogger(TrafficLightRoutesConsumer.class);
 
     public TrafficLightRoutesConsumer(Channel channel) {
         super(channel);
@@ -24,14 +28,15 @@ public class TrafficLightRoutesConsumer extends DefaultConsumer {
     public void handleDelivery(String consumerTag, Envelope envelope,
                                AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-        String message = new String(body, "UTF-8");
+        TrafficMessage trafficMessage = MessageUnmarshaller.getTrafficMessage(new String(body, "UTF-8"));
 
-        TrafficLightCommand trafficLightCommand = mapper.readValue(message, TrafficLightCommand.class);
-
-        TrafficLightInfo trafficLightInfo = trafficLightCommand.getTrafficLightInfo();
-
-        if (Objects.equals(TrafficLightRunner.ID, trafficLightInfo.getId())) {
-            System.out.println("Trafic Light set to " + trafficLightCommand.getColour());
+        for (TrafficLightInfo trafficLightInfo : trafficMessage.getTrafficLights()) {
+            if (Objects.equals(TrafficLightRunner.ID, trafficLightInfo.getId())) {
+                logger.info("Waiting for car " + trafficMessage.getCar().getId());
+                TrafficLightRunner.cars.add(trafficMessage.getCar());
+            }
         }
+
     }
+
 }

@@ -2,6 +2,7 @@ package fr.polytech.al.five.commands;
 
 import asg.cliche.Command;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.polytech.al.five.consumers.TrafficLightRoutesConsumer;
 import fr.polytech.al.five.message.CarDetection;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.message.CarPosition;
@@ -9,10 +10,13 @@ import fr.polytech.al.five.message.TrafficLightInfo;
 import fr.polytech.al.five.runner.TrafficLightRunner;
 import fr.polytech.al.five.util.EventEmitter;
 import fr.polytech.al.five.util.MessageMarshaller;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 public class TrafficLightCommands {
+
+    private final static Logger logger = Logger.getLogger(TrafficLightCommands.class);
 
     @Command(name = "see-car")
     public void seeCar(Integer carId) throws IOException {
@@ -38,22 +42,18 @@ public class TrafficLightCommands {
     }
 
     private void event(CarInfo carInfo, CarPosition carPosition) throws IOException {
-        EventEmitter emitter = new EventEmitter("TLActivity");
+        EventEmitter emitter = new EventEmitter("CarSurveillance");
 
         CarDetection carDetection = new CarDetection();
         carDetection.setTrafficLightInfo(new TrafficLightInfo(TrafficLightRunner.ID));
         carDetection.setCarInfo(carInfo);
         carDetection.setCarPosition(carPosition);
 
-        String message = "";
-        try {
-            message = MessageMarshaller.construct(carDetection);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String message = MessageMarshaller.construct(carDetection);
 
-        System.out.println("Sending :" + message);
+        logger.info("Sending :" + message);
 
         emitter.publish(message.getBytes("UTF-8"));
+        emitter.close();
     }
 }

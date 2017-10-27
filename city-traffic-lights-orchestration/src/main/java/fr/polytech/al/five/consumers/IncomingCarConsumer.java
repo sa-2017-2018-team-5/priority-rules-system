@@ -14,8 +14,6 @@ public class IncomingCarConsumer extends DefaultConsumer{
 
     final static Logger logger = Logger.getLogger(IncomingCarConsumer.class);
 
-    private static final String ID = "City";
-
     private EventEmitter emitter;
 
     public IncomingCarConsumer(Channel channel, String exchange) {
@@ -27,34 +25,6 @@ public class IncomingCarConsumer extends DefaultConsumer{
     public void handleDelivery(String consumerTag, Envelope envelope,
                                AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-        JSONObject jsonObject = new JSONObject(new String(body,"UTF-8"));
-//
-//        if (processMessage.isCorrectID(ID,jsonObject)){
-//            logger.info("Received message ["+consumerTag+ "] : " + jsonObject.toString());
-//
-//            TrafficMessage message = processMessage.getMessage(jsonObject);
-//            // Associate each traffic lights to its Group
-//            List<Integer> trafficID = new ArrayList<>();
-//            message.getTrafficLights().forEach(trafficLightInfo -> {
-//                trafficID.add(trafficLightInfo.getId());
-//            });
-//            Set<String> groups =
-//                    TrafficLightGroupLoader.findGroup(trafficID);
-//
-//            // Construct the message
-//            List<JSONObject> result = constructMessage.construct(groups);
-//
-//            result.forEach((reply)->{
-//                reply.put("message",jsonObject.get("message"));
-//
-//                logger.info("Reply message to ["+reply.getString("id")+ "] : " + reply.toString());
-//                try {
-//                    emitter.publish(reply.toString().getBytes());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
     }
 
 }

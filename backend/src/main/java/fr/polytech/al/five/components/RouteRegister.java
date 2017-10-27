@@ -8,6 +8,7 @@ import fr.polytech.al.five.message.TrafficLightInfo;
 import fr.polytech.al.five.message.TrafficMessage;
 import fr.polytech.al.five.util.EventEmitter;
 import fr.polytech.al.five.util.MessageMarshaller;
+
 import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
@@ -28,16 +29,16 @@ public class RouteRegister implements RouteRegisterer {
         EventEmitter eventEmitter = new EventEmitter("Routes");
 
         CarInfo carInfo = new CarInfo(
-                car.getId(),
-                car.getType().getName(),
-                car.getType().getPriority(),
-                car.getType().getStatus().name()
+                car.getId()
         );
 
         List<TrafficLightInfo> trafficLightInfos = new ArrayList<>();
 
-        route.getEncounteredLights().forEach(trafficLight ->
-            trafficLightInfos.add(new TrafficLightInfo(trafficLight.getId())));
+        if (route.getEncounteredLights() != null) {
+            route.getEncounteredLights().forEach(trafficLight -> {
+                trafficLightInfos.add(new TrafficLightInfo(trafficLight.getId()));
+            });
+        }
 
         TrafficMessage trafficMessage = new TrafficMessage(
                 carInfo,
@@ -45,12 +46,12 @@ public class RouteRegister implements RouteRegisterer {
                 route.getDeparture()
         );
 
+        LOGGER.info("Sending message : " + MessageMarshaller.construct(trafficMessage));
         try {
             eventEmitter.publish(MessageMarshaller.construct(trafficMessage).getBytes("UTF-8"));
         } catch (IOException e) {
             LOGGER.error("Error when sending the route to the bus: " + e);
         }
-
         eventEmitter.close();
     }
 }
