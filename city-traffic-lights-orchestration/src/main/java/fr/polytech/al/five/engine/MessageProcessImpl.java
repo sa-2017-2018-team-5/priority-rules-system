@@ -1,9 +1,9 @@
 package fr.polytech.al.five.engine;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import message.TrafficMessage;
+import fr.polytech.al.five.message.TrafficMessage;
 import org.json.JSONObject;
-import util.MessageProcess;
+import fr.polytech.al.five.util.MessageProcess;
 
 import java.io.IOException;
 

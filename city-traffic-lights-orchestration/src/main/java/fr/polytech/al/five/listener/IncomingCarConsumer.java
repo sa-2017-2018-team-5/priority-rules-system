@@ -4,13 +4,13 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import message.TrafficMessage;
+import fr.polytech.al.five.message.TrafficMessage;
 import org.apache.log4j.Logger;
-import util.EventEmitter;
+import fr.polytech.al.five.util.EventEmitter;
 import fr.polytech.al.five.engine.ConstructMessageImpl;
 import fr.polytech.al.five.engine.MessageProcessImpl;
 import org.json.JSONObject;
-import util.TrafficLightGroupLoader;
+import fr.polytech.al.five.util.TrafficLightGroupLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class IncomingCarConsumer extends DefaultConsumer{
             Set<String> groups =
                     TrafficLightGroupLoader.findGroup(trafficID);
 
-            // Construct th reply message
+            // Construct the message
             List<JSONObject> result = constructMessage.construct(groups);
 
             result.forEach((reply)->{

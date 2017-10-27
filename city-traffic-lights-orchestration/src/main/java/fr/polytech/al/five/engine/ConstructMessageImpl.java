@@ -1,7 +1,7 @@
 package fr.polytech.al.five.engine;
 
 import org.json.JSONObject;
-import util.ConstructMessage;
+import fr.polytech.al.five.util.ConstructMessage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package util;
+package fr.polytech.al.five.util;
 
 import org.json.JSONObject;
 

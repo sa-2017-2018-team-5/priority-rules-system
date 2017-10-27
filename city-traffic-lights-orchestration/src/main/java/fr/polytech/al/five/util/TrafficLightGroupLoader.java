@@ -1,4 +1,4 @@
-package util;
+package fr.polytech.al.five.util;
 
 import fr.polytech.al.five.model.TrafficGroup;
 import org.apache.commons.csv.CSVFormat;

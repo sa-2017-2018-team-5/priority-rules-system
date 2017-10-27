@@ -1,4 +1,4 @@
-package message;
+package fr.polytech.al.five.message;
 
 import java.io.Serializable;
 import java.util.Date;

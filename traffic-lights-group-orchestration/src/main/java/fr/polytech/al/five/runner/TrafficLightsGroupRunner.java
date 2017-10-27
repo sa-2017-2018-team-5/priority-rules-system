@@ -1,6 +1,6 @@
 package fr.polytech.al.five.runner;
 
-import util.EventListener;
+import fr.polytech.al.five.util.EventListener;
 import fr.polytech.al.five.listener.CarArrivalConsumer;
 
 import java.io.IOException;

@@ -9,11 +9,11 @@ import fr.polytech.al.five.model.TrafficLightColour;
 
 import java.io.IOException;
 
-public class EventConsumer extends DefaultConsumer{
+public class TrafficLightConsumer extends DefaultConsumer{
 
     private TrafficLightController controller;
 
-    public EventConsumer(Channel channel) {
+    public TrafficLightConsumer(Channel channel) {
         super(channel);
         this.controller = new TrafficLightController();
     }

@@ -1,6 +1,6 @@
-package util;
+package fr.polytech.al.five.util;
 
-import message.TrafficMessage;
+import fr.polytech.al.five.message.TrafficMessage;
 import org.json.JSONObject;
 
 public interface MessageProcess {

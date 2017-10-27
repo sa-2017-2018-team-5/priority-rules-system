@@ -5,7 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import fr.polytech.al.five.engine.MessageProcessImpl;
-import message.CarInfo;
+import fr.polytech.al.five.message.CarInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
