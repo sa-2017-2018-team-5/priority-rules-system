@@ -30,4 +30,12 @@ public class TrafficLightCommand implements Serializable {
     public void setColour(TrafficLightColour colour) {
         this.colour = colour;
     }
+
+    @Override
+    public String toString() {
+        return "TrafficLightCommand{" +
+                "trafficLightInfo=" + trafficLightInfo +
+                ", colour=" + colour +
+                '}';
+    }
 }

@@ -40,4 +40,13 @@ public class CarDetection implements Serializable{
     public void setCarStatus(CarStatus carStatus) {
         this.carStatus = carStatus;
     }
+
+    @Override
+    public String toString() {
+        return "CarDetection{" +
+                "trafficLightInfo=" + trafficLightInfo +
+                ", carInfo=" + carInfo +
+                ", carStatus=" + carStatus +
+                '}';
+    }
 }

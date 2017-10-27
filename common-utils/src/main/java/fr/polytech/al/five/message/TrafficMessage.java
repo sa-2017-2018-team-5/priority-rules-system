@@ -42,4 +42,13 @@ public class TrafficMessage implements Serializable{
     public void setDeparture(Date departure) {
         this.departure = departure;
     }
+
+    @Override
+    public String toString() {
+        return "TrafficMessage{" +
+                "car=" + car +
+                ", trafficLights=" + trafficLights +
+                ", departure=" + departure +
+                '}';
+    }
 }
