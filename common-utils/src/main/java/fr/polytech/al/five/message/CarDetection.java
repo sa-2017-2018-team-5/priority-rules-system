@@ -6,15 +6,15 @@ public class CarDetection implements Serializable{
 
     private TrafficLightInfo trafficLightInfo;
     private CarInfo carInfo;
-    private CarStatus carStatus;
+    private CarPosition carPosition;
 
     public CarDetection() {
     }
 
-    public CarDetection(TrafficLightInfo trafficLightInfo, CarInfo carInfo, CarStatus carStatus) {
+    public CarDetection(TrafficLightInfo trafficLightInfo, CarInfo carInfo, CarPosition carPosition) {
         this.trafficLightInfo = trafficLightInfo;
         this.carInfo = carInfo;
-        this.carStatus = carStatus;
+        this.carPosition = carPosition;
     }
 
     public TrafficLightInfo getTrafficLightInfo() {
@@ -33,12 +33,12 @@ public class CarDetection implements Serializable{
         this.carInfo = carInfo;
     }
 
-    public CarStatus getCarStatus() {
-        return carStatus;
+    public CarPosition getCarPosition() {
+        return carPosition;
     }
 
-    public void setCarStatus(CarStatus carStatus) {
-        this.carStatus = carStatus;
+    public void setCarPosition(CarPosition carPosition) {
+        this.carPosition = carPosition;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class CarDetection implements Serializable{
         return "CarDetection{" +
                 "trafficLightInfo=" + trafficLightInfo +
                 ", carInfo=" + carInfo +
-                ", carStatus=" + carStatus +
+                ", carPosition=" + carPosition +
                 '}';
     }
 }

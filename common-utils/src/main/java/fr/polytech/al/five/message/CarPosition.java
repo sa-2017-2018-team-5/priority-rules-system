@@ -2,7 +2,7 @@ package fr.polytech.al.five.message;
 
 import java.io.Serializable;
 
-public enum CarStatus implements Serializable{
+public enum CarPosition implements Serializable{
 
     SEEN, PASSED
 }
