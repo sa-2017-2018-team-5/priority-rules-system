@@ -1,4 +1,4 @@
-package fr.polytech.al.five.commands;
+package fr.polytech.al.five.runner;
 
 import asg.cliche.Command;
 import org.apache.log4j.Logger;
@@ -9,23 +9,23 @@ import java.util.List;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public class AdministrationCommands {
+public class AdministrationInterface {
 
-    private static Logger LOGGER = Logger.getLogger(AdministrationCommands.class);
+    private static Logger LOGGER = Logger.getLogger(AdministrationInterface.class);
 
-    private static AdministrationWebService ADMINISTRATION_WS;
+    private AdministrationWebService administrationWebService;
 
-    public AdministrationCommands(AdministrationWebService administrationWebService) {
-        ADMINISTRATION_WS = administrationWebService;
+    public AdministrationInterface(AdministrationWebService administrationWebService) {
+        this.administrationWebService = administrationWebService;
     }
 
-    @Command(name = "list-all")
+    @Command(name = "all-types")
     public void listAll() {
-        List<CarType> carTypes = ADMINISTRATION_WS.findAllPriorities();
+        List<CarType> carTypes = administrationWebService.findAllPriorities();
 
         String headers = String.format("%-15s %-10s %-10s",
                 "Name", "Priority", "Status");
-        String separator = headers.replaceAll(".", "―");
+        String separator = headers.replaceAll("(?s).", "―");
 
         LOGGER.info(headers);
         LOGGER.info(separator);
@@ -50,7 +50,7 @@ public class AdministrationCommands {
         carType.setStatus(status);
 
         try {
-            ADMINISTRATION_WS.registerPriority(carType);
+            administrationWebService.registerPriority(carType);
             LOGGER.info("Registration of car type '" + name + "' succeed!");
         } catch (AlreadyExistingCarType_Exception e) {
             LOGGER.error("Registration of car type '" + name + "' failed!");
@@ -60,7 +60,7 @@ public class AdministrationCommands {
     @Command
     public void fetch(String name) {
         try {
-            CarType carType = ADMINISTRATION_WS.findPriorityByName(name);
+            CarType carType = administrationWebService.findPriorityByName(name);
             LOGGER.info(String.format("Fetched { name: %s; priority: %d; status: %s }.",
                     carType.getName(), carType.getPriority(), carType.getStatus()));
         } catch (NotExistingCarType_Exception e) {
@@ -75,7 +75,7 @@ public class AdministrationCommands {
         carType.setPriority(updatedPriority);
 
         try {
-            ADMINISTRATION_WS.modifyPriority(carType);
+            administrationWebService.modifyPriority(carType);
             LOGGER.info("Type '" + name + "' updated!");
         } catch (NotExistingCarType_Exception e) {
             LOGGER.error("Could not update the type '" + name + "'.");

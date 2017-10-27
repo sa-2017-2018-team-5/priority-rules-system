@@ -5,6 +5,7 @@ import fr.polytech.al.five.TrafficSupervisor;
 import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.entities.TrafficInformation;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,11 +19,14 @@ import java.util.List;
 @Stateless
 public class RoutePlanner implements RouteBuilder {
 
+    private static final Logger LOGGER = Logger.getLogger(RoutePlanner.class);
+
     @EJB private TrafficSupervisor trafficSupervisor;
 
     @Override
     public Route getRoute(Position from, Position to, Date departureDate) {
         TrafficInformation information = trafficSupervisor.getTraffic();
+        LOGGER.trace(information);
 
         List<String> instructions = new ArrayList<>();
         instructions.add("Tournez à gauche.");
