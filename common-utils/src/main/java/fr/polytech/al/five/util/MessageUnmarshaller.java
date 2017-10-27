@@ -16,11 +16,11 @@ public class MessageUnmarshaller {
        return mapper.readValue(message, TrafficMessage.class);
     }
 
-    CarDetection getCarDetection(String message) throws IOException {
+    public static CarDetection getCarDetection(String message) throws IOException {
         return mapper.readValue(message, CarDetection.class);
     }
 
-    TrafficLightCommand getTrafficLightCommand(String message) throws IOException {
+    public static TrafficLightCommand getTrafficLightCommand(String message) throws IOException {
         return mapper.readValue(message, TrafficLightCommand.class);
     }
 }
