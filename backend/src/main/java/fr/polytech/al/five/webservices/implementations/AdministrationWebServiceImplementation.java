@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,5 +50,10 @@ public class AdministrationWebServiceImplementation
             LOGGER.info("Could not find a car type named '" + typeName + "'.");
             throw new NotExistingCarType();
         }
+    }
+
+    @Override
+    public List<CarType> findAllPriorities() {
+        return priorityReader.getPriorities();
     }
 }

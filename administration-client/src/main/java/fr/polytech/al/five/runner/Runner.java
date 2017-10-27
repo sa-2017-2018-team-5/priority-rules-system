@@ -22,7 +22,7 @@ public class Runner {
         fetch("FIREFIGHTERS");
 
         update("FIREFIGHTERS", 120);
-        update("POLICEMEN", 110);
+        //update("POLICEMEN", 110);
 
         fetch("FIREFIGHTERS");
         fetch("POLICEMEN");

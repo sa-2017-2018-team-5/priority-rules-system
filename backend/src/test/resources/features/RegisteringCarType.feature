@@ -17,3 +17,12 @@ Feature: Registering Car Type
     And the car type FIREFIGHTERS is fetched
     Then the car type priority should be 160
     And the cars of this type should be emergency ones
+
+  Scenario: Fetch all the car types
+    When all car types are fetched
+    Then the car type FIREFIGHTERS should exist
+    And the car type priority should be 100
+    And the cars of this type should be emergency ones
+    And the car type GREEN_CAR should exist
+    And the car type priority should be 50
+    And the cars of this type should be privileged ones

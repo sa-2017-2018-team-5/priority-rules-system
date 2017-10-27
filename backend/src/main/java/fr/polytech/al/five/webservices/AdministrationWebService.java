@@ -6,6 +6,7 @@ import fr.polytech.al.five.exceptions.NotExistingCarType;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import java.util.List;
 
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
@@ -34,4 +35,11 @@ public interface AdministrationWebService {
      */
     @WebMethod
     CarType findPriorityByName(String typeName) throws NotExistingCarType;
+
+    /**
+     * Retrieves all registered car types.
+     * @return The list of registered car types.
+     */
+    @WebMethod
+    List<CarType> findAllPriorities();
 }
