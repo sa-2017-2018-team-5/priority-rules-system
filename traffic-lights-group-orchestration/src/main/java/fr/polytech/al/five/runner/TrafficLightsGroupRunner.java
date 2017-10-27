@@ -9,8 +9,8 @@ public class TrafficLightsGroupRunner {
 
     public static void main(String[] args){
 
-        EventListener listener = new EventListener("GroupExchange");
-        CarArrivalConsumer consumer = new CarArrivalConsumer(listener.getChannel(), "TrafficExchange");
+        EventListener listener = new EventListener("TLActivity");
+        CarArrivalConsumer consumer = new CarArrivalConsumer(listener.getChannel(), "TLActivity");
 
         try {
             listener.bind();

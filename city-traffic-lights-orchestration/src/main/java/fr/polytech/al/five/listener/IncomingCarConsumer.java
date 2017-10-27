@@ -7,8 +7,6 @@ import com.rabbitmq.client.Envelope;
 import fr.polytech.al.five.message.TrafficMessage;
 import org.apache.log4j.Logger;
 import fr.polytech.al.five.util.EventEmitter;
-import fr.polytech.al.five.engine.ConstructMessageImpl;
-import fr.polytech.al.five.engine.MessageProcessImpl;
 import org.json.JSONObject;
 import fr.polytech.al.five.util.TrafficLightGroupLoader;
 
@@ -23,9 +21,6 @@ public class IncomingCarConsumer extends DefaultConsumer{
 
     private static final String ID = "City";
 
-    private MessageProcessImpl processMessage  = new MessageProcessImpl();
-    private ConstructMessageImpl constructMessage = new ConstructMessageImpl();
-
     private EventEmitter emitter;
 
     public IncomingCarConsumer(Channel channel, String exchange) {
@@ -38,33 +33,33 @@ public class IncomingCarConsumer extends DefaultConsumer{
                                AMQP.BasicProperties properties, byte[] body) throws IOException {
 
         JSONObject jsonObject = new JSONObject(new String(body,"UTF-8"));
-
-        if (processMessage.isCorrectID(ID,jsonObject)){
-            logger.info("Received message ["+consumerTag+ "] : " + jsonObject.toString());
-
-            TrafficMessage message = processMessage.getMessage(jsonObject);
-            // Associate each traffic lights to its Group
-            List<Integer> trafficID = new ArrayList<>();
-            message.getTrafficLights().forEach(trafficLightInfo -> {
-                trafficID.add(trafficLightInfo.getId());
-            });
-            Set<String> groups =
-                    TrafficLightGroupLoader.findGroup(trafficID);
-
-            // Construct the message
-            List<JSONObject> result = constructMessage.construct(groups);
-
-            result.forEach((reply)->{
-                reply.put("message",jsonObject.get("message"));
-
-                logger.info("Reply message to ["+reply.getString("id")+ "] : " + reply.toString());
-                try {
-                    emitter.publish(reply.toString().getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+//
+//        if (processMessage.isCorrectID(ID,jsonObject)){
+//            logger.info("Received message ["+consumerTag+ "] : " + jsonObject.toString());
+//
+//            TrafficMessage message = processMessage.getMessage(jsonObject);
+//            // Associate each traffic lights to its Group
+//            List<Integer> trafficID = new ArrayList<>();
+//            message.getTrafficLights().forEach(trafficLightInfo -> {
+//                trafficID.add(trafficLightInfo.getId());
+//            });
+//            Set<String> groups =
+//                    TrafficLightGroupLoader.findGroup(trafficID);
+//
+//            // Construct the message
+//            List<JSONObject> result = constructMessage.construct(groups);
+//
+//            result.forEach((reply)->{
+//                reply.put("message",jsonObject.get("message"));
+//
+//                logger.info("Reply message to ["+reply.getString("id")+ "] : " + reply.toString());
+//                try {
+//                    emitter.publish(reply.toString().getBytes());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
     }
 
 }

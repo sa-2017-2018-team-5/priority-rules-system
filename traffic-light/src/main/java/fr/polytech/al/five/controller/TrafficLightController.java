@@ -7,6 +7,8 @@ public class TrafficLightController {
 
     private TrafficLight trafficLight;
 
+    private static final String ID = "City";
+
     public TrafficLightController(){
         this.trafficLight = new TrafficLight("myId", TrafficLightColour.RED);
     }
