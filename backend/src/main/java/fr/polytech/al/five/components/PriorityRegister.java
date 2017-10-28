@@ -5,7 +5,6 @@ import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarType;
 import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
 import fr.polytech.al.five.exceptions.NotExistingCarType;
-import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,8 +22,6 @@ import java.util.Optional;
  */
 @Stateless
 public class PriorityRegister implements PriorityRegisterer, PriorityReader {
-
-    private static Logger LOGGER = Logger.getLogger(PriorityRegister.class);
 
     @PersistenceContext
     private EntityManager manager;

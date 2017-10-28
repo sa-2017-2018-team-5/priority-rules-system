@@ -5,7 +5,7 @@ public class TrafficGroup {
     private String id;
     private int trafficLight;
 
-    public TrafficGroup(){
+    public TrafficGroup() {
 
     }
 

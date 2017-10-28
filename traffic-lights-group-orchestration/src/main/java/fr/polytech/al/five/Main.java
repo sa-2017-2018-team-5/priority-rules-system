@@ -5,7 +5,6 @@ import fr.polytech.al.five.message.TrafficLightCommand;
 import fr.polytech.al.five.message.TrafficLightInfo;
 import fr.polytech.al.five.util.EventEmitter;
 import fr.polytech.al.five.util.MessageMarshaller;
-import fr.polytech.al.five.util.MessageUnmarshaller;
 
 import java.io.IOException;
 

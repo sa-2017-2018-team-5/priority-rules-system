@@ -1,12 +1,8 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.message.TrafficLightInfo;
 import fr.polytech.al.five.message.TrafficMessage;
 import fr.polytech.al.five.util.EventEmitter;
-import fr.polytech.al.five.util.EventListener;
 import fr.polytech.al.five.util.MessageMarshaller;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
