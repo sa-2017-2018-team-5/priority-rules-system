@@ -1,8 +1,6 @@
 package fr.polytech.al.five.commands;
 
 import asg.cliche.Command;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.polytech.al.five.consumers.TrafficLightRoutesConsumer;
 import fr.polytech.al.five.message.CarDetection;
 import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.message.CarPosition;

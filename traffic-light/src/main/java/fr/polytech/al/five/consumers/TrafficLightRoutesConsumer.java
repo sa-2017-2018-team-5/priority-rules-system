@@ -1,6 +1,5 @@
 package fr.polytech.al.five.consumers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
@@ -11,9 +10,7 @@ import fr.polytech.al.five.runner.TrafficLightRunner;
 import fr.polytech.al.five.util.MessageUnmarshaller;
 import org.apache.log4j.Logger;
 
-
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class TrafficLightRoutesConsumer extends DefaultConsumer {

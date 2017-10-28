@@ -5,6 +5,10 @@ import stubs.administration.AdministrationWebServiceImplementationService;
 
 public class ServiceProvider {
 
+    private ServiceProvider() {
+        // No ServiceProvider object!
+    }
+
     public static AdministrationWebService getAdministrationWebService() {
         AdministrationWebServiceImplementationService factory =
                 new AdministrationWebServiceImplementationService();

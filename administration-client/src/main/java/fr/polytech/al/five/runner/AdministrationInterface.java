@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class AdministrationInterface {
 
-    private static Logger LOGGER = Logger.getLogger(AdministrationInterface.class);
+    private static final Logger LOGGER = Logger.getLogger(AdministrationInterface.class);
 
     private AdministrationWebService administrationWebService;
 

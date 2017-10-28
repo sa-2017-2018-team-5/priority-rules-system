@@ -5,6 +5,10 @@ import stubs.route.RouteWebServiceImplementationService;
 
 public class ServiceProvider {
 
+    private ServiceProvider() {
+        // No ServiceProvider object!
+    }
+
     public static RouteWebService getRouteService() {
         RouteWebServiceImplementationService factory =
                 new RouteWebServiceImplementationService();
