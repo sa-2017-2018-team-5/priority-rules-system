@@ -25,8 +25,9 @@ public class RoutePlanner implements RouteBuilder {
 
     @Override
     public Route getRoute(Position from, Position to, Date departureDate) {
-        TrafficInformation information = trafficSupervisor.getTraffic();
+        TrafficInformation information = trafficSupervisor.getTraffic("1");
         LOGGER.trace(information);
+
 
         List<String> instructions = new ArrayList<>();
         instructions.add("Tournez à gauche.");
