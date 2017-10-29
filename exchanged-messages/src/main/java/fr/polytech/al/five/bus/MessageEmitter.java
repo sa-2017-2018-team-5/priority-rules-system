@@ -15,24 +15,13 @@ public class MessageEmitter extends BusUser {
     }
 
     public void send(Message message, BusChannel to) throws IOException, TimeoutException {
-        Connection connection = null;
-        Channel channel = null;
+        try (Connection connection = getConnectionFactory().newConnection()) {
+            try (Channel channel = connection.createChannel()) {
+                channel.exchangeDeclare(to.toString(), "fanout");
 
-        try {
-            connection = getConnectionFactory().newConnection();
-            channel = connection.createChannel();
-            channel.exchangeDeclare(to.toString(), "fanout");
-
-            channel.basicPublish(to.toString(), "", null,
-                    SerializationUtils.serialize(message));
-        } finally {
-             if (channel != null) {
-                 channel.close();
-             }
-
-             if (connection != null) {
-                 connection.close();
-             }
+                channel.basicPublish(to.toString(), "", null,
+                        SerializationUtils.serialize(message));
+            }
         }
     }
 }
