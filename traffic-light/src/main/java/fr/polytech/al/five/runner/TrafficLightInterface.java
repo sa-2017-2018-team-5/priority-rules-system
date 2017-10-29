@@ -4,7 +4,7 @@ import asg.cliche.Command;
 import fr.polytech.al.five.behaviour.TrafficLightState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.MessageEmitter;
-import fr.polytech.al.five.messages.CarAction;
+import fr.polytech.al.five.messages.contents.CarAction;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import org.apache.log4j.Logger;

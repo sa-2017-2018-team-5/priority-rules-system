@@ -1,5 +1,7 @@
 package fr.polytech.al.five.messages;
 
+import fr.polytech.al.five.messages.contents.CarAction;
+
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */

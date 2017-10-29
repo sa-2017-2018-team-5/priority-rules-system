@@ -1,4 +1,4 @@
-package fr.polytech.al.five.messages;
+package fr.polytech.al.five.messages.contents;
 
 import java.io.Serializable;
 
