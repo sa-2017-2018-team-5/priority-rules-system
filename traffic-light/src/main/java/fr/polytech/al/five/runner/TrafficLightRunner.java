@@ -7,12 +7,10 @@ import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
 import fr.polytech.al.five.bus.MessageConsumer;
 import fr.polytech.al.five.bus.MessageEmitter;
-import fr.polytech.al.five.message.CarInfo;
 import fr.polytech.al.five.messages.RoutePlannedMessage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -24,14 +22,17 @@ public class TrafficLightRunner {
 
     public static void main(String[] args) throws IOException {
         // TODO: Set up the bus hostname.
-        BusInformation busInformation = new BusInformation("172.0.0.2");
+        BusInformation busInformation = new BusInformation("172.17.0.2");
 
         // TODO: Set up the traffic light ID.
         TrafficLightState state = new TrafficLightState(123);
 
+        LOGGER.info("CONSUMERS SET UP - Starting");
+
         // ROUTE_PLANNED messages consumption.
         MessageConsumer<RoutePlannedMessage> routePlannedConsumer
                 = new MessageConsumer<>(busInformation);
+
         try {
             routePlannedConsumer.makeConsume(
                     BusChannel.ROUTE_PLANNED,
@@ -40,6 +41,8 @@ public class TrafficLightRunner {
             LOGGER.error("Time out when attempting to connect the bus: " + e);
             System.exit(1);
         }
+
+        LOGGER.info("CONSUMERS SET UP - Done");
 
         TrafficLightInterface commands = new TrafficLightInterface(
                 new MessageEmitter(busInformation),

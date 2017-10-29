@@ -27,7 +27,7 @@ public class RouteRegister implements RouteRegisterer {
 
     public void sendRoute(Car car, Route route) throws JMSException {
         // TODO: Set up the bus hostname.
-        BusInformation busInformation = new BusInformation("172.0.0.2");
+        BusInformation busInformation = new BusInformation("172.17.0.2");
         MessageEmitter messageEmitter = new MessageEmitter(busInformation);
 
         Message routePlanned = new RoutePlannedMessage(
