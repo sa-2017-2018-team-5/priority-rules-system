@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>common-utils</module>
+        <module>exchanged-messages</module>
         <module>administration-client</module>
         <module>driver-client</module>
         <module>traffic-light</module>

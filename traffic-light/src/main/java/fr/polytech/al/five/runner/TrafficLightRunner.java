@@ -1,45 +1,54 @@
 package fr.polytech.al.five.runner;
 
-import fr.polytech.al.five.commands.TrafficLightCommands;
-import fr.polytech.al.five.consumers.TrafficLightRoutesConsumer;
-import fr.polytech.al.five.consumers.TrafficLightCommandsConsumer;
-import fr.polytech.al.five.message.CarInfo;
-import fr.polytech.al.five.util.EventListener;
 import asg.cliche.ShellFactory;
+import fr.polytech.al.five.actions.OnRoutePlanned;
+import fr.polytech.al.five.behaviour.TrafficLightState;
+import fr.polytech.al.five.bus.BusChannel;
+import fr.polytech.al.five.bus.BusInformation;
+import fr.polytech.al.five.bus.MessageConsumer;
+import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.message.CarInfo;
+import fr.polytech.al.five.messages.RoutePlannedMessage;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
 public class TrafficLightRunner {
 
-    public static final Integer ID = 1111;
-    public static ArrayList<CarInfo> cars = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(TrafficLightRunner.class);
 
     public static void main(String[] args) throws IOException {
-        EventListener routesListener = new EventListener("TLActivity");
+        // TODO: Set up the bus hostname.
+        BusInformation busInformation = new BusInformation("172.0.0.2");
+
+        // TODO: Set up the traffic light ID.
+        TrafficLightState state = new TrafficLightState(123);
+
+        // ROUTE_PLANNED messages consumption.
+        MessageConsumer<RoutePlannedMessage> routePlannedConsumer
+                = new MessageConsumer<>(busInformation);
         try {
-            routesListener.bind();
-            TrafficLightCommandsConsumer trafficLightRoutesConsumer = new TrafficLightCommandsConsumer(routesListener.getChannel());
-            routesListener.getChannel().basicConsume(routesListener.getQueueName(), true, trafficLightRoutesConsumer);
-        } catch (IOException e) {
-            e.printStackTrace();
+            routePlannedConsumer.makeConsume(
+                    BusChannel.ROUTE_PLANNED,
+                    new OnRoutePlanned(state).getAction());
+        } catch (TimeoutException e) {
+            LOGGER.error("Time out when attempting to connect the bus: " + e);
+            System.exit(1);
         }
 
-        EventListener TLActivityListener = new EventListener("Routes");
-        try {
-            TLActivityListener.bind();
-            TrafficLightRoutesConsumer trafficLightCommandsConsumer = new TrafficLightRoutesConsumer(TLActivityListener.getChannel());
-            TLActivityListener.getChannel().basicConsume(TLActivityListener.getQueueName(), true, trafficLightCommandsConsumer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TrafficLightInterface commands = new TrafficLightInterface(
+                new MessageEmitter(busInformation),
+                state);
 
+        // Start the shell.
         ShellFactory.createConsoleShell("traffic-light",
                 "Traffic Light",
-                new TrafficLightCommands())
+                commands)
                 .commandLoop();
     }
 }
