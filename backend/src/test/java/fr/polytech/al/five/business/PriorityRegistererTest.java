@@ -1,9 +1,10 @@
 package fr.polytech.al.five.business;
 
 import arquillian.AbstractPRSTest;
-import fr.polytech.al.five.PriorityReader;
+import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarStatus;
 import fr.polytech.al.five.entities.CarType;
+import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
@@ -17,20 +18,18 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
-import java.util.List;
-import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
 @RunWith(Arquillian.class)
 @Transactional(TransactionMode.COMMIT)
-public class PriorityReaderTest extends AbstractPRSTest {
+public class PriorityRegistererTest extends AbstractPRSTest {
 
     @EJB
-    private PriorityReader priorityReader;
+    private PriorityRegisterer priorityRegisterer;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -39,15 +38,10 @@ public class PriorityReaderTest extends AbstractPRSTest {
     private UserTransaction userTransaction;
 
     private CarType firefighters;
-    private CarType policemen;
 
     @Before
     public void setup() {
         firefighters = new CarType("FIREFIGHTERS", 100, CarStatus.EMERGENCY);
-        policemen = new CarType("POLICEMEN", 90, CarStatus.EMERGENCY);
-
-        entityManager.persist(firefighters);
-        entityManager.persist(policemen);
     }
 
     @After
@@ -58,32 +52,23 @@ public class PriorityReaderTest extends AbstractPRSTest {
         entityManager.remove(firefighters);
         firefighters = null;
 
-        policemen = entityManager.merge(policemen);
-        entityManager.remove(policemen);
-        policemen = null;
-
         userTransaction.commit();
     }
 
     @Test
-    public void shouldFindFirefighters() {
-        Optional<CarType> carType = priorityReader.getPriority("FIREFIGHTERS");
+    public void shouldRegisterFirefighters() throws AlreadyExistingCarType {
+        priorityRegisterer.registerPriority(firefighters);
 
-        assertTrue(carType.isPresent());
-        assertEquals(firefighters, carType.get());
+        CarType carType = entityManager.find(CarType.class, "FIREFIGHTERS");
+
+        assertEquals(firefighters, carType);
     }
 
-    @Test
-    public void shouldNotFindGreenCars() {
-        Optional<CarType> carType = priorityReader.getPriority("GREEN_CARS");
+    @Test(expected = AlreadyExistingCarType.class)
+    public void shouldNotRegisterFirefightersTwice() throws AlreadyExistingCarType {
+        priorityRegisterer.registerPriority(firefighters);
 
-        assertFalse(carType.isPresent());
-    }
-
-    @Test
-    public void shouldFindAllCarTypes() {
-        List<CarType> carTypes = priorityReader.getPriorities();
-
-        assertEquals(2, carTypes.size());
+        CarType carType = new CarType("FIREFIGHTERS", 100, CarStatus.EMERGENCY);
+        priorityRegisterer.registerPriority(carType);
     }
 }
