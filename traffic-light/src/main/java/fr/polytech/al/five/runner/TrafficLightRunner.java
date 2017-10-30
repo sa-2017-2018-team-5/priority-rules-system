@@ -21,8 +21,12 @@ public class TrafficLightRunner {
     private static final Logger LOGGER = Logger.getLogger(TrafficLightRunner.class);
 
     public static void main(String[] args) throws IOException {
-        // TODO: Set up the bus hostname.
-        BusInformation busInformation = new BusInformation("172.17.0.2");
+        String busAddress = System.getenv("BUS_ADDRESS");
+        if (busAddress == null) {
+            busAddress = "localhost";
+        }
+
+        BusInformation busInformation = new BusInformation(busAddress);
 
         // TODO: Set up the traffic light ID.
         TrafficLightState state = new TrafficLightState(123);

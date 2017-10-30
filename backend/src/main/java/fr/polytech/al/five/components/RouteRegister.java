@@ -26,8 +26,12 @@ public class RouteRegister implements RouteRegisterer {
     private static final Logger LOGGER = Logger.getLogger(RouteRegister.class);
 
     public void sendRoute(Car car, Route route) throws JMSException {
-        // TODO: Set up the bus hostname.
-        BusInformation busInformation = new BusInformation("172.17.0.2");
+        String busAddress = System.getenv("BUS_ADDRESS");
+        if (busAddress == null) {
+            busAddress = "localhost";
+        }
+
+        BusInformation busInformation = new BusInformation(busAddress);
         MessageEmitter messageEmitter = new MessageEmitter(busInformation);
 
         Message routePlanned = new RoutePlannedMessage(

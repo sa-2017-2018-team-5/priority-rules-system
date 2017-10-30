@@ -15,8 +15,12 @@ public class CityTrafficLightsRunner {
     private static final Logger LOGGER = Logger.getLogger(CityTrafficLightsRunner.class);
 
     public static void main(String[] args) {
-        // TODO: Set up the IP address properly.
-        BusInformation busInformation = new BusInformation("172.17.0.2");
+        String busAddress = System.getenv("BUS_ADDRESS");
+        if (busAddress == null) {
+            busAddress = "localhost";
+        }
+
+        BusInformation busInformation = new BusInformation(busAddress);
 
         MessageConsumer<RoutePlannedMessage> routePlannedConsumer
                 = new MessageConsumer<>(busInformation);

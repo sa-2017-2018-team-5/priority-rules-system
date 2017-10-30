@@ -3,6 +3,7 @@ package fr.polytech.al.five.util;
 import fr.polytech.al.five.model.TrafficLightsGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 public class TrafficLightGroupLoader {
+
+    private static final Logger LOGGER = Logger.getLogger(TrafficLightGroupLoader.class);
 
     private static Map<String, List<Integer>> trafficLightgroup = new HashMap<>();
 
@@ -23,7 +26,7 @@ public class TrafficLightGroupLoader {
             tmp = trafficLightgroup.get(trafficLightsGroup.getId());
             tmp.add(trafficLightsGroup.getTrafficLight());
             trafficLightgroup.replace(trafficLightsGroup.getId(), tmp);
-        }else {
+        } else {
             tmp.add(trafficLightsGroup.getTrafficLight());
             trafficLightgroup.put(trafficLightsGroup.getId(),tmp);
         }
@@ -50,7 +53,7 @@ public class TrafficLightGroupLoader {
             parser.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Could not load the properties file: " + e);
         }
     }
 

@@ -16,7 +16,12 @@ public class TrafficLightsGroupRunner {
     private static final Logger LOGGER = Logger.getLogger(TrafficLightsGroupRunner.class);
 
     public static void main(String[] args) {
-        BusInformation busInformation = new BusInformation("172.17.0.2");
+        String busAddress = System.getenv("BUS_ADDRESS");
+        if (busAddress == null) {
+            busAddress = "localhost";
+        }
+
+        BusInformation busInformation = new BusInformation(busAddress);
 
         TrafficLightsGroupState state = new TrafficLightsGroupState();
 
