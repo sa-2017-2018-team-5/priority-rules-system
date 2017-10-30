@@ -16,6 +16,10 @@ public class TrafficLightGroupLoader {
 
     private static Map<String, List<Integer>> trafficLightgroup = new HashMap<>();
 
+    private TrafficLightGroupLoader() {
+        // No instance of TrafficLightGroupLoader.
+    }
+
     /**
      * temporary method to fill the car list
      * @param trafficLightsGroup
@@ -59,6 +63,7 @@ public class TrafficLightGroupLoader {
 
     public static Set<String> findGroup(List<Integer> traffics){
         Set<String> groups = new HashSet<>();
+
         for (String key: trafficLightgroup.keySet()) {
             for (int traffic : traffics) {
                 if (trafficLightgroup.get(key).contains(traffic)) {

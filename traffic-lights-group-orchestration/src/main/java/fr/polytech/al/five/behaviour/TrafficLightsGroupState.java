@@ -24,20 +24,18 @@ public class TrafficLightsGroupState {
     }
 
     public List<Integer> mustBecomeRed(int askGreen) {
-        switch (askGreen) {
-            case 1:
-                return Arrays.asList(2, 3);
-            default:
-                return Collections.singletonList(1);
+        if (askGreen == 1) {
+            return Arrays.asList(2, 3);
+        } else {
+            return Collections.singletonList(1);
         }
     }
 
     public List<Integer> mustBecomeGreen(int askGreen) {
-        switch (askGreen) {
-            case 1:
-                return Collections.singletonList(1);
-            default:
-                return Arrays.asList(2, 3);
+        if (askGreen == 1){
+            return Collections.singletonList(1);
+        } else {
+            return Arrays.asList(2, 3);
         }
     }
 

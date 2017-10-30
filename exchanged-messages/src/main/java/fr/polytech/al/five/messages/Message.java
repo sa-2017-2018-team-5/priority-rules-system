@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public abstract class Message implements Serializable {
+public interface Message extends Serializable {
 
     // Nothing. For now.
 }

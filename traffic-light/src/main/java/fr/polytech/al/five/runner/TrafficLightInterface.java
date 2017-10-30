@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 
 public class TrafficLightInterface {
 
-    private final static Logger LOGGER = Logger.getLogger(TrafficLightInterface.class);
+    private static final Logger LOGGER = Logger.getLogger(TrafficLightInterface.class);
 
     private final MessageEmitter messageEmitter;
     private final TrafficLightState trafficLightState;

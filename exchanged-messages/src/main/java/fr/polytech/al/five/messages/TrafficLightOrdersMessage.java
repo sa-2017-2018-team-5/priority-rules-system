@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public class TrafficLightOrdersMessage extends Message {
+public class TrafficLightOrdersMessage implements Message {
 
     private final List<Integer> mustBecomeRed;
     private final List<Integer> mustBecomeGreen;

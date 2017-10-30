@@ -5,7 +5,7 @@ import fr.polytech.al.five.messages.contents.CarAction;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public class TrafficLightObservationMessage extends Message {
+public class TrafficLightObservationMessage implements Message {
 
     private final int trafficLightId;
     private final int carId;

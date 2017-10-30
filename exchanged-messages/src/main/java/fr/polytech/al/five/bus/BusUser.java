@@ -10,10 +10,8 @@ public abstract class BusUser {
     private final ConnectionFactory connectionFactory;
 
     public BusUser(BusInformation busInformation) {
-        ConnectionFactory connectionFactory = new ConnectionFactory();
+        this.connectionFactory = new ConnectionFactory();
         connectionFactory.setHost(busInformation.getHostname());
-
-        this.connectionFactory = connectionFactory;
     }
 
     protected ConnectionFactory getConnectionFactory() {

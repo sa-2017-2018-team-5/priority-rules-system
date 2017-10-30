@@ -15,16 +15,17 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class TrafficSupervisionClient implements TrafficSupervisor {
 
-    private final static Logger LOGGER = Logger.getLogger(TrafficSupervisionClient.class);
-    private static String TRAFFIC_API_HOST = getEnvVariable("traffic_api_host", "localhost");
-    private static int TRAFFIC_API_PORT = Integer.parseInt(getEnvVariable("traffic_api_port", "9191"));
+    private static final Logger LOGGER = Logger.getLogger(TrafficSupervisionClient.class);
+    private static final String TRAFFIC_API_HOST = getEnvVariable("traffic_api_host", "localhost");
+    private static final int TRAFFIC_API_PORT = Integer.parseInt(getEnvVariable("traffic_api_port", "9191"));
 
     private static String getEnvVariable(String variableName, String defaultValue) {
-        if (System.getenv().get(variableName) == null) {
-            return defaultValue;
+        String environmentVariable = System.getenv(variableName);
+        if (environmentVariable == null) {
+            environmentVariable = defaultValue;
         }
 
-        return System.getenv().get(variableName);
+        return environmentVariable;
     }
 
     @Override
