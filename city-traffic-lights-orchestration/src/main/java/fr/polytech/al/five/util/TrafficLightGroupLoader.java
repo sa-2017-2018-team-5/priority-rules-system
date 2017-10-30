@@ -64,13 +64,14 @@ public class TrafficLightGroupLoader {
     public static Set<String> findGroup(List<Integer> traffics){
         Set<String> groups = new HashSet<>();
 
-        for (String key: trafficLightgroup.keySet()) {
+        trafficLightgroup.forEach((key, value) -> {
             for (int traffic : traffics) {
-                if (trafficLightgroup.get(key).contains(traffic)) {
+                if (value.contains(traffic)) {
                     groups.add(key);
                 }
             }
-        }
+        });
+
         return groups;
     }
 }

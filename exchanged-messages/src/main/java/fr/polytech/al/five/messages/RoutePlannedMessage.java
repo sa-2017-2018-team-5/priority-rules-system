@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public class RoutePlannedMessage extends Message {
+public class RoutePlannedMessage implements Message {
 
     private final int carId;
     private final List<Integer> encounteredTrafficLights;
