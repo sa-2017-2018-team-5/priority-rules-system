@@ -14,12 +14,6 @@
     <name>AL Team 5 :: Priority Rules System :: Traffic Light</name>
     
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
-        <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-            <version>5.0.0</version>
-        </dependency>
         <dependency>
             <groupId>fr.polytech.al.five</groupId>
             <artifactId>exchanged-messages</artifactId>

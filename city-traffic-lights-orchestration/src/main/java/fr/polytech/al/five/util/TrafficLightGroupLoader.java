@@ -1,6 +1,6 @@
 package fr.polytech.al.five.util;
 
-import fr.polytech.al.five.model.TrafficGroup;
+import fr.polytech.al.five.model.TrafficLightsGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
@@ -15,17 +15,17 @@ public class TrafficLightGroupLoader {
 
     /**
      * temporary method to fill the car list
-     * @param trafficGroup
+     * @param trafficLightsGroup
      */
-    private static void build(TrafficGroup trafficGroup){
+    private static void build(TrafficLightsGroup trafficLightsGroup){
         List<Integer> tmp = new ArrayList<>();
-        if (trafficLightgroup.containsKey(trafficGroup.getId())) {
-            tmp = trafficLightgroup.get(trafficGroup.getId());
-            tmp.add(trafficGroup.getTrafficLight());
-            trafficLightgroup.replace(trafficGroup.getId(), tmp);
+        if (trafficLightgroup.containsKey(trafficLightsGroup.getId())) {
+            tmp = trafficLightgroup.get(trafficLightsGroup.getId());
+            tmp.add(trafficLightsGroup.getTrafficLight());
+            trafficLightgroup.replace(trafficLightsGroup.getId(), tmp);
         }else {
-            tmp.add(trafficGroup.getTrafficLight());
-            trafficLightgroup.put(trafficGroup.getId(),tmp);
+            tmp.add(trafficLightsGroup.getTrafficLight());
+            trafficLightgroup.put(trafficLightsGroup.getId(),tmp);
         }
     }
 
@@ -39,12 +39,12 @@ public class TrafficLightGroupLoader {
             CSVParser parser = CSVParser.parse(carData, Charset.defaultCharset(), CSVFormat.DEFAULT.withHeader());
 
             parser.forEach(item->{
-                TrafficGroup trafficGroup = new TrafficGroup(
+                TrafficLightsGroup trafficLightsGroup = new TrafficLightsGroup(
                         item.get("Group"),
                         Integer.parseInt(item.get("Traffic-lights"))
                 );
 
-                build(trafficGroup);
+                build(trafficLightsGroup);
             });
 
             parser.close();
