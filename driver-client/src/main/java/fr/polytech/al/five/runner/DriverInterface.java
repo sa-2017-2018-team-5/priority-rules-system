@@ -1,4 +1,4 @@
-package fr.polytech.al.five.commands;
+package fr.polytech.al.five.runner;
 
 import asg.cliche.Command;
 import org.apache.log4j.Logger;
@@ -7,14 +7,14 @@ import stubs.route.*;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-public class DriverCommands {
+public class DriverInterface {
 
-    private static final Logger LOGGER = Logger.getLogger(DriverCommands.class);
+    private static final Logger LOGGER = Logger.getLogger(DriverInterface.class);
 
     private Car car;
     private RouteWebService routeWebService;
 
-    public DriverCommands(RouteWebService routeWebService) {
+    public DriverInterface(RouteWebService routeWebService) {
         car = new Car();
         this.routeWebService = routeWebService;
     }

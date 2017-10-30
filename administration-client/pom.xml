@@ -55,7 +55,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.5.0</version>
                 <configuration>
-                    <mainClass>Runner</mainClass>
+                    <mainClass>fr.polytech.al.five.runner.AdministrationRunner</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -63,7 +63,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Runner</mainClass>
+                            <mainClass>fr.polytech.al.five.runner.AdministrationRunner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

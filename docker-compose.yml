@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  administration:
+    image: alteamfive/prs-administration-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+    links:
+      - backend
+    stdin_open: true
+    tty: true
+
+  driver:
+    image: alteamfive/prs-driver-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+    links:
+      - backend
+    stdin_open: true
+    tty: true
+
+  backend:
+    image: alteamfive/prs-backend
+    environment:
+      - BUS_ADDRESS=message-bus
+
+  message-bus:
+    image: rabbitmq

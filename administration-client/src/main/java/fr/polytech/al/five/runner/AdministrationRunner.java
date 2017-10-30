@@ -5,7 +5,7 @@ import fr.polytech.al.five.remote.ServiceProvider;
 
 import java.io.IOException;
 
-public class Runner {
+public class AdministrationRunner {
 
     public static void main(String... args) throws IOException {
         ShellFactory.createConsoleShell("administration",
