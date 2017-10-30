@@ -16,8 +16,8 @@ import javax.ws.rs.core.MediaType;
 public class TrafficSupervisionClient implements TrafficSupervisor {
 
     private static final Logger LOGGER = Logger.getLogger(TrafficSupervisionClient.class);
-    private static final String TRAFFIC_API_HOST = getEnvVariable("traffic_api_host", "localhost");
-    private static final int TRAFFIC_API_PORT = Integer.parseInt(getEnvVariable("traffic_api_port", "9191"));
+    private static final String TRAFFIC_API_HOST = getEnvVariable("TRAFFIC_CONDITIONS_HOST", "localhost");
+    private static final int TRAFFIC_API_PORT = Integer.parseInt(getEnvVariable("TRAFFIC_CONDITIONS_PORT", "9191"));
 
     private static String getEnvVariable(String variableName, String defaultValue) {
         String environmentVariable = System.getenv(variableName);
@@ -34,6 +34,8 @@ public class TrafficSupervisionClient implements TrafficSupervisor {
         String host = TRAFFIC_API_HOST;
         String serviceName = "/traffic-api/road";
 
+
+
         WebClient webClient = WebClient.create("http://" + host + ":" + port + serviceName)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Content-Type", MediaType.APPLICATION_JSON)
@@ -45,7 +47,7 @@ public class TrafficSupervisionClient implements TrafficSupervisor {
             return TrafficInformation.valueOf(
                     jsonResult.getString("status").toUpperCase());
         } catch (Exception e){
-            LOGGER.error("Could not reach the external service. At adress:" +
+            LOGGER.error("Could not reach the external service. At address:" +
                     "http://" + host + ":" + port + serviceName + roadId);
             return TrafficInformation.UNKNOWN;
         }

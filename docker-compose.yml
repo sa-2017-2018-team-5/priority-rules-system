@@ -23,8 +23,62 @@ services:
 
   backend:
     image: alteamfive/prs-backend
+    links:
+      - message-bus
+      - traffic-conditions
     environment:
       - BUS_ADDRESS=message-bus
+      - TRAFFIC_CONDITIONS_HOST=traffic-conditions
+      - TRAFFIC_CONDITIONS_PORT=9090
+
+  traffic-conditions:
+    image: alteamfive/traffic-conditions
 
   message-bus:
     image: rabbitmq
+
+  traffic-light-one:
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-two:
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-three:
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-lights-group:
+    image: alteamfive/prs-tl-group-orchestration
+    links:
+      - message-bus
+    depends_on:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-lights-group-orchestration.jar"]

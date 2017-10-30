@@ -20,5 +20,6 @@ jdk:
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 after_script:
+- "./build-all.sh"
 - docker login --username $DOCKER_USER --password $DOCKER_PASS
-- "./build-and-push-all.sh"
+- "./publish-all.sh"
