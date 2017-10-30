@@ -28,8 +28,14 @@ public class TrafficLightRunner {
 
         BusInformation busInformation = new BusInformation(busAddress);
 
-        // TODO: Set up the traffic light ID.
-        TrafficLightState state = new TrafficLightState(123);
+        String stringTrafficLightId = System.getenv("TRAFFIC_LIGHT_ID");
+        Integer trafficLightId;
+        if (stringTrafficLightId == null) {
+            trafficLightId = -1;
+        } else {
+            trafficLightId = Integer.parseInt(stringTrafficLightId);
+        }
+        TrafficLightState state = new TrafficLightState(trafficLightId);
 
         LOGGER.info("CONSUMERS SET UP - Starting");
 

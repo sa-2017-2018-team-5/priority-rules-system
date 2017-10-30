@@ -43,6 +43,7 @@ services:
       - message-bus
     environment:
       - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=1
     depends_on:
       - message-bus
     stdin_open: true
@@ -55,6 +56,7 @@ services:
       - message-bus
     environment:
       - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=2
     depends_on:
       - message-bus
     stdin_open: true
@@ -67,6 +69,7 @@ services:
       - message-bus
     environment:
       - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=3
     depends_on:
       - message-bus
     stdin_open: true

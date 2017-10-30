@@ -5,6 +5,7 @@ import fr.polytech.al.five.PriorityRegisterer;
 import fr.polytech.al.five.entities.CarStatus;
 import fr.polytech.al.five.entities.CarType;
 import fr.polytech.al.five.exceptions.AlreadyExistingCarType;
+import fr.polytech.al.five.exceptions.NotExistingCarType;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
@@ -70,5 +71,27 @@ public class PriorityRegistererTest extends AbstractPRSTest {
 
         CarType carType = new CarType("FIREFIGHTERS", 100, CarStatus.EMERGENCY);
         priorityRegisterer.registerPriority(carType);
+    }
+
+    @Test
+    public void shouldModifyFirefighters() throws AlreadyExistingCarType, NotExistingCarType {
+        priorityRegisterer.registerPriority(firefighters);
+
+        CarType carType = new CarType();
+        carType.setName("FIREFIGHTERS");
+
+        priorityRegisterer.modifyPriority(carType, 120);
+
+        carType = entityManager.find(CarType.class, "FIREFIGHTERS");
+
+        assertEquals(120, (int) carType.getPriority());
+    }
+
+    @Test(expected = NotExistingCarType.class)
+    public void shouldNotModifyNotExistingType() throws NotExistingCarType {
+        CarType carType = new CarType();
+        carType.setName("FIREFIGHTERS");
+
+        priorityRegisterer.modifyPriority(carType, 120);
     }
 }
