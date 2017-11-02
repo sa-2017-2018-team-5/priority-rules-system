@@ -21,10 +21,10 @@ public class OnRoutePlanned {
 
     public Consumer<RoutePlannedMessage> getAction() {
         return message -> {
-            LOGGER.info("Received a new route");
+            LOGGER.info("Received a new route...");
             if (message.getEncounteredTrafficLights().contains(trafficLightState.getId())) {
                 trafficLightState.waitCar(message.getCarId());
-                LOGGER.info("Waiting a new car type: " + message.getCarId());
+                LOGGER.info("Waiting a new car: " + message.getCarId());
             }
         };
     }

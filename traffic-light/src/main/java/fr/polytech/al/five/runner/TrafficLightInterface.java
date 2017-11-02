@@ -53,4 +53,9 @@ public class TrafficLightInterface {
             }
         }
     }
+
+    @Command
+    public void status() {
+        LOGGER.info("Current status: " + trafficLightState.getTrafficLightStatus());
+    }
 }

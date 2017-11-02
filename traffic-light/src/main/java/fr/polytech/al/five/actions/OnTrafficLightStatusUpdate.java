@@ -16,25 +16,23 @@ public class OnTrafficLightStatusUpdate {
     private TrafficLightState trafficLightState;
 
     public OnTrafficLightStatusUpdate(TrafficLightState trafficLightState) {
-
         this.trafficLightState = trafficLightState;
     }
 
     public Consumer<TrafficLightStatusMessage> getAction() {
         return message -> {
             LOGGER.info("Received a traffic light status update");
+
             if (message.getLightStatus().equals(LightStatus.FORCED_RED) &&
                     trafficLightState.isWaitingForcedRedLight(message.getTrafficLightId())) {
                 trafficLightState.stopWaitingTrafficLight(message.getTrafficLightId());
 
-                LOGGER.info("Traffic light id: " + trafficLightState.getId() +
-                            " stopped waiting for traffic light id: " + message.getTrafficLightId());
+                LOGGER.info("Acknowledge traffic light #" + message.getTrafficLightId() + " status.");
 
                 if (trafficLightState.isTrafficLightReadyToTurnGreen()) {
                     trafficLightState.setTrafficLightStatus(LightStatus.FORCED_GREEN);
 
-                    LOGGER.info("Traffic light id: " + trafficLightState.getId() +
-                                "changed to forced green");
+                    LOGGER.info("Forced to green.");
                 }
             }
         };

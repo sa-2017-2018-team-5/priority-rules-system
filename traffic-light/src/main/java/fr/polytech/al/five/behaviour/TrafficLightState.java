@@ -53,6 +53,7 @@ public class TrafficLightState {
     }
 
     public boolean isTrafficLightReadyToTurnGreen() {
-        return  expectedForcedRedLights.isEmpty() && trafficLightStatus.equals(LightStatus.WAITING_TO_TURN_GREEN);
+        return expectedForcedRedLights.isEmpty() &&
+                trafficLightStatus.equals(LightStatus.WAITING_TO_TURN_GREEN);
     }
 }

@@ -23,7 +23,6 @@ public class OnCarStatusUpdate {
 
     public OnCarStatusUpdate(BusInformation busInformation,
                              TrafficLightState trafficLightState) {
-
         this.trafficLightState = trafficLightState;
         messageEmitter = new MessageEmitter(busInformation);
     }
@@ -31,29 +30,36 @@ public class OnCarStatusUpdate {
     public Consumer<TrafficLightOrdersMessage> getAction() {
         return message -> {
             LOGGER.info("Received a car status update");
-            if(message.getTrafficLightStatus().equals(LightStatus.NORMAL)){
-                // First return green light to normal pattern then red light
-                // So that we don't have all the light turning green all of a sudden
+
+            if (message.getTrafficLightStatus().equals(LightStatus.NORMAL)) {
+                // First return green light to normal pattern then red light.
+                // So that we don't have all the light turning green all of a sudden.
                 resumeNormalPattern(message.getMustBecomeGreen());
                 resumeNormalPattern(message.getMustBecomeRed());
-            }
-            else if (message.getMustBecomeGreen().contains(trafficLightState.getId())
-                    && !message.getMustBecomeRed().isEmpty()){
+            } else if (message.getMustBecomeGreen().contains(trafficLightState.getId())
+                    && !message.getMustBecomeRed().isEmpty()) {
                 handleTrafficLightToWait(trafficLightState.getTrafficLightStatus(), message.getMustBecomeRed());
-                // Case all the light are already red
-                if(trafficLightState.isTrafficLightReadyToTurnGreen()){
+                // Case all the light are already red.
+                if (trafficLightState.isTrafficLightReadyToTurnGreen()) {
                     trafficLightState.setTrafficLightStatus(LightStatus.FORCED_GREEN);
-                    LOGGER.info("Traffic light id: " + trafficLightState.getId() + " turned green.");
+                    LOGGER.info("Forced to green.");
                 } else {
                     trafficLightState.setTrafficLightStatus(LightStatus.WAITING_TO_TURN_GREEN);
-                    LOGGER.info("Traffic light id: " + trafficLightState.getId() +
-                            " wait for other traffic lights to turn red before turning green.");
+                    LOGGER.info("Waiting other traffic lights before turning to green.");
                 }
             } else if (message.getMustBecomeRed().contains(trafficLightState.getId())) {
+                LOGGER.info("Forcing to red...");
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    LOGGER.error("Error while sleeping: " + e);
+                }
+
                 trafficLightState.setTrafficLightStatus(LightStatus.FORCED_RED);
+                LOGGER.info("Forced to red.");
                 handleLightStatusChange(trafficLightState.getId(), trafficLightState.getTrafficLightStatus());
             }
-
         };
     }
 
@@ -72,9 +78,7 @@ public class OnCarStatusUpdate {
     }
 
     private void handleLightStatusChange(int trafficLightId, LightStatus newStatus) {
-        Message message = new TrafficLightStatusMessage(
-                trafficLightId,
-                newStatus);
+        Message message = new TrafficLightStatusMessage(trafficLightId, newStatus);
 
         try {
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_STATUS);
@@ -87,7 +91,7 @@ public class OnCarStatusUpdate {
         if (trafficLightIds.contains(trafficLightState.getId())) {
             trafficLightState.setTrafficLightStatus(LightStatus.NORMAL);
 
-            LOGGER.info("Resuming traffic light '" + trafficLightState.getId() + "' to normal state.");
+            LOGGER.info("Resumed to normal state.");
         }
     }
 }
