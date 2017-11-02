@@ -1,6 +1,9 @@
 package fr.polytech.al.five.behaviour;
 
+import fr.polytech.al.five.messages.contents.LightStatus;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,10 +15,14 @@ public class TrafficLightState {
 
     private final int trafficLightId;
     private Set<Integer> expectedCars;
+    private LightStatus trafficLightStatus;
+    private Set<Integer> expectedForcedRedLights;
 
     public TrafficLightState(int trafficLightId) {
         this.trafficLightId = trafficLightId;
         expectedCars = new HashSet<>();
+        expectedForcedRedLights = new HashSet<>();
+        trafficLightStatus = LightStatus.NORMAL;
     }
 
     public void waitCar(int carId) {
@@ -32,5 +39,21 @@ public class TrafficLightState {
 
     public int getId() {
         return trafficLightId;
+    }
+
+    public LightStatus getTrafficLightStatus() { return trafficLightStatus; }
+
+    public void setTrafficLightStatus(LightStatus status) { this.trafficLightStatus = status; }
+
+    public void waitTrafficLight(int trafficLightId) { expectedForcedRedLights.add(trafficLightId); }
+
+    public void stopWaitingTrafficLight(int trafficLightId) { expectedForcedRedLights.remove(trafficLightId); }
+
+    public boolean isWaitingForcedRedLight(int trafficLightId) {
+        return expectedForcedRedLights.contains(trafficLightId);
+    }
+
+    public boolean isTrafficLightReadyToTurnGreen() {
+        return  expectedForcedRedLights.isEmpty() && trafficLightStatus.equals(LightStatus.WAITING_TO_TURN_GREEN);
     }
 }

@@ -8,6 +8,7 @@ import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightOrdersMessage;
 import fr.polytech.al.five.messages.contents.CarAction;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
+import fr.polytech.al.five.messages.contents.LightStatus;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -46,7 +47,8 @@ public class OnTrafficLightObservation {
     private void handleSeenCar(int trafficLight, int car) {
         Message message = new TrafficLightOrdersMessage(
                 state.mustBecomeRed(trafficLight),
-                state.mustBecomeGreen(trafficLight));
+                state.mustBecomeGreen(trafficLight),
+                LightStatus.FORCED);
 
         try {
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
@@ -57,7 +59,17 @@ public class OnTrafficLightObservation {
     }
 
     private void handlePassedCar(int trafficLight, int car) {
-        // TODO: Implement the logic.
         LOGGER.trace("The car " + car + " passed the traffic light " + trafficLight + ".");
+        Message message = new TrafficLightOrdersMessage(
+                state.mustBecomeRed(trafficLight),
+                state.mustBecomeGreen(trafficLight),
+                LightStatus.NORMAL);
+
+        try {
+            LOGGER.trace("Sending message to resume normal pattern.");
+            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
+        } catch (IOException | TimeoutException e) {
+            LOGGER.error("Exception occurred while sending a message to the bus: " + e);
+        }
     }
 }
