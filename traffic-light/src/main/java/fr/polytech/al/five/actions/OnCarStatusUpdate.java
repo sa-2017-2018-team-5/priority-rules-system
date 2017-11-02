@@ -49,7 +49,7 @@ public class OnCarStatusUpdate {
                     LOGGER.info("Traffic light id: " + trafficLightState.getId() +
                             " wait for other traffic lights to turn red before turning green.");
                 }
-            } else if (message.getMustBecomeRed().contains(trafficLightState)) {
+            } else if (message.getMustBecomeRed().contains(trafficLightState.getId())) {
                 trafficLightState.setTrafficLightStatus(LightStatus.FORCED_RED);
                 handleLightStatusChange(trafficLightState.getId(), trafficLightState.getTrafficLightStatus());
             }
@@ -59,12 +59,13 @@ public class OnCarStatusUpdate {
 
     private void handleTrafficLightToWait(LightStatus trafficLightStatus, List<Integer> trafficLightIds) {
         // Case the light is already waiting to turn green or already green
-        if(trafficLightStatus.equals(LightStatus.WAITING_TO_TURN_GREEN)
-                || trafficLightStatus.equals(LightStatus.FORCED_GREEN))
+        if (trafficLightStatus.equals(LightStatus.WAITING_TO_TURN_GREEN)
+                || trafficLightStatus.equals(LightStatus.FORCED_GREEN)) {
             return;
+        }
 
-        for (int id : trafficLightIds){
-            if(!trafficLightState.isWaitingForcedRedLight(id)) {
+        for (int id : trafficLightIds) {
+            if (!trafficLightState.isWaitingForcedRedLight(id)) {
                 trafficLightState.waitTrafficLight(id);
             }
         }
@@ -82,11 +83,11 @@ public class OnCarStatusUpdate {
         }
     }
 
-    private void resumeNormalPattern(List<Integer> trafficLightIds){
-        for (int id : trafficLightIds){
+    private void resumeNormalPattern(List<Integer> trafficLightIds) {
+        if (trafficLightIds.contains(trafficLightState.getId())) {
             trafficLightState.setTrafficLightStatus(LightStatus.NORMAL);
-            LOGGER.info("Resetting traffic light id: " + trafficLightState.getId() + " to normal state.");
 
+            LOGGER.info("Resuming traffic light '" + trafficLightState.getId() + "' to normal state.");
         }
     }
 }

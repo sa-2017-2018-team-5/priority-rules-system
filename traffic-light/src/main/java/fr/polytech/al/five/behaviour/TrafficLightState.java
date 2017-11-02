@@ -3,7 +3,6 @@ package fr.polytech.al.five.behaviour;
 import fr.polytech.al.five.messages.contents.LightStatus;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -61,7 +61,7 @@ public class TrafficLightRunner {
                     new OnRoutePlanned(state).getAction());
             trafficLightStatusConsumer.makeConsume(
                     BusChannel.TRAFFIC_LIGHT_STATUS,
-                    new OnTrafficLightStatusUpdate(busInformation, state).getAction());
+                    new OnTrafficLightStatusUpdate(state).getAction());
             carStatusConsumer.makeConsume(
                     BusChannel.TRAFFIC_LIGHTS_ORDER,
                     new OnCarStatusUpdate(busInformation, state).getAction());
