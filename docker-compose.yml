@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=al
+      - POSTGRES_PASSWORD=pwd
+
   administration:
     image: alteamfive/prs-administration-client
     environment:
