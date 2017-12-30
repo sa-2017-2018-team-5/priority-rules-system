@@ -10,33 +10,28 @@ import java.util.List;
  */
 public class TrafficLightsGroupState {
 
-    private List<Integer> includedTrafficLights;
     private List<Integer> seenCars;
 
     public TrafficLightsGroupState() {
-        // TODO: Get the known traffic lights from configuration.
-        includedTrafficLights = Arrays.asList(1, 2, 3);
         seenCars = new ArrayList<>();
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
-        return includedTrafficLights.contains(trafficLightId);
+        return PropertiesLoader.getTrafficLights().contains(trafficLightId);
     }
 
     public List<Integer> mustBecomeRed(int askGreen) {
-        if (askGreen == 1) {
-            return Arrays.asList(2, 3);
-        } else {
-            return Collections.singletonList(1);
-        }
+        return PropertiesLoader.getTrafficRules().get(askGreen);
     }
 
     public List<Integer> mustBecomeGreen(int askGreen) {
-        if (askGreen == 1){
-            return Collections.singletonList(1);
-        } else {
-            return Arrays.asList(2, 3);
+        List<Integer> tmp = new ArrayList<>();
+        for (int tl : PropertiesLoader.getTrafficLights()){
+            if (!mustBecomeRed(askGreen).contains(tl)) {
+                tmp.add(tl);
+            }
         }
+        return tmp;
     }
 
     public void registerSeenCar(int carId) {
