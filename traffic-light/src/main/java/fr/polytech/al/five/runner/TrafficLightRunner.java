@@ -41,7 +41,7 @@ public class TrafficLightRunner {
         }
         TrafficLightState state = new TrafficLightState(trafficLightId);
 
-        LOGGER.info("CONSUMERS SET UP - Starting");
+        LOGGER.info("CONSUMERS SET UP - Starting the traffic light");
 
         // ROUTE_PLANNED messages consumption.
         MessageConsumer<RoutePlannedMessage> routePlannedConsumer
