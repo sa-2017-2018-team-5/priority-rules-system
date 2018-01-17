@@ -1,9 +1,10 @@
 <resources>
     <Resource id="production" type="DataSource">
-        JdbcDriver  org.hsqldb.jdbcDriver
-        JdbcUrl     jdbc:hsqldb:file:proddb
+        JdbcDriver  org.postgresql.Driver
+        JdbcUrl     jdbc:postgresql://database
         UserName    al
-        Password
+        Password    pwd
+        ssl         true
         LogSql      true
         JtaManaged  true
     </Resource>
