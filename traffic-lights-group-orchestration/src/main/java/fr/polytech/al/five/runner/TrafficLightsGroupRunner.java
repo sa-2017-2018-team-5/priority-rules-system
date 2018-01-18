@@ -1,6 +1,7 @@
 package fr.polytech.al.five.runner;
 
 import fr.polytech.al.five.actions.OnTrafficLightObservation;
+import fr.polytech.al.five.behaviour.PropertiesLoader;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
@@ -21,9 +22,14 @@ public class TrafficLightsGroupRunner {
             busAddress = "localhost";
         }
 
+        PropertiesLoader properties = new PropertiesLoader()
+                .setGroupId(System.getenv("TRAFFIC_GROUP_ID"))
+                .setTrafficLights(System.getenv("TRAFFIC_LIGHTS"))
+                .setTrafficRules(System.getenv("TRAFFIC_RULES"));
+
         BusInformation busInformation = new BusInformation(busAddress);
 
-        TrafficLightsGroupState state = new TrafficLightsGroupState();
+        TrafficLightsGroupState state = new TrafficLightsGroupState(properties);
 
         // Set up the Traffic Lights Observation messages consumer.
         MessageConsumer<TrafficLightObservationMessage> observationConsumer =

@@ -11,22 +11,24 @@ import java.util.List;
 public class TrafficLightsGroupState {
 
     private List<Integer> seenCars;
+    private PropertiesLoader properties;
 
-    public TrafficLightsGroupState() {
+    public TrafficLightsGroupState(PropertiesLoader properties){
+        this.properties = properties;
         seenCars = new ArrayList<>();
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
-        return PropertiesLoader.getTrafficLights().contains(trafficLightId);
+        return this.properties.getTrafficLights().contains(trafficLightId);
     }
 
     public List<Integer> mustBecomeRed(int askGreen) {
-        return PropertiesLoader.getTrafficRules().get(askGreen);
+        return this.properties.getTrafficRules().get(askGreen);
     }
 
     public List<Integer> mustBecomeGreen(int askGreen) {
         List<Integer> tmp = new ArrayList<>();
-        for (int tl : PropertiesLoader.getTrafficLights()){
+        for (int tl : this.properties.getTrafficLights()){
             if (!mustBecomeRed(askGreen).contains(tl)) {
                 tmp.add(tl);
             }

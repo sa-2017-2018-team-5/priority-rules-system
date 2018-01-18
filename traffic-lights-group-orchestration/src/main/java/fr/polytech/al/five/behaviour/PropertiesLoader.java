@@ -7,17 +7,44 @@ import java.util.*;
 
 public class PropertiesLoader {
 
-    private static final String CONF_FILE = "config.properties";
+    private  Integer groupId;
+    private  List<Integer> trafficLights;
+    private  Map<Integer, List<Integer>> trafficRules = new HashMap<>();
 
-    private static Integer groupId;
-    private static List<Integer> trafficLights;
-    private static Map<Integer, List<Integer>> trafficRules = new HashMap<>();
+    public PropertiesLoader(){
+        this.groupId = -1;
+        this.trafficLights = new ArrayList<>();
+        this.trafficRules = new HashMap<>();
+    }
 
-    private static void setId(String id){
+    public PropertiesLoader setGroupId(String id){
+        if (id != null){
+            setId(id);
+        }
+        return this;
+    }
+
+    public PropertiesLoader setTrafficLights(String trafficList){
+        if (trafficList != null){
+            fillTrafficLights(trafficList);
+        }
+        return this;
+    }
+
+    public PropertiesLoader setTrafficRules(String ruleList){
+        if (ruleList!=null){
+            fillTrafficRules(ruleList);
+        }
+        return this;
+    }
+
+
+    private void setId(String id){
         groupId = Integer.parseInt(id);
     }
 
-    private static Integer[] converter(String txt){
+
+    private Integer[] converter(String txt){
         String[] strArray = txt.split("\\s*,\\s*");
         Integer[] intArray=new Integer[strArray.length];
         int i=0;
@@ -28,11 +55,11 @@ public class PropertiesLoader {
         return intArray;
     }
 
-    private static void fillTrafficLights(String trafficList){
+    private void fillTrafficLights(String trafficList){
         trafficLights = Arrays.asList(converter(trafficList));
     }
 
-    private static void fillTrafficRules(String ruleList){
+    private void fillTrafficRules(String ruleList){
         Map<String,String> tmp =  Splitter.on(":").withKeyValueSeparator("=").split(ruleList);
 
         for (String rule:tmp.keySet()) {
@@ -40,46 +67,31 @@ public class PropertiesLoader {
         }
     }
 
-    static {
-        ClassLoader classLoader = PropertiesLoader.class.getClassLoader();
-        Properties properties = new Properties();
-        InputStream input = null;
-        try {
-            // Read the conf file
-            input = new FileInputStream(classLoader.getResource(CONF_FILE).getPath());
-
-            // Load properties
-            properties.load(input);
-            setId(properties.getProperty("group.id"));
-            fillTrafficLights(properties.getProperty("traffic.lights"));
-            fillTrafficRules(properties.getProperty("traffic.rules"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     /*
             Data loader methods
      */
-    static List<Integer> getTrafficLights(){
+    List<Integer> getTrafficLights(){
         return trafficLights;
     }
 
-    static Map<Integer,List<Integer>> getTrafficRules(){
+    Map<Integer,List<Integer>> getTrafficRules(){
         return trafficRules;
     }
 
-    static Integer getId(){
+    Integer getId(){
         return groupId;
     }
 
+    /*
+        Test
+     */
+
+    @Override
+    public String toString() {
+        return "PropertiesLoader{" +
+                "groupId=" + groupId +
+                ", trafficLights=" + trafficLights +
+                ", trafficRules=" + trafficRules +
+                '}';
+    }
 }
