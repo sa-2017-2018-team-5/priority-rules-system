@@ -19,15 +19,13 @@ public class TrafficLightsGroupRunner {
     private static final Logger LOGGER = Logger.getLogger(TrafficLightsGroupRunner.class);
 
     public static void main(String[] args) {
+
         String busAddress = System.getenv("BUS_ADDRESS");
         if (busAddress == null) {
             busAddress = "localhost";
         }
 
-        PropertiesLoader properties = new PropertiesLoader()
-                .setGroupId(System.getenv("TRAFFIC_GROUP_ID"))
-                .setTrafficLights(System.getenv("TRAFFIC_LIGHTS"))
-                .setTrafficRules(System.getenv("TRAFFIC_RULES"));
+        PropertiesLoader properties = new PropertiesLoader();
 
         BusInformation busInformation = new BusInformation(busAddress);
 

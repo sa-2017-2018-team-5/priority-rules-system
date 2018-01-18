@@ -2,7 +2,9 @@ package fr.polytech.al.five.behaviour;
 
 import com.google.common.base.Splitter;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class PropertiesLoader {
@@ -15,34 +17,55 @@ public class PropertiesLoader {
         this.groupId = -1;
         this.trafficLights = new ArrayList<>();
         this.trafficRules = new HashMap<>();
+        loadConfigFile();
     }
 
-    public PropertiesLoader setGroupId(String id){
+    private void loadConfigFile() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            input = new FileInputStream("config.properties");
+            // load a properties file
+            prop.load(input);
+            // get the property value and print it out
+            setGroupId(prop.getProperty("group.id"));
+            setTrafficLights(prop.getProperty("traffic.lights"));
+            setTrafficRules(prop.getProperty("traffic.rules"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void setGroupId(String id) {
         if (id != null){
             setId(id);
         }
-        return this;
     }
 
-    public PropertiesLoader setTrafficLights(String trafficList){
+    private void setTrafficLights(String trafficList) {
         if (trafficList != null){
             fillTrafficLights(trafficList);
         }
-        return this;
     }
 
-    public PropertiesLoader setTrafficRules(String ruleList){
+    private void setTrafficRules(String ruleList) {
         if (ruleList!=null){
             fillTrafficRules(ruleList);
         }
-        return this;
     }
-
 
     private void setId(String id){
         groupId = Integer.parseInt(id);
     }
-
 
     private Integer[] converter(String txt){
         String[] strArray = txt.split("\\s*,\\s*");

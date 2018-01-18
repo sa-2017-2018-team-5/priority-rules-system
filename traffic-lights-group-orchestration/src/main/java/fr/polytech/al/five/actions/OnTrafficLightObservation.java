@@ -35,10 +35,11 @@ public class OnTrafficLightObservation {
     public Consumer<TrafficLightObservationMessage> getAction() {
         return message -> {
             if (state.knowsTrafficLight(message.getTrafficLightId())) {
-                if (CarAction.SEEN.equals(message.getCarAction())) {
+                CarAction receivedAction = message.getCarAction();
+
+                if (receivedAction == CarAction.SEEN) {
                     handleSeenCar(message.getTrafficLightId(), message.getCarId());
-                } else {
-                    // Supposed to be CarAction.PASSED.
+                } else if (receivedAction == CarAction.PASSED) {
                     handlePassedCar(message.getTrafficLightId(), message.getCarId());
                 }
             }
@@ -69,7 +70,7 @@ public class OnTrafficLightObservation {
         }
 
         if (state.isBusyIntersection(trafficLight)) {
-            state.addQuery(trafficLight, car);
+            state.addQuery(trafficLight, car, 1, false);
         } else {
             sendColorChange(trafficLight, car);
         }
@@ -91,6 +92,7 @@ public class OnTrafficLightObservation {
 
         try {
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
+
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
         }

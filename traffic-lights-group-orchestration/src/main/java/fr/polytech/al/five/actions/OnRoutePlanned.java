@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 public class OnRoutePlanned {
 
     private static final Logger LOGGER = Logger.getLogger(OnRoutePlanned.class);
-    private TrafficLightsGroupState state;
+
+    private final TrafficLightsGroupState state;
 
     public OnRoutePlanned(TrafficLightsGroupState state) {
         this.state = state;
@@ -21,9 +22,12 @@ public class OnRoutePlanned {
     public Consumer<RoutePlannedMessage> getAction() {
         return message -> {
             LOGGER.info("Received a new route!");
-            LOGGER.info("The car is " + message.getCarId());
+            LOGGER.info("The car is " + message.getCarId() + " and it will encounter " + message.getEncounteredTrafficLights());
 
-            state.acknowledgeRoute(message.getCarId(), message.getEncounteredTrafficLights());
+            TrafficLightsGroupState.KnownCar car = new TrafficLightsGroupState.KnownCar(message.getCarId(),
+                    message.getCarPriority(), message.isEmergency());
+
+            state.acknowledgeRoute(car, message.getEncounteredTrafficLights());
         };
     }
 }
