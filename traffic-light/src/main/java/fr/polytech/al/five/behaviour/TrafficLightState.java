@@ -13,27 +13,13 @@ import java.util.Set;
 public class TrafficLightState {
 
     private final int trafficLightId;
-    private Set<Integer> expectedCars;
     private LightStatus trafficLightStatus;
     private Set<Integer> expectedForcedRedLights;
 
     public TrafficLightState(int trafficLightId) {
         this.trafficLightId = trafficLightId;
-        expectedCars = new HashSet<>();
         expectedForcedRedLights = new HashSet<>();
         trafficLightStatus = LightStatus.NORMAL;
-    }
-
-    public void waitCar(int carId) {
-        expectedCars.add(carId);
-    }
-
-    public void stopWaitCar(int carId) {
-        expectedCars.remove(carId);
-    }
-
-    public boolean isWaitingCar(int carId) {
-        return expectedCars.contains(carId);
     }
 
     public int getId() {

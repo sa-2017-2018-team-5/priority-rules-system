@@ -18,16 +18,61 @@ services:
     stdin_open: true
     tty: true
 
-  driver:
-    container_name: driver
+  driver-A:
+    container_name: driverA
     image: alteamfive/prs-driver-client
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=8080
       - DEFAULT_CAR_TYPE=FIREFIGHTERS
       - DEFAULT_CAR_ID=1
+      - DEFAULT_CAR_LONGITUDE=1.0
+      - DEFAULT_CAR_LATITUDE=4.0
+    links:
+      - backend
+    stdin_open: true
+    tty: true
+
+  driver-B:
+    container_name: driverB
+    image: alteamfive/prs-driver-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_ID=2
+      - DEFAULT_CAR_LONGITUDE=3.0
+      - DEFAULT_CAR_LATITUDE=2.0
+    links:
+      - backend
+    stdin_open: true
+    tty: true
+
+  driver-C:
+    container_name: driverC
+    image: alteamfive/prs-driver-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_ID=3
       - DEFAULT_CAR_LONGITUDE=0.0
       - DEFAULT_CAR_LATITUDE=0.0
+    links:
+      - backend
+    stdin_open: true
+    tty: true
+
+  driver-D:
+    container_name: driverD
+    image: alteamfive/prs-driver-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_ID=4
+      - DEFAULT_CAR_LONGITUDE=1.0
+      - DEFAULT_CAR_LATITUDE=-1.0
     links:
       - backend
     stdin_open: true
@@ -86,6 +131,33 @@ services:
     environment:
       - BUS_ADDRESS=message-bus
       - TRAFFIC_LIGHT_ID=3
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-four:
+    container_name: tl4
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=4
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-five:
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=5
     depends_on:
       - message-bus
     stdin_open: true

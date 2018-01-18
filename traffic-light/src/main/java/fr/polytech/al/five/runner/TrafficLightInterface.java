@@ -27,42 +27,40 @@ public class TrafficLightInterface {
 
     @Command(name = "car-seen")
     public void carSeen(Integer carId) {
-        if (trafficLightState.isWaitingCar(carId)) {
-            Message message = new TrafficLightObservationMessage(trafficLightState.getId(), carId, CarAction.SEEN);
+        Message message = new TrafficLightObservationMessage(trafficLightState.getId(), carId, CarAction.SEEN);
 
-            SabotagedAction action = new SabotagedAction(() -> {
-                try {
-                    messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
-                } catch (IOException e) {
-                    LOGGER.error("Output exception while sending a message to the bus: " + e);
-                } catch (TimeoutException e) {
-                    LOGGER.error("Timeout exception while sending a message to the bus: " + e);
-                }
-            });
-
-            action.run();
-        }
+        sendObservation(message);
     }
 
     @Command(name = "car-passed")
     public void carPassed(Integer carId) {
-        if (trafficLightState.isWaitingCar(carId)) {
-            Message message = new TrafficLightObservationMessage(trafficLightState.getId(), carId, CarAction.PASSED);
+        Message message = new TrafficLightObservationMessage(trafficLightState.getId(), carId, CarAction.PASSED);
 
-            SabotagedAction action = new SabotagedAction(() -> {
-                try {
-                    messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
-                } catch (IOException e) {
-                    LOGGER.error("Output exception while sending a message to the bus: " + e);
-                } catch (TimeoutException e) {
-                    LOGGER.error("Timeout exception while sending a message to the bus: " + e);
-                } finally {
-                    trafficLightState.stopWaitCar(carId);
-                }
-            });
+        sendObservation(message);
+    }
 
-            action.run();
+    private void sendObservation(Message message) {
+        try {
+            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+        } catch (IOException e) {
+            LOGGER.error("Output exception while sending a message to the bus: " + e);
+        } catch (TimeoutException e) {
+            LOGGER.error("Timeout exception while sending a message to the bus: " + e);
         }
+    }
+
+    private void sendSabotagedObservation(Message message) {
+        SabotagedAction action = new SabotagedAction(() -> {
+            try {
+                messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+            } catch (IOException e) {
+                LOGGER.error("Output exception while sending a message to the bus: " + e);
+            } catch (TimeoutException e) {
+                LOGGER.error("Timeout exception while sending a message to the bus: " + e);
+            }
+        });
+
+        action.run();
     }
 
     @Command
