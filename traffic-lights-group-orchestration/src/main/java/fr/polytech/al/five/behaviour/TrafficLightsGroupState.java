@@ -10,7 +10,7 @@ public class TrafficLightsGroupState {
     private PropertiesLoader properties;
     private final Map<Integer, KnownCar> knownCars;
     private final Map<Integer, List<Integer>> carToRoute;
-    private final Map<List<Integer>, List<Integer>> busyTrafficLights;
+    private final Map<Integer, List<Integer>> busyTrafficLights;
 
     public TrafficLightsGroupState(PropertiesLoader properties) {
         this.properties = properties;
@@ -51,7 +51,12 @@ public class TrafficLightsGroupState {
     public void registerSeenCar(int trafficLight, int carId) {
         updateCarRoute(trafficLight, carId);
 
-        // TODO Register the fact that the intersection is now busy.
+        // TODO Change the registration to keep into account the fact that multiple car use the intersection.
+        List<Integer> concernedTrafficLights = new ArrayList<>();
+        concernedTrafficLights.addAll(mustBecomeGreen(trafficLight));
+        concernedTrafficLights.addAll(mustBecomeRed(trafficLight));
+
+        busyTrafficLights.put(carId, concernedTrafficLights);
     }
 
     private void updateCarRoute(int trafficLight, int carId) {
@@ -72,7 +77,7 @@ public class TrafficLightsGroupState {
                 .anyMatch(tl -> tl == trafficLight);
     }
 
-    public void addQuery(int trafficLight, int carId, int carPriority, boolean isEmergency) {
+    public void addQuery(int trafficLight, int carId) {
         // TODO Keep in mind the query until the intersection is not busy anymore.
     }
 
@@ -86,6 +91,18 @@ public class TrafficLightsGroupState {
             this.id = id;
             this.priority = priority;
             this.isEmergency = isEmergency;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
+
+        public boolean isEmergency() {
+            return isEmergency;
         }
     }
 }

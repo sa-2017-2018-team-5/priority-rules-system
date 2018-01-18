@@ -64,15 +64,15 @@ public class OnTrafficLightObservation {
         }
     }
 
-    private void handleSeenCar(int trafficLight, int car) {
-        if (!state.isWaitingCar(car)) {
+    private void handleSeenCar(int trafficLight, int carId) {
+        if (!state.isWaitingCar(carId)) {
             return;
         }
 
         if (state.isBusyIntersection(trafficLight)) {
-            state.addQuery(trafficLight, car, 1, false);
+            state.addQuery(trafficLight, carId);
         } else {
-            sendColorChange(trafficLight, car);
+            sendColorChange(trafficLight, carId);
         }
     }
 

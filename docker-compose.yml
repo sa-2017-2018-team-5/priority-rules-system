@@ -152,6 +152,7 @@ services:
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
 
   traffic-light-five:
+    container_name: tl5
     image: alteamfive/prs-tl
     links:
       - message-bus
