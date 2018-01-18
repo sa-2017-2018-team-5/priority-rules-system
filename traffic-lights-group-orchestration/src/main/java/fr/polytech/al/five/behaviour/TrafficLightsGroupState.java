@@ -8,17 +8,20 @@ import java.util.*;
 public class TrafficLightsGroupState {
 
     private PropertiesLoader properties;
+    private final Map<Integer, KnownCar> knownCars;
     private final Map<Integer, List<Integer>> carToRoute;
-    private final List<List<Integer>> busyTrafficLights;
+    private final Map<List<Integer>, List<Integer>> busyTrafficLights;
 
-    public TrafficLightsGroupState(PropertiesLoader properties){
+    public TrafficLightsGroupState(PropertiesLoader properties) {
         this.properties = properties;
+        knownCars = new HashMap<>();
         carToRoute = new HashMap<>();
-        busyTrafficLights = new ArrayList<>();
+        busyTrafficLights = new HashMap<>();
     }
 
-    public void acknowledgeRoute(int carId, List<Integer> encounteredTrafficLights) {
-        carToRoute.put(carId, encounteredTrafficLights);
+    public void acknowledgeRoute(KnownCar car, List<Integer> encounteredTrafficLights) {
+        carToRoute.put(car.id, encounteredTrafficLights);
+        knownCars.put(car.id, car);
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
@@ -47,6 +50,8 @@ public class TrafficLightsGroupState {
 
     public void registerSeenCar(int trafficLight, int carId) {
         updateCarRoute(trafficLight, carId);
+
+        // TODO Register the fact that the intersection is now busy.
     }
 
     private void updateCarRoute(int trafficLight, int carId) {
@@ -62,12 +67,25 @@ public class TrafficLightsGroupState {
     }
 
     public boolean isBusyIntersection(int trafficLight) {
-        return busyTrafficLights.stream()
+        return busyTrafficLights.values().stream()
                 .flatMap(Collection::stream)
                 .anyMatch(tl -> tl == trafficLight);
     }
 
-    public void addQuery(int trafficLight, int carId) {
-        // TODO
+    public void addQuery(int trafficLight, int carId, int carPriority, boolean isEmergency) {
+        // TODO Keep in mind the query until the intersection is not busy anymore.
+    }
+
+    public static class KnownCar {
+
+        private final int id;
+        private final int priority;
+        private final boolean isEmergency;
+
+        public KnownCar(int id, int priority, boolean isEmergency) {
+            this.id = id;
+            this.priority = priority;
+            this.isEmergency = isEmergency;
+        }
     }
 }

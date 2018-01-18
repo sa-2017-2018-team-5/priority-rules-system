@@ -5,6 +5,7 @@ import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
 import fr.polytech.al.five.bus.MessageEmitter;
 import fr.polytech.al.five.entities.Car;
+import fr.polytech.al.five.entities.CarStatus;
 import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.entities.TrafficLight;
 import fr.polytech.al.five.messages.Message;
@@ -36,6 +37,8 @@ public class RouteRegister implements RouteRegisterer {
 
         Message routePlanned = new RoutePlannedMessage(
                 car.getId(),
+                car.getType().getPriority(),
+                car.getType().getStatus().equals(CarStatus.EMERGENCY),
                 route.getEncounteredLights()
                         .stream()
                         .map(TrafficLight::getId)
