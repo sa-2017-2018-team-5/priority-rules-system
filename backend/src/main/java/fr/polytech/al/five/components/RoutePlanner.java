@@ -25,19 +25,49 @@ public class RoutePlanner implements RouteBuilder {
     @EJB private TrafficSupervisor trafficSupervisor;
 
     @Override
-    public Route getRoute(Position from, Position to, Date departureDate) {
+    public Route getRoute(Integer id, Position from, Position to, Date departureDate) {
         TrafficInformation information = trafficSupervisor.getTraffic("1");
         LOGGER.trace(information);
 
         List<String> instructions = new ArrayList<>();
-        instructions.add("Vous pouvez démarrer.");
-        instructions.add("Tournez tout droit sur 50 mètres.");
-        instructions.add("Arrêtez-vous au feu SVP.");
-        instructions.add("Tournez à gauche au croisement.");
-        instructions.add("Vous êtes arrivé à destination.");
-
         List<TrafficLight> encounteredTrafficLights = new ArrayList<>();
-        encounteredTrafficLights.add(new TrafficLight(1, new Position(10f, 10f)));
+
+        switch (id) {
+            case 1: {
+                instructions.add("Vous pouvez démarrer.");
+                instructions.add("Continuez tout droit sur 500m.");
+                instructions.add("Au feu tournez à gauche.");
+                instructions.add("Vous êtes arrivé à destination.");
+                encounteredTrafficLights.add(new TrafficLight(1, new Position(0f, 1f)));
+                encounteredTrafficLights.add(new TrafficLight(3, new Position(0f, 0f)));
+                break;
+            }
+            case 2: {
+                instructions.add("Vous pouvez démarrer.");
+                instructions.add("Au feu tournez à gauche.");
+                instructions.add("Continuez tout droit sur 200m.");
+                instructions.add("Au feu suivant tournez à gauche.");
+                instructions.add("Vous êtes arrivé à destination.");
+                encounteredTrafficLights.add(new TrafficLight(2, new Position(0f, 1f)));
+                encounteredTrafficLights.add(new TrafficLight(3, new Position(0f, 0f)));
+                break;
+            }
+            case 3: {
+                instructions.add("Vous pouvez démarrer.");
+                instructions.add("Continuez tout droit sur 500m.");
+                instructions.add("Vous êtes arrivé à destination.");
+                encounteredTrafficLights.add(new TrafficLight(4, new Position(0f, 0f)));
+                break;
+            }
+            case 4: {
+                instructions.add("Vous pouvez démarrer.");
+                instructions.add("Au feu tournez à droite.");
+                instructions.add("Continuez tout droit sur 200m.");
+                instructions.add("Vous êtes arrivé à destination.");
+                encounteredTrafficLights.add(new TrafficLight(5, new Position(0f, 0f)));
+                break;
+            }
+        }
 
         return new Route(0, instructions, encounteredTrafficLights, new Date());
     }

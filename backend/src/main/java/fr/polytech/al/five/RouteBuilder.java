@@ -16,5 +16,5 @@ public interface RouteBuilder {
      * @param departureDate The departure date.
      * @return A route which fit the request.
      */
-    Route getRoute(Position from, Position to, Date departureDate);
+    Route getRoute(Integer id, Position from, Position to, Date departureDate);
 }

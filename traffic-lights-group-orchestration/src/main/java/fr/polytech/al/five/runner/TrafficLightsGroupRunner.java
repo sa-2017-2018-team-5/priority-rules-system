@@ -49,7 +49,7 @@ public class TrafficLightsGroupRunner {
 
         try {
             routePlannedConsumer.makeConsume(BusChannel.ROUTE_PLANNED,
-                    new OnRoutePlanned().getAction());
+                    new OnRoutePlanned(state).getAction());
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Error while connecting to the message bus: " + e);
             System.exit(1);

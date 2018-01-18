@@ -36,6 +36,7 @@ public class RouteWebServiceImplementation implements RouteWebService {
         Optional<Route> optionalRoute = priorityReader
                 .getPriority(car.getType().getName())
                 .map(carType -> routeBuilder.getRoute(
+                        car.getId(),
                         car.getCurrentPosition(),
                         destination,
                         new Date()));
