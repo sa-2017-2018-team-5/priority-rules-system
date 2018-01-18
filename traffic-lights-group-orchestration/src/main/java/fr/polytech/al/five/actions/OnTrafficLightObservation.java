@@ -1,5 +1,7 @@
 package fr.polytech.al.five.actions;
 
+import fr.polytech.al.five.behaviour.CarQuery;
+import fr.polytech.al.five.behaviour.KnownCar;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
@@ -13,6 +15,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
@@ -65,19 +68,23 @@ public class OnTrafficLightObservation {
     }
 
     private void handleSeenCar(int trafficLight, int carId) {
+        LOGGER.info("Seen car #" + carId + " on traffic light #" + trafficLight);
+
         if (!state.isWaitingCar(carId)) {
+            LOGGER.info("Was not waiting car #" + carId);
             return;
         }
 
         if (state.isBusyIntersection(trafficLight)) {
+            LOGGER.info("Busy intersection for car #" + carId  + " on traffic light #" + trafficLight + ". Creating a query.");
             state.addQuery(trafficLight, carId);
         } else {
+            LOGGER.info("Executing color change for car #" + carId  + " on traffic light #" + trafficLight);
             sendColorChange(trafficLight, carId);
         }
     }
 
-    private void handlePassedCar(int trafficLight, int car) {
-        LOGGER.trace("The car " + car + " passed the traffic light " + trafficLight + ".");
+    private void sendResume(int trafficLight) {
         TrafficLightOrdersMessage message = new TrafficLightOrdersMessage(
                 state.mustBecomeRed(trafficLight),
                 state.mustBecomeGreen(trafficLight),
@@ -91,11 +98,35 @@ public class OnTrafficLightObservation {
         LOGGER.info("- " + resuming  + " will resume to their pattern.");
 
         try {
-            // TODO Check for the next query in the order of priority on this intersection. If there is none, release all traffic lights.
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
 
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
+        }
+    }
+
+    private void handlePassedCar(int trafficLight, int carId) {
+        LOGGER.trace("The car " + carId + " passed the traffic light " + trafficLight + ".");
+
+        state.makeTrafficLightStopWaitCar(trafficLight, carId);
+
+        if (!state.trafficLightIsWaiting(trafficLight)) {
+            LOGGER.info("No more car waited on traffic light #" + trafficLight);
+            Optional<CarQuery> nextQuery = state.nextQuery();
+
+            if (nextQuery.isPresent()) {
+                LOGGER.info("There is a query to be fulfilled.");
+                handleSeenCar(nextQuery.get().getTrafficLightId(), nextQuery.get().getCar().getId());
+
+                // Get all the associated queries.
+                state.popQueriesForTrafficLight(nextQuery.get().getTrafficLightId()).forEach(query ->
+                        state.makeTrafficLightWaitCar(query.getTrafficLightId(), query.getCar().getId()));
+            } else {
+                LOGGER.info("Nothing to do, resume all concerned traffic lights.");
+                sendResume(trafficLight);
+            }
+        } else {
+            LOGGER.info("There is still cars to pass on traffic light #" + trafficLight);
         }
     }
 }

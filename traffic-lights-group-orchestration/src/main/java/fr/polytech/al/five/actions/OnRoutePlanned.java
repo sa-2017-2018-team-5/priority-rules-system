@@ -1,5 +1,6 @@
 package fr.polytech.al.five.actions;
 
+import fr.polytech.al.five.behaviour.KnownCar;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.messages.RoutePlannedMessage;
 import org.apache.log4j.Logger;
@@ -24,7 +25,7 @@ public class OnRoutePlanned {
             LOGGER.info("Received a new route!");
             LOGGER.info("The car is " + message.getCarId() + " and it will encounter " + message.getEncounteredTrafficLights());
 
-            TrafficLightsGroupState.KnownCar car = new TrafficLightsGroupState.KnownCar(message.getCarId(),
+            KnownCar car = new KnownCar(message.getCarId(),
                     message.getCarPriority(), message.isEmergency());
 
             state.acknowledgeRoute(car, message.getEncounteredTrafficLights());
