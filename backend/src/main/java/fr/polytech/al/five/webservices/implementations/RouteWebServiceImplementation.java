@@ -4,6 +4,7 @@ import fr.polytech.al.five.PriorityReader;
 import fr.polytech.al.five.RouteBuilder;
 import fr.polytech.al.five.RouteRegisterer;
 import fr.polytech.al.five.entities.Car;
+import fr.polytech.al.five.entities.CarType;
 import fr.polytech.al.five.entities.Position;
 import fr.polytech.al.five.entities.Route;
 import fr.polytech.al.five.exceptions.NotAuthorizedCar;
@@ -33,9 +34,12 @@ public class RouteWebServiceImplementation implements RouteWebService {
     @Override
     public Route getRoute(Car car, Position destination)
             throws NotAuthorizedCar {
-        Optional<Route> optionalRoute = priorityReader
-                .getPriority(car.getType().getName())
-                .map(carType -> routeBuilder.getRoute(
+        Optional<CarType> carType = priorityReader.getPriority(car.getType().getName());
+
+        carType.ifPresent(car::setType);
+
+        Optional<Route> optionalRoute = carType.map(type ->
+                routeBuilder.getRoute(
                         car.getCurrentPosition(),
                         destination,
                         new Date()));

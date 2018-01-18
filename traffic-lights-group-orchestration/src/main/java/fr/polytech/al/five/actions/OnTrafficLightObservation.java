@@ -91,6 +91,7 @@ public class OnTrafficLightObservation {
         LOGGER.info("- " + resuming  + " will resume to their pattern.");
 
         try {
+            // TODO Check for the next query in the order of priority on this intersection. If there is none, release all traffic lights.
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
 
         } catch (IOException | TimeoutException e) {
