@@ -8,6 +8,7 @@ services:
       - POSTGRES_PASSWORD=pwd
 
   administration:
+    container_name: admin
     image: alteamfive/prs-administration-client
     environment:
       - BACKEND_HOST=backend
@@ -18,6 +19,7 @@ services:
     tty: true
 
   driver-A:
+    container_name: driverA
     image: alteamfive/prs-driver-client
     environment:
       - BACKEND_HOST=backend
@@ -32,6 +34,7 @@ services:
     tty: true
 
   driver-B:
+    container_name: driverB
     image: alteamfive/prs-driver-client
     environment:
       - BACKEND_HOST=backend
@@ -46,6 +49,7 @@ services:
     tty: true
 
   driver-C:
+    container_name: driverC
     image: alteamfive/prs-driver-client
     environment:
       - BACKEND_HOST=backend
@@ -60,6 +64,7 @@ services:
     tty: true
 
   driver-D:
+    container_name: driverD
     image: alteamfive/prs-driver-client
     environment:
       - BACKEND_HOST=backend
@@ -74,6 +79,7 @@ services:
     tty: true
 
   backend:
+    container_name: backend
     image: alteamfive/prs-backend
     links:
       - message-bus
@@ -90,6 +96,7 @@ services:
     image: rabbitmq
 
   traffic-light-one:
+    container_name: tl1
     image: alteamfive/prs-tl
     links:
       - message-bus
@@ -103,6 +110,7 @@ services:
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
 
   traffic-light-two:
+    container_name: tl2
     image: alteamfive/prs-tl
     links:
       - message-bus
@@ -116,6 +124,7 @@ services:
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
 
   traffic-light-three:
+    container_name: tl3
     image: alteamfive/prs-tl
     links:
       - message-bus
@@ -129,6 +138,7 @@ services:
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
 
   traffic-light-four:
+    container_name: tl4
     image: alteamfive/prs-tl
     links:
       - message-bus
@@ -155,6 +165,7 @@ services:
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
 
   traffic-lights-group:
+    container_name: tlg
     image: alteamfive/prs-tl-group-orchestration
     links:
       - message-bus
