@@ -45,7 +45,7 @@ public class OnTrafficLightObservation {
         };
     }
 
-    private void handleSeenCar(int trafficLight, int car) {
+    private void sendColorChange(int trafficLight, int car) {
         TrafficLightOrdersMessage message = new TrafficLightOrdersMessage(
                 state.mustBecomeRed(trafficLight),
                 state.mustBecomeGreen(trafficLight),
@@ -57,9 +57,21 @@ public class OnTrafficLightObservation {
 
         try {
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
-            state.registerSeenCar(car);
+            state.registerSeenCar(trafficLight, car);
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
+        }
+    }
+
+    private void handleSeenCar(int trafficLight, int car) {
+        if (!state.isWaitingCar(car)) {
+            return;
+        }
+
+        if (state.isBusyIntersection(trafficLight)) {
+            state.addQuery(trafficLight, car);
+        } else {
+            sendColorChange(trafficLight, car);
         }
     }
 

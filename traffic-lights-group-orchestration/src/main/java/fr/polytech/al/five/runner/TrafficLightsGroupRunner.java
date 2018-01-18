@@ -1,11 +1,13 @@
 package fr.polytech.al.five.runner;
 
+import fr.polytech.al.five.actions.OnRoutePlanned;
 import fr.polytech.al.five.actions.OnTrafficLightObservation;
 import fr.polytech.al.five.behaviour.PropertiesLoader;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
 import fr.polytech.al.five.bus.MessageConsumer;
+import fr.polytech.al.five.messages.RoutePlannedMessage;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import org.apache.log4j.Logger;
 
@@ -39,6 +41,17 @@ public class TrafficLightsGroupRunner {
                     new OnTrafficLightObservation(busInformation, state).getAction());
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Error while connecting to the bus: " + e);
+            System.exit(1);
+        }
+
+        MessageConsumer<RoutePlannedMessage> routePlannedConsumer
+                = new MessageConsumer<>(busInformation);
+
+        try {
+            routePlannedConsumer.makeConsume(BusChannel.ROUTE_PLANNED,
+                    new OnRoutePlanned().getAction());
+        } catch (IOException | TimeoutException e) {
+            LOGGER.error("Error while connecting to the message bus: " + e);
             System.exit(1);
         }
     }
