@@ -36,17 +36,18 @@ public class CarQuery implements Comparable<CarQuery> {
 
     @Override
     public int compareTo(CarQuery carQuery) {
+        // This sorts in descending order.
         if (car.isEmergency()) {
             if (carQuery.car.isEmergency()) {
-                return car.getPriority() - carQuery.car.getPriority();
+                return carQuery.car.getPriority() - car.getPriority();
             } else {
-                return 1;
+                return -1;
             }
         } else {
             if (carQuery.car.isEmergency()) {
-                return -1;
+                return 1;
             } else {
-                return car.getPriority() - carQuery.car.getPriority();
+                return carQuery.car.getPriority() - car.getPriority();
             }
         }
     }
