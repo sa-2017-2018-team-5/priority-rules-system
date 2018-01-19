@@ -11,17 +11,21 @@ public class TrafficLightsGroupState {
     private final Map<Integer, KnownCar> knownCars;
     private final Map<Integer, List<Integer>> carToRoute;
     private final Map<Integer, List<Integer>> busyTrafficLights;
+    private final Map<Integer, Set<Integer>> trafficLightToCurrentCars;
+    private final List<CarQuery> queries;
 
     public TrafficLightsGroupState(PropertiesLoader properties) {
         this.properties = properties;
         knownCars = new HashMap<>();
         carToRoute = new HashMap<>();
         busyTrafficLights = new HashMap<>();
+        trafficLightToCurrentCars = new HashMap<>();
+        queries = new ArrayList<>();
     }
 
     public void acknowledgeRoute(KnownCar car, List<Integer> encounteredTrafficLights) {
-        carToRoute.put(car.id, encounteredTrafficLights);
-        knownCars.put(car.id, car);
+        carToRoute.put(car.getId(), encounteredTrafficLights);
+        knownCars.put(car.getId(), car);
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
@@ -52,12 +56,31 @@ public class TrafficLightsGroupState {
     public void registerSeenCar(int trafficLight, int carId) {
         updateCarRoute(trafficLight, carId);
 
-        // TODO Change the registration to keep into account the fact that multiple car use the intersection.
+        makeTrafficLightWaitCar(trafficLight, carId);
+    }
+
+    public void makeTrafficLightWaitCar(int trafficLight, int car) {
         List<Integer> concernedTrafficLights = new ArrayList<>();
         concernedTrafficLights.addAll(mustBecomeGreen(trafficLight));
         concernedTrafficLights.addAll(mustBecomeRed(trafficLight));
 
-        busyTrafficLights.put(carId, concernedTrafficLights);
+        busyTrafficLights.put(car, concernedTrafficLights);
+
+        if (!trafficLightToCurrentCars.containsKey(trafficLight)) {
+            trafficLightToCurrentCars.put(trafficLight, new HashSet<>());
+        }
+
+        trafficLightToCurrentCars.get(trafficLight).add(car);
+    }
+
+    public void makeTrafficLightStopWaitCar(int trafficLight, int car) {
+        busyTrafficLights.remove(car);
+
+        trafficLightToCurrentCars.get(trafficLight).remove(car);
+    }
+
+    public boolean trafficLightIsWaiting(int trafficLight) {
+        return trafficLightToCurrentCars.containsKey(trafficLight) && !trafficLightToCurrentCars.get(trafficLight).isEmpty();
     }
 
     private void updateCarRoute(int trafficLight, int carId) {
@@ -72,38 +95,68 @@ public class TrafficLightsGroupState {
         }
     }
 
+    public KnownCar getCar(int carId) {
+        return knownCars.get(carId);
+    }
+
+    public Optional<Integer> nextTrafficLight(int carId) {
+        List<Integer> trafficLights = carToRoute.get(carId);
+
+        if (trafficLights.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(trafficLights.get(0));
+    }
+
+    public Optional<CarQuery> nextQuery() {
+        if (queries.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Collections.sort(queries);
+
+        Iterator<CarQuery> iterator = queries.iterator();
+        while (iterator.hasNext()) {
+            CarQuery query = iterator.next();
+
+            if (!isBusyIntersection(query.getTrafficLightId())) {
+                iterator.remove();
+                return Optional.of(query);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public List<CarQuery> popQueriesForTrafficLight(int trafficLight) {
+        List<CarQuery> results = new ArrayList<>();
+
+        Iterator<CarQuery> iterator = queries.iterator();
+        while (iterator.hasNext()) {
+            CarQuery query = iterator.next();
+
+            if (query.getTrafficLightId() == trafficLight) {
+                iterator.remove();
+                results.add(query);
+            }
+        }
+
+        return results;
+    }
+
     public boolean isBusyIntersection(int trafficLight) {
-        return busyTrafficLights.values().stream()
-                .flatMap(Collection::stream)
-                .anyMatch(tl -> tl == trafficLight);
+        return busyTrafficLights.values().stream().flatMap(Collection::stream).anyMatch(i -> i == trafficLight);
     }
 
     public void addQuery(int trafficLight, int carId) {
-        // TODO Keep in mind the query until the intersection is not busy anymore.
-    }
-
-    public static class KnownCar {
-
-        private final int id;
-        private final int priority;
-        private final boolean isEmergency;
-
-        public KnownCar(int id, int priority, boolean isEmergency) {
-            this.id = id;
-            this.priority = priority;
-            this.isEmergency = isEmergency;
+        CarQuery newQuery = new CarQuery(knownCars.get(carId), trafficLight);
+        for (CarQuery query : queries) {
+            if (query.equals(newQuery)) {
+                return;
+            }
         }
 
-        public int getId() {
-            return id;
-        }
-
-        public int getPriority() {
-            return priority;
-        }
-
-        public boolean isEmergency() {
-            return isEmergency;
-        }
+        queries.add(newQuery);
     }
 }
