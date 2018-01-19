@@ -149,6 +149,13 @@ public class TrafficLightsGroupState {
     }
 
     public void addQuery(int trafficLight, int carId) {
-        queries.add(new CarQuery(knownCars.get(carId), trafficLight));
+        CarQuery newQuery = new CarQuery(knownCars.get(carId), trafficLight);
+        for (CarQuery query : queries) {
+            if (query.equals(newQuery)) {
+                return;
+            }
+        }
+
+        queries.add(newQuery);
     }
 }

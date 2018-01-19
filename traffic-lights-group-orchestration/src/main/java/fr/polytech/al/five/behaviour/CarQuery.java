@@ -1,5 +1,7 @@
 package fr.polytech.al.five.behaviour;
 
+import java.util.Objects;
+
 public class CarQuery implements Comparable<CarQuery> {
 
     private final KnownCar car;
@@ -16,6 +18,20 @@ public class CarQuery implements Comparable<CarQuery> {
 
     public int getTrafficLightId() {
         return trafficLightId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarQuery carQuery = (CarQuery) o;
+        return trafficLightId == carQuery.trafficLightId &&
+                Objects.equals(car, carQuery.car);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(car, trafficLightId);
     }
 
     @Override
