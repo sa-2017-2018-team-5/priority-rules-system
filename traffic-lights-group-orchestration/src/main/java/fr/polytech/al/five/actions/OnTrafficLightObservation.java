@@ -65,19 +65,33 @@ public class OnTrafficLightObservation {
     }
 
     private void handleSeenCar(int trafficLight, int carId) {
+        LOGGER.info("car" + carId + " seen by the traffic light " + trafficLight + ".");
+
         if (!state.isWaitingCar(carId)) {
             return;
         }
 
         if (state.isBusyIntersection(trafficLight)) {
-            state.addQuery(trafficLight, carId);
+            LOGGER.info("The intersection is busy.");
+            LOGGER.info("car" + carId + "'s request added to traffic-light" + trafficLight + "'s queue.");
+            state.addPendingRequest(trafficLight, carId);
         } else {
+            LOGGER.info("The intersection is not busy.");
             sendColorChange(trafficLight, carId);
         }
     }
 
-    private void handlePassedCar(int trafficLight, int car) {
-        LOGGER.trace("The car " + car + " passed the traffic light " + trafficLight + ".");
+    private void handlePassedCar(int trafficLight, int carId) {
+        LOGGER.info("car" + carId + " passed traffic-light" + trafficLight + ".");
+
+        if (state.isPendingRequests(trafficLight)) {
+            int nextPriorityCarId = state.removePendingRequest(trafficLight);
+
+            LOGGER.info("Treating car" + nextPriorityCarId + "'s pending request.");
+            sendColorChange(trafficLight, nextPriorityCarId);
+            return;
+        }
+        LOGGER.info("No pending requests for traffic-light" + trafficLight + ".");
         TrafficLightOrdersMessage message = new TrafficLightOrdersMessage(
                 state.mustBecomeRed(trafficLight),
                 state.mustBecomeGreen(trafficLight),
@@ -85,15 +99,13 @@ public class OnTrafficLightObservation {
 
         List<Integer> resuming = new ArrayList<>();
         resuming.addAll(message.getMustBecomeGreen());
-        resuming.addAll(message.getMustBecomeGreen());
+        resuming.addAll(message.getMustBecomeRed());
 
         LOGGER.info("New order:");
-        LOGGER.info("- " + resuming  + " will resume to their pattern.");
+        LOGGER.info("- " + resuming + " will resume to their pattern.");
 
         try {
-            // TODO Check for the next query in the order of priority on this intersection. If there is none, release all traffic lights.
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
-
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
         }

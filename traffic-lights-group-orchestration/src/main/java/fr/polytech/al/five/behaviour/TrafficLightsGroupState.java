@@ -11,12 +11,14 @@ public class TrafficLightsGroupState {
     private final Map<Integer, KnownCar> knownCars;
     private final Map<Integer, List<Integer>> carToRoute;
     private final Map<Integer, List<Integer>> busyTrafficLights;
+    private final Map<Integer, List<KnownCar>> pendingRequests;
 
     public TrafficLightsGroupState(PropertiesLoader properties) {
         this.properties = properties;
         knownCars = new HashMap<>();
         carToRoute = new HashMap<>();
         busyTrafficLights = new HashMap<>();
+        pendingRequests = new HashMap<>();
     }
 
     public void acknowledgeRoute(KnownCar car, List<Integer> encounteredTrafficLights) {
@@ -42,6 +44,7 @@ public class TrafficLightsGroupState {
 //        }
         // TODO : this solution is valid only for the demo 19/1/2018
         tmp.add(askGreen);
+
         return tmp;
     }
 
@@ -53,6 +56,7 @@ public class TrafficLightsGroupState {
         updateCarRoute(trafficLight, carId);
 
         // TODO Change the registration to keep into account the fact that multiple car use the intersection.
+        // TODO Map TL to TLGroup using an id
         List<Integer> concernedTrafficLights = new ArrayList<>();
         concernedTrafficLights.addAll(mustBecomeGreen(trafficLight));
         concernedTrafficLights.addAll(mustBecomeRed(trafficLight));
@@ -78,8 +82,32 @@ public class TrafficLightsGroupState {
                 .anyMatch(tl -> tl == trafficLight);
     }
 
-    public void addQuery(int trafficLight, int carId) {
-        // TODO Keep in mind the query until the intersection is not busy anymore.
+    public void addPendingRequest(int trafficLight, int carId) {
+        if (pendingRequests.containsKey(trafficLight)) {
+            pendingRequests.get(trafficLight).add(knownCars.get(carId));
+            pendingRequests.get(trafficLight).sort(Comparator.comparingInt(KnownCar::getPriority));
+
+        } else {
+            List<KnownCar> cars = new ArrayList<>();
+            cars.add(knownCars.get(carId));
+            pendingRequests.put(trafficLight, cars);
+            pendingRequests.get(trafficLight).sort(Comparator.comparingInt(KnownCar::getPriority));
+        }
+    }
+
+    public boolean isPendingRequests(Integer trafficLight) {
+        return pendingRequests.containsKey(trafficLight) && !pendingRequests.get(trafficLight).isEmpty();
+    }
+
+    public int removePendingRequest(Integer trafficLight) {
+        List<KnownCar> carsWaitingList = pendingRequests.get(trafficLight);
+        int nextPriorityCarId = carsWaitingList.remove(carsWaitingList.size() - 1).getId();
+
+        if(carsWaitingList.isEmpty()){
+            pendingRequests.remove(trafficLight);
+        }
+
+        return  nextPriorityCarId;
     }
 
     public static class KnownCar {
