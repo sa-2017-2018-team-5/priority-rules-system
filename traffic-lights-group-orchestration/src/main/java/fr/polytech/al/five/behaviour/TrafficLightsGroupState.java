@@ -34,13 +34,14 @@ public class TrafficLightsGroupState {
 
     public List<Integer> mustBecomeGreen(int askGreen) {
         List<Integer> tmp = new ArrayList<>();
-
-        for (int trafficLight : this.properties.getTrafficLights()){
-            if (!mustBecomeRed(askGreen).contains(trafficLight)) {
-                tmp.add(trafficLight);
-            }
-        }
-
+//
+//        for (int trafficLight : this.properties.getTrafficLights()){
+//            if (!mustBecomeRed(askGreen).contains(trafficLight)) {
+//                tmp.add(trafficLight);
+//            }
+//        }
+        // TODO : this solution is valid only for the demo 19/1/2018
+        tmp.add(askGreen);
         return tmp;
     }
 
