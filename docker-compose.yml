@@ -39,7 +39,7 @@ services:
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=8080
-      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_TYPE=GREEN_CARS
       - DEFAULT_CAR_ID=2
       - DEFAULT_CAR_LONGITUDE=3.0
       - DEFAULT_CAR_LATITUDE=2.0
@@ -54,7 +54,7 @@ services:
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=8080
-      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_TYPE=GREEN_CARS
       - DEFAULT_CAR_ID=3
       - DEFAULT_CAR_LONGITUDE=0.0
       - DEFAULT_CAR_LATITUDE=0.0
@@ -69,7 +69,7 @@ services:
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=8080
-      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_TYPE=CARPOOLING
       - DEFAULT_CAR_ID=4
       - DEFAULT_CAR_LONGITUDE=1.0
       - DEFAULT_CAR_LATITUDE=-1.0
