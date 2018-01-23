@@ -38,8 +38,8 @@ cd traffic-lights-group-orchestration/docker
 echo ""
 cd ../..
 
-# City traffic lights orchestration
-cd city-traffic-lights-orchestration/docker
+# City traffic lights supervision
+cd city-traffic-lights-supervision/docker
 ./build.sh
 
 echo ""

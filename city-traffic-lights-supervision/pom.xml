@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>city-traffic-lights-orchestration</artifactId>
+    <artifactId>city-traffic-lights-supervision</artifactId>
 
-    <name>AL Team 5 :: Priority Rules System :: City Traffic Lights Orchestration</name>
+    <name>AL Team 5 :: Priority Rules System :: City Traffic Lights Supervision</name>
 
     <properties>
         <cxf.version>3.1.10</cxf.version>
@@ -60,7 +60,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>fr.polytech.al.five.runner.CityTrafficLightsRunner</mainClass>
+                    <mainClass>fr.polytech.al.five.runner.SupervisionRunner</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -68,7 +68,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>fr.polytech.al.five.runner.CityTrafficLightsRunner</mainClass>
+                            <mainClass>fr.polytech.al.five.runner.SupervisionRunner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

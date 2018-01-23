@@ -175,3 +175,14 @@ services:
     environment:
       - BUS_ADDRESS=message-bus
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-lights-group-orchestration.jar"]
+
+  traffic-lights-supervision:
+    container_name: supervision
+    image: alteamfive/prs-city-tl-supervision
+    links:
+      - message-bus
+    depends_on:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./prs-city-tl-supervision.jar"]

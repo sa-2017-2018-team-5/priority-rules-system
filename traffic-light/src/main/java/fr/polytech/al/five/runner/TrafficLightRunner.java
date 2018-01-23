@@ -37,7 +37,7 @@ public class TrafficLightRunner {
         } else {
             trafficLightId = Integer.parseInt(stringTrafficLightId);
         }
-        TrafficLightState state = new TrafficLightState(trafficLightId);
+        TrafficLightState state = new TrafficLightState(trafficLightId, new MessageEmitter(busInformation));
 
         LOGGER.info("CONSUMERS SET UP - Starting the traffic light");
 

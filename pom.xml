@@ -26,6 +26,6 @@
         <module>traffic-light</module>
         <module>traffic-lights-group-orchestration</module>
         <module>backend</module>
-        <module>city-traffic-lights-orchestration</module>
+        <module>city-traffic-lights-supervision</module>
     </modules>
 </project>
