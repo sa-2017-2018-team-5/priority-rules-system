@@ -6,6 +6,4 @@ COPY ./resources/wait-for-it.sh .
 
 VOLUME /host
 
-ENTRYPOINT ["java", "-jar", "./prs-city-tl-supervision.jar"]
-
-CMD ["localhost", "8080"]
+CMD ["java", "-jar", "./prs-city-tl-supervision.jar"]
