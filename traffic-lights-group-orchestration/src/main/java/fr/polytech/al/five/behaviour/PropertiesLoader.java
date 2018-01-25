@@ -1,70 +1,50 @@
 package fr.polytech.al.five.behaviour;
 
 import com.google.common.base.Splitter;
+import fr.polytech.al.five.model.TrafficGroup;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class PropertiesLoader {
 
-    private  Integer groupId;
-    private  List<Integer> trafficLights;
-    private  Map<Integer, List<Integer>> trafficRules = new HashMap<>();
+    private static final String CSV_FILE_PATH = "traffic-rules.csv";
+
+    private List<TrafficGroup> trafficGroups;
 
     public PropertiesLoader(){
-        this.groupId = -1;
-        this.trafficLights = new ArrayList<>();
-        this.trafficRules = new HashMap<>();
+        this.trafficGroups = new ArrayList<>();
         loadConfigFile();
     }
 
     private void loadConfigFile() {
-        Properties prop = new Properties();
-        InputStream input = null;
         try {
-            input = new FileInputStream("config.properties");
-            // load a properties file
-            prop.load(input);
-            // get the property value and print it out
-            setGroupId(prop.getProperty("group.id"));
-            setTrafficLights(prop.getProperty("traffic.lights"));
-            setTrafficRules(prop.getProperty("traffic.rules"));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE_PATH));
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
+                    .withHeader("group-id", "traffic-id", "rules")
+                    .withIgnoreHeaderCase()
+                    .withTrim());
+            List<CSVRecord> csvRecords = csvParser.getRecords();
+            csvRecords.remove(0);
+            csvRecords.forEach(record -> {
+                TrafficGroup group = new TrafficGroup();
+                group.setGroupId(Integer.valueOf(record.get("group-id")));
+                fillTrafficLights(group.getTrafficID(), record.get("traffic-id"));
+                fillTrafficRules(group.getRules(), record.get("rules"));
+                trafficGroups.add(group);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    private void setGroupId(String id) {
-        if (id != null){
-            setId(id);
-        }
-    }
-
-    private void setTrafficLights(String trafficList) {
-        if (trafficList != null){
-            fillTrafficLights(trafficList);
-        }
-    }
-
-    private void setTrafficRules(String ruleList) {
-        if (ruleList!=null){
-            fillTrafficRules(ruleList);
-        }
-    }
-
-    private void setId(String id){
-        groupId = Integer.parseInt(id);
     }
 
     private Integer[] converter(String txt){
@@ -78,43 +58,23 @@ public class PropertiesLoader {
         return intArray;
     }
 
-    private void fillTrafficLights(String trafficList){
-        trafficLights = Arrays.asList(converter(trafficList));
+    private void fillTrafficLights(List<Integer> trafficLight, String trafficList) {
+        trafficLight.addAll(Arrays.asList(converter(trafficList)));
     }
 
-    private void fillTrafficRules(String ruleList){
+    private void fillTrafficRules(Map<Integer, List<Integer>> rules, String ruleList) {
         Map<String,String> tmp =  Splitter.on(":").withKeyValueSeparator("=").split(ruleList);
 
         for (String rule:tmp.keySet()) {
-            trafficRules.put(Integer.parseInt(rule), Arrays.asList(converter(tmp.get(rule))));
+            rules.put(Integer.parseInt(rule), Arrays.asList(converter(tmp.get(rule))));
         }
     }
 
     /*
             Data loader methods
      */
-    List<Integer> getTrafficLights(){
-        return trafficLights;
+    public List<TrafficGroup> getTrafficGroups() {
+        return trafficGroups;
     }
 
-    Map<Integer,List<Integer>> getTrafficRules(){
-        return trafficRules;
-    }
-
-    Integer getId(){
-        return groupId;
-    }
-
-    /*
-        Test
-     */
-
-    @Override
-    public String toString() {
-        return "PropertiesLoader{" +
-                "groupId=" + groupId +
-                ", trafficLights=" + trafficLights +
-                ", trafficRules=" + trafficRules +
-                '}';
-    }
 }

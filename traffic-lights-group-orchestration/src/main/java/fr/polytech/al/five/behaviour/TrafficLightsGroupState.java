@@ -1,5 +1,7 @@
 package fr.polytech.al.five.behaviour;
 
+import fr.polytech.al.five.model.TrafficGroup;
+
 import java.util.*;
 
 /**
@@ -31,24 +33,33 @@ public class TrafficLightsGroupState {
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
-        return this.properties.getTrafficLights().contains(trafficLightId);
+        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
+            if (trafficGroup.getTrafficID().contains(trafficLightId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Integer> mustBecomeRed(int askGreen) {
-        return this.properties.getTrafficRules().get(askGreen);
+        List<Integer> toRed = new ArrayList<>();
+        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
+            if (trafficGroup.getTrafficID().contains(askGreen)) {
+                toRed.addAll(trafficGroup.getRules().get(askGreen));
+            }
+        }
+        return toRed;
     }
 
     public List<Integer> mustBecomeGreen(int askGreen) {
-        List<Integer> tmp = new ArrayList<>();
-//
-//        for (int trafficLight : this.properties.getTrafficLights()){
-//            if (!mustBecomeRed(askGreen).contains(trafficLight)) {
-//                tmp.add(trafficLight);
-//            }
-//        }
-        // TODO : this solution is valid only for the demo 19/1/2018
-        tmp.add(askGreen);
-        return tmp;
+        List<Integer> toGreen = new ArrayList<>();
+        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
+            if (trafficGroup.getTrafficID().contains(askGreen)) {
+                toGreen.addAll(trafficGroup.getTrafficID());
+            }
+        }
+        toGreen.removeAll(mustBecomeRed(askGreen));
+        return toGreen;
     }
 
     public boolean isWaitingCar(int carId) {
