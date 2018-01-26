@@ -33,30 +33,29 @@ public class TrafficLightsGroupState {
     }
 
     public boolean knowsTrafficLight(int trafficLightId) {
-        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
-            if (trafficGroup.getTrafficID().contains(trafficLightId)) {
-                return true;
-            }
-        }
-        return false;
+        return properties.getTrafficGroups().stream()
+                .filter(trafficGroup -> trafficGroup.getTrafficID().contains(trafficLightId))
+                .count() > 0;
     }
 
     public List<Integer> mustBecomeRed(int askGreen) {
         List<Integer> toRed = new ArrayList<>();
-        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
-            if (trafficGroup.getTrafficID().contains(askGreen)) {
-                toRed.addAll(trafficGroup.getRules().get(askGreen));
-            }
+        Optional<TrafficGroup> oGroup = properties.getTrafficGroups().stream()
+                .filter(trafficGroup -> trafficGroup.getTrafficID().contains(askGreen)).findFirst();
+        if (oGroup.isPresent()) {
+            TrafficGroup trafficGroup = oGroup.get();
+            toRed.addAll(trafficGroup.getRules().get(askGreen));
         }
         return toRed;
     }
 
     public List<Integer> mustBecomeGreen(int askGreen) {
         List<Integer> toGreen = new ArrayList<>();
-        for (TrafficGroup trafficGroup : properties.getTrafficGroups()) {
-            if (trafficGroup.getTrafficID().contains(askGreen)) {
-                toGreen.addAll(trafficGroup.getTrafficID());
-            }
+        Optional<TrafficGroup> oGroup = properties.getTrafficGroups().stream()
+                .filter(trafficGroup -> trafficGroup.getTrafficID().contains(askGreen)).findFirst();
+        if (oGroup.isPresent()) {
+            TrafficGroup trafficGroup = oGroup.get();
+            toGreen.addAll(trafficGroup.getTrafficID());
         }
         toGreen.removeAll(mustBecomeRed(askGreen));
         return toGreen;
