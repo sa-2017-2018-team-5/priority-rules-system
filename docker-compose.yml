@@ -170,10 +170,15 @@ services:
     image: alteamfive/prs-tl-group-orchestration
     links:
       - message-bus
+      - my-mongodb
     depends_on:
       - message-bus
+      - my-mongodb
     environment:
       - BUS_ADDRESS=message-bus
+      - DB_ADDRESS=my-mongodb
+      - DB_PORT=27017
+      - DB_NAME=orchestrationDB
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-lights-group-orchestration.jar"]
 
   traffic-lights-supervision:
@@ -186,3 +191,13 @@ services:
     environment:
       - BUS_ADDRESS=message-bus
     command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./prs-city-tl-supervision.jar"]
+
+  my-mongodb:
+    image: mongo:latest
+    container_name: "my-mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - 27017:27017
+    command: mongod --bind_ip 0.0.0.0

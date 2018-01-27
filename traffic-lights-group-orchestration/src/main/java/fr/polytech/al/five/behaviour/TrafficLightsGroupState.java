@@ -1,6 +1,8 @@
 package fr.polytech.al.five.behaviour;
 
+import fr.polytech.al.five.data.DBHandler;
 import fr.polytech.al.five.model.TrafficGroup;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -16,9 +18,13 @@ public class TrafficLightsGroupState {
     private final Map<Integer, Set<Integer>> trafficLightToCurrentCars;
     private final List<CarQuery> queries;
     private final Map<Integer, List<KnownCar>> pendingRequests;
+    private DBHandler dbHandler;
+
+    private static final Logger LOGGER = Logger.getLogger(TrafficLightsGroupState.class);
 
     public TrafficLightsGroupState(PropertiesLoader properties) {
         this.properties = properties;
+        dbHandler = new DBHandler();
         knownCars = new HashMap<>();
         carToRoute = new HashMap<>();
         busyTrafficLights = new HashMap<>();
@@ -26,6 +32,8 @@ public class TrafficLightsGroupState {
         queries = new ArrayList<>();
         pendingRequests = new HashMap<>();
     }
+
+
 
     public void acknowledgeRoute(KnownCar car, List<Integer> encounteredTrafficLights) {
         carToRoute.put(car.getId(), encounteredTrafficLights);
