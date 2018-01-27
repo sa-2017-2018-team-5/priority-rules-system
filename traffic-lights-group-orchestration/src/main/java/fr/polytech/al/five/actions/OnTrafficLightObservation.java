@@ -78,8 +78,8 @@ public class OnTrafficLightObservation {
         if (state.isBusyIntersection(trafficLight)) {
             LOGGER.info("Busy intersection for car #" + carId + " on traffic light #" + trafficLight);
             LOGGER.info("Adding car #" + carId + " request to traffic light #" + trafficLight + " queue");
-            //state.addQuery(trafficLight, carId);
-            state.addPendingRequest(trafficLight, carId);
+            state.addPendingRequest(carId, state.getCar(carId).getPriority(), trafficLight);
+            state.addQuery(trafficLight, carId); //TODO remove that
         } else {
             LOGGER.info("Intersection not busy for car #" + carId + " on traffic light #" + trafficLight);
             LOGGER.info("Executing color change for car #" + carId + " on traffic light #" + trafficLight);
@@ -90,7 +90,7 @@ public class OnTrafficLightObservation {
     private void handlePassedCar(int trafficLight, int carId) {
         LOGGER.info("Car #" + carId + " passed traffic light #" + trafficLight);
 
-        if (state.isPendingRequests(trafficLight)) {
+        if (state.isCarWaitingAt(trafficLight)) {
             int nextPriorityCarId = state.removePendingRequest(trafficLight);
 
             LOGGER.info("Treating car #" + nextPriorityCarId + " pending request");
