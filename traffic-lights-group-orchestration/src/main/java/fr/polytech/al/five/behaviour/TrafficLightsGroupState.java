@@ -14,9 +14,9 @@ public class TrafficLightsGroupState {
     private PropertiesLoader properties;
     //private final Map<Integer, KnownCar> knownCars;
     //private final Map<Integer, List<Integer>> carToRoute;
-    private final Map<Integer, List<Integer>> busyTrafficLights;
-    private final Map<Integer, Set<Integer>> trafficLightToCurrentCars;
-    private final List<CarQuery> queries;
+    //private final Map<Integer, List<Integer>> busyTrafficLights;
+    //private final Map<Integer, Set<Integer>> trafficLightToCurrentCars;
+    //private final List<CarQuery> queries;
     //private final Map<Integer, List<KnownCar>> pendingRequests;
     private DBClient dbClient;
 
@@ -27,9 +27,9 @@ public class TrafficLightsGroupState {
         dbClient = new DBClient();
         //knownCars = new HashMap<>();
         //carToRoute = new HashMap<>();
-        busyTrafficLights = new HashMap<>();
-        trafficLightToCurrentCars = new HashMap<>();
-        queries = new ArrayList<>();
+        //busyTrafficLights = new HashMap<>();
+        //trafficLightToCurrentCars = new HashMap<>();
+        //queries = new ArrayList<>();
         //pendingRequests = new HashMap<>();
         LOGGER.info("silence");
     }
@@ -87,23 +87,26 @@ public class TrafficLightsGroupState {
         concernedTrafficLights.addAll(mustBecomeGreen(trafficLight));
         concernedTrafficLights.addAll(mustBecomeRed(trafficLight));
 
-        busyTrafficLights.put(car, concernedTrafficLights);
+        //busyTrafficLights.put(car, concernedTrafficLights);
+        dbClient.saveCarInfluence(car, concernedTrafficLights);
 
-        if (!trafficLightToCurrentCars.containsKey(trafficLight)) {
+        /*if (!trafficLightToCurrentCars.containsKey(trafficLight)) {
             trafficLightToCurrentCars.put(trafficLight, new HashSet<>());
         }
 
-        trafficLightToCurrentCars.get(trafficLight).add(car);
+        trafficLightToCurrentCars.get(trafficLight).add(car);*/
     }
 
     public void makeTrafficLightStopWaitCar(int trafficLight, int car) {
-        busyTrafficLights.remove(car);
+        //busyTrafficLights.remove(car);
+        dbClient.removeCarInfluence(car);
 
-        trafficLightToCurrentCars.get(trafficLight).remove(car);
+        //trafficLightToCurrentCars.get(trafficLight).remove(car);
     }
 
     public boolean trafficLightIsWaiting(int trafficLight) {
-        return trafficLightToCurrentCars.containsKey(trafficLight) && !trafficLightToCurrentCars.get(trafficLight).isEmpty();
+        return dbClient.isTrafficLightInfluenced(trafficLight);
+        //return trafficLightToCurrentCars.containsKey(trafficLight) && !trafficLightToCurrentCars.get(trafficLight).isEmpty();
     }
 
     private void updateCarRoute(int trafficLight, int carId) {
@@ -128,7 +131,7 @@ public class TrafficLightsGroupState {
         //return knownCars.get(carId);
     }
 
-    public Optional<Integer> nextTrafficLight(int carId) {
+    /*public Optional<Integer> nextTrafficLight(int carId) {
         List<Integer> trafficLights = dbClient.retrieveCarRoute(carId);
         //List<Integer> trafficLights = carToRoute.get(carId);
 
@@ -173,10 +176,11 @@ public class TrafficLightsGroupState {
         }
 
         return results;
-    }
+    }*/
 
     public boolean isBusyIntersection(int trafficLight) {
-        return busyTrafficLights.values().stream().flatMap(Collection::stream).anyMatch(i -> i == trafficLight);
+        //return busyTrafficLights.values().stream().flatMap(Collection::stream).anyMatch(i -> i == trafficLight);
+        return dbClient.isTrafficLightInfluenced(trafficLight);
     }
 
     /*public void addPendingRequest(int trafficLight, int carId) {
@@ -215,7 +219,7 @@ public class TrafficLightsGroupState {
         return  nextPriorityCarId;
     }
 
-    public void addQuery(int trafficLight, int carId) {
+    /*public void addQuery(int trafficLight, int carId) {
         CarQuery newQuery = new CarQuery(dbClient.retrieveCar(carId), trafficLight);
         //CarQuery newQuery = new CarQuery(knownCars.get(carId), trafficLight);
         for (CarQuery query : queries) {
@@ -224,5 +228,5 @@ public class TrafficLightsGroupState {
             }
         }
         queries.add(newQuery);
-    }
+    }*/
 }

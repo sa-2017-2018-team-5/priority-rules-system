@@ -40,6 +40,15 @@ public class QueryHandler {
 
     }
 
+    public boolean isInArray(String arrayName, Object value, String collectionName){
+        MongoCollection<Document> collection = mongoDB.getCollection(collectionName);
+        if (collection == null) {
+            return false;
+        }
+
+        return collection.find(Filters.eq(arrayName, value)).iterator().hasNext();
+    }
+
     public List<Integer> selectArrayWhere(String attributeName, Object attributeValue, String arrayName, String collectionName){
         MongoCursor<Document> dbCursor = selectWhere(attributeName, attributeValue, collectionName);
 

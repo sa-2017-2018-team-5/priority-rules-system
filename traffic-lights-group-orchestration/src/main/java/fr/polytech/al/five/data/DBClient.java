@@ -72,7 +72,7 @@ public class DBClient {
             return null;
         }
 
-        MongoCursor<Document> cursor = queryHandler.selectWhere("car-id", carId, "carInfos");
+        MongoCursor<Document> cursor = queryHandler.selectWhere("car-id", carId, "carsInfos");
         Document document = cursor.next();
         KnownCar knownCar = new KnownCar(document.getInteger("car-id"),
                                          document.getInteger("car-priority"),
@@ -125,6 +125,19 @@ public class DBClient {
         queryHandler.remove("car-id", carId, "plannedRoutes");
     }
 
+    public void saveCarInfluence(int carId, List<Integer> trafficLights) {
+        Document carInfluence = new Document();
+        carInfluence.append("car-id", carId);
+        carInfluence.append("tl-affected", trafficLights);
 
+        queryHandler.insertDocumentIntoCollection(carInfluence, "influencedTrafficLights");
+    }
 
+    public boolean isTrafficLightInfluenced(int trafficLight) {
+        return queryHandler.isInArray("tl-affected", trafficLight, "influencedTrafficLights");
+    }
+
+    public void removeCarInfluence(int carId){
+        queryHandler.remove("car-id", carId, "influencedTrafficLights");
+    }
 }

@@ -79,7 +79,6 @@ public class OnTrafficLightObservation {
             LOGGER.info("Busy intersection for car #" + carId + " on traffic light #" + trafficLight);
             LOGGER.info("Adding car #" + carId + " request to traffic light #" + trafficLight + " queue");
             state.addPendingRequest(carId, state.getCar(carId).getPriority(), trafficLight);
-            state.addQuery(trafficLight, carId); //TODO remove that
         } else {
             LOGGER.info("Intersection not busy for car #" + carId + " on traffic light #" + trafficLight);
             LOGGER.info("Executing color change for car #" + carId + " on traffic light #" + trafficLight);
@@ -90,6 +89,7 @@ public class OnTrafficLightObservation {
     private void handlePassedCar(int trafficLight, int carId) {
         LOGGER.info("Car #" + carId + " passed traffic light #" + trafficLight);
 
+        // TODO: Fix strategy here
         if (state.isCarWaitingAt(trafficLight)) {
             int nextPriorityCarId = state.removePendingRequest(trafficLight);
 
@@ -117,7 +117,7 @@ public class OnTrafficLightObservation {
         }
     }
 
-    private void handlePassedCar2(int trafficLight, int carId) {
+    /*private void handlePassedCar2(int trafficLight, int carId) {
         LOGGER.trace("The car " + carId + " passed the traffic light " + trafficLight + ".");
 
         state.makeTrafficLightStopWaitCar(trafficLight, carId);
@@ -160,5 +160,5 @@ public class OnTrafficLightObservation {
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
         }
-    }
+    }*/
 }
