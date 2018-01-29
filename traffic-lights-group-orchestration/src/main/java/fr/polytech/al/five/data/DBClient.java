@@ -1,6 +1,7 @@
 package fr.polytech.al.five.data;
 
 import com.mongodb.client.MongoCursor;
+import fr.polytech.al.five.behaviour.CarQuery;
 import fr.polytech.al.five.behaviour.KnownCar;
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -23,19 +24,9 @@ public class DBClient {
         }
     }
 
-    public void testRequests() {
-        Document document = new Document();
-        document.append("car-id", 3);
-        document.append("car-priority", 30);
-        document.append("last-passed-tl", 1);
-        document.append("grp-id", 2);
-        document.append("avg-speed", 20);
-
-        queryHandler.insertDocumentIntoCollection(document, "test");
-    }
-
-    public boolean isCarRegistered(int carId) {
-        MongoCursor<Document> carsInfosCursor = queryHandler.selectWhere("car-id", carId, "carsInfos");
+    private boolean isCarRegistered(int carId) {
+        MongoCursor<Document> carsInfosCursor = queryHandler.selectWhere("car-id", carId,
+                                                                         "carsInfos");
 
         return carsInfosCursor != null && carsInfosCursor.hasNext();
     }
@@ -54,7 +45,8 @@ public class DBClient {
     }
 
     public boolean isRouteDefinedForCar(int carId) {
-        MongoCursor<Document> carsInfosCursor = queryHandler.selectWhere("car-id", carId, "plannedRoutes");
+        MongoCursor<Document> carsInfosCursor = queryHandler.selectWhere("car-id", carId,
+                                                                         "plannedRoutes");
 
         return carsInfosCursor != null && carsInfosCursor.hasNext();
     }
@@ -67,7 +59,7 @@ public class DBClient {
         queryHandler.insertDocumentIntoCollection(itinerary, "plannedRoutes");
     }
 
-    public KnownCar retrieveCar(int carId){
+    public KnownCar retrieveCar(int carId) {
         if (!isCarRegistered(carId)) {
             return null;
         }
@@ -81,21 +73,24 @@ public class DBClient {
     }
 
     public List<Integer> retrieveCarRoute(int carId) {
-        return queryHandler.selectArrayWhere("car-id", carId, "tl-on-route", "plannedRoutes");
+        return queryHandler.selectArrayWhere("car-id", carId, "tl-on-route",
+                                             "plannedRoutes");
     }
 
-    public void saveRequest(int carId, int priority, int trafficLightId) {
+    public void saveRequest(int carId, int priority, int trafficLightGroupId, int trafficLightId) {
         Document itinerary = new Document();
         itinerary.append("car-id", carId);
         itinerary.append("priority", priority);
+        itinerary.append("tl-group-id", trafficLightGroupId);
         itinerary.append("tl-id", trafficLightId);
 
         LOGGER.info("Creating pending request database");
         queryHandler.insertDocumentIntoCollection(itinerary, "pendingRequests");
     }
 
-    public boolean isPendingRequests(int trafficLightId) {
-        MongoCursor<Document> pendingRequestsCursor = queryHandler.selectWhere("tl-id", trafficLightId,
+    public boolean isPendingRequests(int trafficLightGroupId) {
+        MongoCursor<Document> pendingRequestsCursor = queryHandler.selectWhere("tl-group-id",
+                                                                                trafficLightGroupId,
                                                                                "pendingRequests");
 
         return pendingRequestsCursor != null && pendingRequestsCursor.hasNext();
@@ -111,14 +106,20 @@ public class DBClient {
         queryHandler.remove(attributesNames, attributesValues, "pendingRequests");
     }
 
-    public int getHighestPriorityRequest(int trafficLightId) {
-        MongoCursor<Document> sortedCollection = queryHandler.selectWhereSorted("tl-id", trafficLightId,
-                                                    "priority", -1, "pendingRequests");
-        return sortedCollection.next().getInteger("car-id");
+    public CarQuery getHighestPriorityRequest(int trafficLightGroupId) {
+        MongoCursor<Document> sortedCollection = queryHandler.selectWhereSorted("tl-group-id",
+                                                                                trafficLightGroupId,
+                                                                                "priority", -1,
+                                                                                "pendingRequests");
+        Document document = sortedCollection.next();
+        return new CarQuery(document.getInteger("car-id"),
+                                      document.getInteger("tl-id"),
+                                      document.getInteger("tl-group-id"));
     }
 
     public void updateRoute(int carId, List<Integer> updatedRoute) {
-        queryHandler.update("car-id", carId, "tl-on-route", updatedRoute, "plannedRoutes");
+        queryHandler.update("car-id", carId, "tl-on-route", updatedRoute,
+                            "plannedRoutes");
     }
 
     public void removeRoute(int carId)  {
@@ -137,7 +138,8 @@ public class DBClient {
         return queryHandler.isInArray("tl-affected", trafficLight, "influencedTrafficLights");
     }
 
-    public void removeCarInfluence(int carId){
+    public void removeCarInfluence(int carId) {
+        // TODO see when to use this if car is out of its way
         queryHandler.remove("car-id", carId, "influencedTrafficLights");
     }
 }
