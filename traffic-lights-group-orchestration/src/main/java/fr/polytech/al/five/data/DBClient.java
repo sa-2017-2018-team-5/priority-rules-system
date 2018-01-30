@@ -113,11 +113,16 @@ public class DBClient {
                                                                                 "pendingRequests");
         Document document = sortedCollection.next();
         return new CarQuery(document.getInteger("car-id"),
-                                      document.getInteger("tl-id"),
-                                      document.getInteger("tl-group-id"));
+                            document.getInteger("tl-id"),
+                            document.getInteger("tl-group-id"));
     }
 
     public void updateRoute(int carId, List<Integer> updatedRoute) {
+        if(updatedRoute.isEmpty()){
+            removeRoute(carId);
+            return;
+        }
+
         queryHandler.update("car-id", carId, "tl-on-route", updatedRoute,
                             "plannedRoutes");
     }
@@ -139,7 +144,7 @@ public class DBClient {
     }
 
     public void removeCarInfluence(int carId) {
-        // TODO see when to use this if car is out of its way
+        // TODO see when to use this, in the case car is out of its way
         queryHandler.remove("car-id", carId, "influencedTrafficLights");
     }
 }

@@ -38,22 +38,4 @@ public class CarQuery {
 
     @Override
     public int hashCode() { return Objects.hash(carId, trafficLightId, trafficLightGroupId); }
-
-    /*@Override
-    public int compareTo(CarQuery carQuery) {
-        // This sorts in descending order.
-        if (car.isEmergency()) {
-            if (carQuery.car.isEmergency()) {
-                return carQuery.car.getPriority() - car.getPriority();
-            } else {
-                return -1;
-            }
-        } else {
-            if (carQuery.car.isEmergency()) {
-                return 1;
-            } else {
-                return carQuery.car.getPriority() - car.getPriority();
-            }
-        }
-    }*/
 }

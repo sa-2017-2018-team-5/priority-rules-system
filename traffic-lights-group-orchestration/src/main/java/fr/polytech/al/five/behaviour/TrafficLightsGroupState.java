@@ -124,4 +124,8 @@ public class TrafficLightsGroupState {
 
         return query;
     }
+
+    public void removeCarInfluence(int carId){
+        dbClient.removeCarInfluence(carId);
+    }
 }

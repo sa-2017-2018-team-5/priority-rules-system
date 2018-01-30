@@ -88,12 +88,13 @@ public class OnTrafficLightObservation {
     private void handlePassedCar(int trafficLight, int carId) {
         LOGGER.info("Car #" + carId + " passed traffic light #" + trafficLight);
 
-        // TODO: Fix strategy here
+
         if (state.isCarWaitingAt(trafficLight)) {
             CarQuery query = state.removePendingRequest(trafficLight);
 
             LOGGER.info("Treating car #" + query.getCarId() + " pending request");
             sendColorChange(query.getTrafficLightId(), query.getCarId());
+            state.removeCarInfluence(carId);
             return;
         }
         LOGGER.info("No pending requests for traffic light #" + trafficLight);
@@ -111,6 +112,7 @@ public class OnTrafficLightObservation {
 
         try {
             messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
+            state.removeCarInfluence(carId);
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
         }
