@@ -27,5 +27,6 @@
         <module>traffic-lights-group-orchestration</module>
         <module>backend</module>
         <module>city-traffic-lights-supervision</module>
+        <module>priorities-ws</module>
     </modules>
 </project>
