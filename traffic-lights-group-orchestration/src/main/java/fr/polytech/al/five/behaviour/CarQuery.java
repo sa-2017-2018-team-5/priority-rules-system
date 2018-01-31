@@ -2,22 +2,28 @@ package fr.polytech.al.five.behaviour;
 
 import java.util.Objects;
 
-public class CarQuery implements Comparable<CarQuery> {
+public class CarQuery {
 
-    private final KnownCar car;
+    private final int carId;
     private final int trafficLightId;
+    private final int trafficLightGroupId;
 
-    public CarQuery(KnownCar car, int trafficLightId) {
-        this.car = car;
+    public CarQuery(int carId, int trafficLightId, int trafficLightGroupId) {
+        this.carId = carId;
         this.trafficLightId = trafficLightId;
+        this.trafficLightGroupId = trafficLightGroupId;
     }
 
-    public KnownCar getCar() {
-        return car;
+    public int getCarId() {
+        return carId;
     }
 
     public int getTrafficLightId() {
         return trafficLightId;
+    }
+
+    public int getTrafficLightGroupId() {
+        return trafficLightGroupId;
     }
 
     @Override
@@ -26,29 +32,10 @@ public class CarQuery implements Comparable<CarQuery> {
         if (o == null || getClass() != o.getClass()) return false;
         CarQuery carQuery = (CarQuery) o;
         return trafficLightId == carQuery.trafficLightId &&
-                Objects.equals(car, carQuery.car);
+                trafficLightGroupId == carQuery.trafficLightGroupId &&
+                carId == carQuery.carId;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(car, trafficLightId);
-    }
-
-    @Override
-    public int compareTo(CarQuery carQuery) {
-        // This sorts in descending order.
-        if (car.isEmergency()) {
-            if (carQuery.car.isEmergency()) {
-                return carQuery.car.getPriority() - car.getPriority();
-            } else {
-                return -1;
-            }
-        } else {
-            if (carQuery.car.isEmergency()) {
-                return 1;
-            } else {
-                return carQuery.car.getPriority() - car.getPriority();
-            }
-        }
-    }
+    public int hashCode() { return Objects.hash(carId, trafficLightId, trafficLightGroupId); }
 }
