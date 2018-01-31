@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
-@XmlRootElement
+@XmlRootElement(name = "car-type")
 public class CarType {
 
     @XmlElement
@@ -17,4 +17,14 @@ public class CarType {
 
     @XmlElement
     public CarStatus status;
+
+    public CarType(String name, Integer priority, CarStatus status) {
+        this.name = name;
+        this.priority = priority;
+        this.status = status;
+    }
+
+    public CarType() {
+        // Nothing in this constructor.
+    }
 }
