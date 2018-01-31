@@ -1,0 +1,11 @@
+<resources>
+    <Resource id="production" type="DataSource">
+        JdbcDriver  org.postgresql.Driver
+        JdbcUrl     jdbc:postgresql://priorities_database
+        UserName    al
+        Password    pwd
+        ssl         true
+        LogSql      true
+        JtaManaged  true
+    </Resource>
+</resources>

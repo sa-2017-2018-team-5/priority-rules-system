@@ -45,5 +45,11 @@ cd city-traffic-lights-supervision/docker
 echo ""
 cd ../..
 
+# Priorities Webservice
+cd priorities-ws/docker
+./build.sh
+
+echo ""
+cd ../..
 
 echo "Build finished!"
