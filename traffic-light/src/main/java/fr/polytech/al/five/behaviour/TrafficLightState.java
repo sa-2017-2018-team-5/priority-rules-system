@@ -1,7 +1,7 @@
 package fr.polytech.al.five.behaviour;
 
 import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
 import fr.polytech.al.five.messages.contents.LightStatus;
@@ -24,13 +24,13 @@ public class TrafficLightState {
     private final int trafficLightId;
     private LightStatus trafficLightStatus;
     private Set<Integer> expectedForcedRedLights;
-    private final MessageEmitter messageEmitter;
+    private final PubSubEmitter pubSubEmitter;
 
-    public TrafficLightState(int trafficLightId, MessageEmitter messageEmitter) {
+    public TrafficLightState(int trafficLightId, PubSubEmitter pubSubEmitter) {
         this.trafficLightId = trafficLightId;
         expectedForcedRedLights = new HashSet<>();
         trafficLightStatus = LightStatus.NORMAL;
-        this.messageEmitter = messageEmitter;
+        this.pubSubEmitter = pubSubEmitter;
     }
 
     public int getId() {
@@ -47,7 +47,7 @@ public class TrafficLightState {
         Message message = new TrafficLightStatusMessage(getId(), getTrafficLightStatus());
 
         try {
-            messageEmitter.send(message, BusChannel.SUPERVISION);
+            pubSubEmitter.send(message, BusChannel.SUPERVISION);
         } catch (IOException e) {
             LOGGER.error("Could not update the supervision.");
         } catch (TimeoutException e) {

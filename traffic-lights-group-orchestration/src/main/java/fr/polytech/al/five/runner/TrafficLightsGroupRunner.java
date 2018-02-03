@@ -6,7 +6,7 @@ import fr.polytech.al.five.behaviour.PropertiesLoader;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageConsumer;
+import fr.polytech.al.five.bus.PubSubConsumer;
 import fr.polytech.al.five.messages.RoutePlannedMessage;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import org.apache.log4j.Logger;
@@ -32,8 +32,8 @@ public class TrafficLightsGroupRunner {
         TrafficLightsGroupState state = new TrafficLightsGroupState(properties);
 
         // Set up the Traffic Lights Observation messages consumer.
-        MessageConsumer<TrafficLightObservationMessage> observationConsumer =
-                new MessageConsumer<>(busInformation);
+        PubSubConsumer<TrafficLightObservationMessage> observationConsumer =
+                new PubSubConsumer<>(busInformation);
         try {
             observationConsumer.makeConsume(BusChannel.TRAFFIC_LIGHT_OBSERVATION,
                     new OnTrafficLightObservation(busInformation, state).getAction());
@@ -42,8 +42,8 @@ public class TrafficLightsGroupRunner {
             System.exit(1);
         }
 
-        MessageConsumer<RoutePlannedMessage> routePlannedConsumer
-                = new MessageConsumer<>(busInformation);
+        PubSubConsumer<RoutePlannedMessage> routePlannedConsumer
+                = new PubSubConsumer<>(busInformation);
 
         try {
             routePlannedConsumer.makeConsume(BusChannel.ROUTE_PLANNED,

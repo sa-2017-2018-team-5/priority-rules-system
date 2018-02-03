@@ -3,7 +3,7 @@ package fr.polytech.al.five.components;
 import fr.polytech.al.five.RouteRegisterer;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.entities.Car;
 import fr.polytech.al.five.entities.CarStatus;
 import fr.polytech.al.five.entities.Route;
@@ -33,7 +33,7 @@ public class RouteRegister implements RouteRegisterer {
         }
 
         BusInformation busInformation = new BusInformation(busAddress);
-        MessageEmitter messageEmitter = new MessageEmitter(busInformation);
+        PubSubEmitter pubSubEmitter = new PubSubEmitter(busInformation);
 
         Message routePlanned = new RoutePlannedMessage(
                 car.getId(),
@@ -45,7 +45,7 @@ public class RouteRegister implements RouteRegisterer {
                         .collect(Collectors.toList()));
 
         try {
-            messageEmitter.send(routePlanned, BusChannel.ROUTE_PLANNED);
+            pubSubEmitter.send(routePlanned, BusChannel.ROUTE_PLANNED);
             LOGGER.info("New route sent to the bus!");
         } catch (IOException e) {
             LOGGER.error("Output exception while sending message to the bus: " + e);

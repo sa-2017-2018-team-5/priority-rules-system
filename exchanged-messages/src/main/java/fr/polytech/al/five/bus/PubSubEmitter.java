@@ -8,9 +8,9 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class MessageEmitter extends BusUser {
+public class PubSubEmitter extends BusUser {
 
-    public MessageEmitter(BusInformation busInformation) {
+    public PubSubEmitter(BusInformation busInformation) {
         super(busInformation);
     }
 

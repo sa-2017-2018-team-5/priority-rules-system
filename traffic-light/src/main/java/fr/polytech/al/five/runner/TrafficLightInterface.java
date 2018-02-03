@@ -3,10 +3,10 @@ package fr.polytech.al.five.runner;
 import asg.cliche.Command;
 import fr.polytech.al.five.behaviour.TrafficLightState;
 import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.MessageEmitter;
-import fr.polytech.al.five.messages.contents.CarAction;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
+import fr.polytech.al.five.messages.contents.CarAction;
 import fr.polytech.al.five.sabotage.SabotagedAction;
 import org.apache.log4j.Logger;
 
@@ -17,12 +17,12 @@ public class TrafficLightInterface {
 
     private static final Logger LOGGER = Logger.getLogger(TrafficLightInterface.class);
 
-    private final MessageEmitter messageEmitter;
+    private final PubSubEmitter pubSubEmitter;
     private final TrafficLightState trafficLightState;
 
-    public TrafficLightInterface(MessageEmitter messageEmitter, TrafficLightState trafficLightState) {
+    public TrafficLightInterface(PubSubEmitter pubSubEmitter, TrafficLightState trafficLightState) {
         this.trafficLightState = trafficLightState;
-        this.messageEmitter = messageEmitter;
+        this.pubSubEmitter = pubSubEmitter;
     }
 
     @Command(name = "car-seen")
@@ -41,7 +41,7 @@ public class TrafficLightInterface {
 
     private void sendObservation(Message message) {
         try {
-            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+            pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
         } catch (IOException e) {
             LOGGER.error("Output exception while sending a message to the bus: " + e);
         } catch (TimeoutException e) {
@@ -52,7 +52,7 @@ public class TrafficLightInterface {
     private void sendSabotagedObservation(Message message) {
         SabotagedAction action = new SabotagedAction(() -> {
             try {
-                messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+                pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
             } catch (IOException e) {
                 LOGGER.error("Output exception while sending a message to the bus: " + e);
             } catch (TimeoutException e) {
