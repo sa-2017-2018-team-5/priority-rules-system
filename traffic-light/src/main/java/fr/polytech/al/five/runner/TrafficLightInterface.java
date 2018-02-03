@@ -3,7 +3,7 @@ package fr.polytech.al.five.runner;
 import asg.cliche.Command;
 import fr.polytech.al.five.behaviour.TrafficLightState;
 import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.PubSubEmitter;
+import fr.polytech.al.five.bus.TaskEmitter;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import fr.polytech.al.five.messages.contents.CarAction;
@@ -17,12 +17,12 @@ public class TrafficLightInterface {
 
     private static final Logger LOGGER = Logger.getLogger(TrafficLightInterface.class);
 
-    private final PubSubEmitter pubSubEmitter;
+    private final TaskEmitter taskEmitter;
     private final TrafficLightState trafficLightState;
 
-    public TrafficLightInterface(PubSubEmitter pubSubEmitter, TrafficLightState trafficLightState) {
+    public TrafficLightInterface(TaskEmitter taskEmitter, TrafficLightState trafficLightState) {
         this.trafficLightState = trafficLightState;
-        this.pubSubEmitter = pubSubEmitter;
+        this.taskEmitter = taskEmitter;
     }
 
     @Command(name = "car-seen")
@@ -41,7 +41,7 @@ public class TrafficLightInterface {
 
     private void sendObservation(Message message) {
         try {
-            pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+            taskEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION_TASK);
         } catch (IOException e) {
             LOGGER.error("Output exception while sending a message to the bus: " + e);
         } catch (TimeoutException e) {
@@ -52,7 +52,7 @@ public class TrafficLightInterface {
     private void sendSabotagedObservation(Message message) {
         SabotagedAction action = new SabotagedAction(() -> {
             try {
-                pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION);
+                taskEmitter.send(message, BusChannel.TRAFFIC_LIGHT_OBSERVATION_TASK);
             } catch (IOException e) {
                 LOGGER.error("Output exception while sending a message to the bus: " + e);
             } catch (TimeoutException e) {

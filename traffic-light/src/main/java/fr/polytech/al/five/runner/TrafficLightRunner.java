@@ -4,10 +4,7 @@ import asg.cliche.ShellFactory;
 import fr.polytech.al.five.actions.OnOrchestrationOrder;
 import fr.polytech.al.five.actions.OnTrafficLightStatusUpdate;
 import fr.polytech.al.five.behaviour.TrafficLightState;
-import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.PubSubConsumer;
-import fr.polytech.al.five.bus.PubSubEmitter;
+import fr.polytech.al.five.bus.*;
 import fr.polytech.al.five.messages.TrafficLightOrdersMessage;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
 import org.apache.log4j.Logger;
@@ -64,7 +61,7 @@ public class TrafficLightRunner {
         LOGGER.info("CONSUMERS SET UP - Done");
 
         TrafficLightInterface commands = new TrafficLightInterface(
-                new PubSubEmitter(busInformation),
+                new TaskEmitter(busInformation),
                 state);
 
         // Start the shell.
