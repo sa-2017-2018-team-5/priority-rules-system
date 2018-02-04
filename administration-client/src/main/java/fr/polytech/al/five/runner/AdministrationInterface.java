@@ -2,9 +2,10 @@ package fr.polytech.al.five.runner;
 
 import asg.cliche.Command;
 import org.apache.log4j.Logger;
-import stubs.administration.*;
 
-import java.util.List;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
@@ -13,51 +14,39 @@ public class AdministrationInterface {
 
     private static final Logger LOGGER = Logger.getLogger(AdministrationInterface.class);
 
-    private AdministrationWebService administrationWebService;
+    private WebTarget resource;
 
-    public AdministrationInterface(AdministrationWebService administrationWebService) {
-        this.administrationWebService = administrationWebService;
+    public AdministrationInterface(String url) {
+        this.resource = ClientBuilder.newClient().target(url);
     }
 
     @Command(name = "all-types")
     public void listAll() {
-        List<CarType> carTypes = administrationWebService.findAllPriorities();
+        Response response = this.resource.request(MediaType.APPLICATION_JSON).get();
 
-        String headers = String.format("%-15s %-10s %-10s",
-                "Name", "Priority", "Status");
-        String separator = headers.replaceAll("(?s).", "―");
-
-        LOGGER.info(headers);
-        LOGGER.info(separator);
-
-        carTypes.forEach(carType ->
-                LOGGER.info(String.format("%-15s %-10s %-10s",
-                        carType.getName(),
-                        carType.getPriority(),
-                        carType.getStatus().toString())));
+        treatResponse(response);
     }
 
     @Command
     public void create(String name, int priority, String carStatus) {
-        CarStatus status = CarStatus.valueOf(carStatus);
+        Response response = this.resource.request(MediaType.APPLICATION_JSON).post(Entity.entity("" +
+                        "{\"name\": \"" + name + "\",\"priority\": "+priority + ",\"status\": \""+carStatus+"\"}",
+                MediaType.APPLICATION_JSON_TYPE));
 
-        LOGGER.info(String.format("Creating { name: %s; priority: %d; status: %s }.",
-                name, priority, carStatus));
+        treatResponse(response);
+    }
 
-        CarType carType = new CarType();
-        carType.setName(name);
-        carType.setPriority(priority);
-        carType.setStatus(status);
-
-        try {
-            administrationWebService.registerPriority(carType);
-            LOGGER.info("Registration of car type '" + name + "' succeed!");
-        } catch (AlreadyExistingCarType_Exception e) {
-            LOGGER.error("Registration of car type '" + name + "' failed!");
+    private void treatResponse(Response response) {
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+            LOGGER.info("Success! " + response.getStatus());
+            LOGGER.info(response.readEntity(String.class));
+        } else {
+            LOGGER.info("ERROR! " + response.getStatus());
+            LOGGER.info(response.getEntity());
         }
     }
 
-    @Command
+    /*@Command
     public void fetch(String name) {
         try {
             CarType carType = administrationWebService.findPriorityByName(name);
@@ -68,7 +57,7 @@ public class AdministrationInterface {
         }
     }
 
-    @Command
+    /*@Command
     public void update(String name, int updatedPriority) {
         CarType carType = new CarType();
         carType.setName(name);
@@ -80,5 +69,5 @@ public class AdministrationInterface {
         } catch (NotExistingCarType_Exception e) {
             LOGGER.error("Could not update the type '" + name + "'.");
         }
-    }
+    }*/
 }
