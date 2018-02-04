@@ -19,7 +19,7 @@ services:
     container_name: admin
     image: alteamfive/prs-administration-client
     environment:
-      - BACKEND_HOST=localhost:8080/prs-priorities/priorities
+      - BACKEND_HOST=localhost
       - BACKEND_PORT=8080
     stdin_open: true
     tty: true
