@@ -28,5 +28,6 @@
         <module>backend</module>
         <module>city-traffic-lights-supervision</module>
         <module>priorities-ws</module>
+        <module>routes-ws</module>
     </modules>
 </project>
