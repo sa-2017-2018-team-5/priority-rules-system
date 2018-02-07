@@ -1,13 +1,16 @@
 version: '3'
 
 services:
+  message-bus:
+    image: rabbitmq
+
   priorities_database:
     image: postgres
     environment:
       - POSTGRES_USER=al
       - POSTGRES_PASSWORD=pwd
 
-  priorities_webservice:
+  priorities-webservice:
     container_name: priorities
     image: alteamfive/prs-priorities
     links:
@@ -16,11 +19,26 @@ services:
     ports:
       - "8080:8080"
 
+  routes-webservice:
+    container_name: routes
+    image: alteamfive/prs-routes
+    ports:
+      - "8081:8080"
+    environment:
+      - PRIORITIES_SERVICE_HOST=priorities-webservice
+      - PRIORITIES_SERVICE_PORT=8080
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_CONDITIONS_HOST=traffic-conditions
+      - TRAFFIC_CONDITIONS_PORT=9090
+    links:
+      - priorities-webservice
+      - message-bus
+
   administration:
     container_name: admin
     image: alteamfive/prs-administration-client
     environment:
-      - BACKEND_HOST=priorities_webservice
+      - BACKEND_HOST=priorities-webservice
       - BACKEND_PORT=8080
     stdin_open: true
     tty: true

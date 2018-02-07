@@ -42,5 +42,18 @@ cd city-traffic-lights-supervision/docker
 echo ""
 cd ../..
 
+# Priorities Webservice
+cd priorities-ws/docker
+./publish.sh
+
+echo ""
+cd ../..
+
+# Routes Webservice
+cd routes-ws/docker
+./publish.sh
+
+echo ""
+cd ../..
 
 echo "All images published!"

@@ -52,4 +52,11 @@ cd priorities-ws/docker
 echo ""
 cd ../..
 
+# Routes Webservice
+cd routes-ws/docker
+./build.sh
+
+echo ""
+cd ../..
+
 echo "Build finished!"

@@ -8,7 +8,13 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.ejb.Stateless;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Optional;
 
 @Stateless
@@ -31,9 +37,7 @@ public class PrioritiesServiceClient implements PriorityChecker {
     public Optional<CarType> checkPriority(String priorityName) {
         String address = "http://" + PRIORITIES_SERVICE_HOST + ":" + PRIORITIES_SERVICE_PORT + "/prs-priorities/priorities/" + priorityName;
 
-        WebClient webClient = WebClient.create(address)
-                .accept(MediaType.APPLICATION_JSON)
-                .header("Content-Type", MediaType.APPLICATION_JSON);
+        WebClient webClient = WebClient.create(address).accept(MediaType.APPLICATION_JSON);
 
         try {
             JSONObject jsonResult = new JSONObject(webClient.get(String.class));
