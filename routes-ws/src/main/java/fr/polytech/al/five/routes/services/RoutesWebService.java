@@ -4,6 +4,7 @@ import fr.polytech.al.five.routes.business.*;
 import fr.polytech.al.five.routes.components.PriorityChecker;
 import fr.polytech.al.five.routes.components.RouteBuilder;
 import fr.polytech.al.five.routes.components.RouteRegisterer;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ejb.EJB;
@@ -63,6 +64,16 @@ public class RoutesWebService {
         routeRegisterer.sendRoute(car, route);
 
         JSONObject responseBody = new JSONObject();
+        responseBody.put("id", route.getId());
+        responseBody.put("departure", route.getDeparture().toInstant().toEpochMilli());
+
+        JSONArray instructions = new JSONArray();
+        route.getInstructions().forEach(instructions::put);
+        responseBody.put("instructions", instructions);
+
+        JSONArray encounteredTrafficLights = new JSONArray();
+        route.getEncounteredLights().forEach(encounteredTrafficLights::put);
+        responseBody.put("encounteredTrafficLights", encounteredTrafficLights);
 
         return Response.ok().entity(responseBody.toString()).build();
     }
