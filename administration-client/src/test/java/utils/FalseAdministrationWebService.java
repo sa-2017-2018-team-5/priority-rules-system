@@ -1,16 +1,9 @@
 package utils;
 
-import stubs.administration.AdministrationWebService;
-import stubs.administration.AlreadyExistingCarType_Exception;
-import stubs.administration.CarType;
-import stubs.administration.NotExistingCarType_Exception;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Antoine Aubé (aube.antoine@protonmail.com)
  */
+/*
 public class FalseAdministrationWebService implements AdministrationWebService {
     private int findPriorityByNameCount = 0;
     private int registerPriorityCount = 0;
@@ -96,3 +89,4 @@ public class FalseAdministrationWebService implements AdministrationWebService {
         return alreadyExistingCarCount;
     }
 }
+*/
