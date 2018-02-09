@@ -56,4 +56,11 @@ cd routes-ws/docker
 echo ""
 cd ../..
 
+# Traffic lights Webservice
+cd traffic-lights-ws/docker
+./publish.sh
+
+echo ""
+cd ../..
+
 echo "All images published!"

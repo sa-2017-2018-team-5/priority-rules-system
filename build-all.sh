@@ -59,4 +59,11 @@ cd routes-ws/docker
 echo ""
 cd ../..
 
+# Traffic lights Webservice
+cd traffic-lights-ws/docker
+./build.sh
+
+echo ""
+cd ../..
+
 echo "Build finished!"
