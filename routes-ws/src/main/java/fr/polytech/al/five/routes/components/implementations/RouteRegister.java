@@ -2,7 +2,7 @@ package fr.polytech.al.five.routes.components.implementations;
 
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.RoutePlannedMessage;
 import fr.polytech.al.five.routes.business.Car;
@@ -32,7 +32,7 @@ public class RouteRegister implements RouteRegisterer {
         }
 
         BusInformation busInformation = new BusInformation(busAddress);
-        MessageEmitter messageEmitter = new MessageEmitter(busInformation);
+        PubSubEmitter messageEmitter = new PubSubEmitter(busInformation);
 
         Message routePlanned = new RoutePlannedMessage(
                 car.getId(),
