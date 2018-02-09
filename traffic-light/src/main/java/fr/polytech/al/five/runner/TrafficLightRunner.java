@@ -4,10 +4,7 @@ import asg.cliche.ShellFactory;
 import fr.polytech.al.five.actions.OnOrchestrationOrder;
 import fr.polytech.al.five.actions.OnTrafficLightStatusUpdate;
 import fr.polytech.al.five.behaviour.TrafficLightState;
-import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageConsumer;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.*;
 import fr.polytech.al.five.messages.TrafficLightOrdersMessage;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
 import org.apache.log4j.Logger;
@@ -37,17 +34,17 @@ public class TrafficLightRunner {
         } else {
             trafficLightId = Integer.parseInt(stringTrafficLightId);
         }
-        TrafficLightState state = new TrafficLightState(trafficLightId, new MessageEmitter(busInformation));
+        TrafficLightState state = new TrafficLightState(trafficLightId, new PubSubEmitter(busInformation));
 
         LOGGER.info("CONSUMERS SET UP - Starting the traffic light");
 
         // TRAFFIC_LIGHT_STATUS messages consumption.
-        MessageConsumer<TrafficLightStatusMessage> trafficLightStatusConsumer
-                = new MessageConsumer<>(busInformation);
+        PubSubConsumer<TrafficLightStatusMessage> trafficLightStatusConsumer
+                = new PubSubConsumer<>(busInformation);
 
         // CAR_STATUS messages consumption.
-        MessageConsumer<TrafficLightOrdersMessage> carStatusConsumer
-                = new MessageConsumer<>(busInformation);
+        PubSubConsumer<TrafficLightOrdersMessage> carStatusConsumer
+                = new PubSubConsumer<>(busInformation);
 
         try {
             trafficLightStatusConsumer.makeConsume(
@@ -64,7 +61,7 @@ public class TrafficLightRunner {
         LOGGER.info("CONSUMERS SET UP - Done");
 
         TrafficLightInterface commands = new TrafficLightInterface(
-                new MessageEmitter(busInformation),
+                new TaskEmitter(busInformation),
                 state);
 
         // Start the shell.

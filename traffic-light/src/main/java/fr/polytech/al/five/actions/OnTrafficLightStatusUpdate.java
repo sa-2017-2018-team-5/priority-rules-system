@@ -1,15 +1,10 @@
 package fr.polytech.al.five.actions;
 
 import fr.polytech.al.five.behaviour.TrafficLightState;
-import fr.polytech.al.five.bus.BusChannel;
-import fr.polytech.al.five.bus.MessageEmitter;
-import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
 import fr.polytech.al.five.messages.contents.LightStatus;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 /**

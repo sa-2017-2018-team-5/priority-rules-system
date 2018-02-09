@@ -6,7 +6,7 @@ import fr.polytech.al.five.behaviour.PropertiesLoader;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageConsumer;
+import fr.polytech.al.five.bus.TaskConsumer;
 import fr.polytech.al.five.messages.RoutePlannedMessage;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import org.apache.log4j.Logger;
@@ -32,21 +32,21 @@ public class TrafficLightsGroupRunner {
         TrafficLightsGroupState state = new TrafficLightsGroupState(properties);
 
         // Set up the Traffic Lights Observation messages consumer.
-        MessageConsumer<TrafficLightObservationMessage> observationConsumer =
-                new MessageConsumer<>(busInformation);
+        TaskConsumer<TrafficLightObservationMessage> observationTaskConsumer =
+                new TaskConsumer<>(busInformation);
         try {
-            observationConsumer.makeConsume(BusChannel.TRAFFIC_LIGHT_OBSERVATION,
+            observationTaskConsumer.makeConsume(BusChannel.TRAFFIC_LIGHT_OBSERVATION_TASK,
                     new OnTrafficLightObservation(busInformation, state).getAction());
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Error while connecting to the bus: " + e);
             System.exit(1);
         }
 
-        MessageConsumer<RoutePlannedMessage> routePlannedConsumer
-                = new MessageConsumer<>(busInformation);
+        TaskConsumer<RoutePlannedMessage> routeTaskConsumer
+                = new TaskConsumer<>(busInformation);
 
         try {
-            routePlannedConsumer.makeConsume(BusChannel.ROUTE_PLANNED,
+            routeTaskConsumer.makeConsume(BusChannel.ROUTE_PLANNED_TASK,
                     new OnRoutePlanned(state).getAction());
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Error while connecting to the message bus: " + e);

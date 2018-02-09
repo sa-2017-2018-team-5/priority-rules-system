@@ -4,7 +4,7 @@ import fr.polytech.al.five.behaviour.CarQuery;
 import fr.polytech.al.five.behaviour.TrafficLightsGroupState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.messages.TrafficLightObservationMessage;
 import fr.polytech.al.five.messages.TrafficLightOrdersMessage;
 import fr.polytech.al.five.messages.contents.CarAction;
@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
@@ -25,13 +24,13 @@ public class OnTrafficLightObservation {
 
     private static final Logger LOGGER = Logger.getLogger(OnTrafficLightObservation.class);
 
-    private MessageEmitter messageEmitter;
+    private PubSubEmitter pubSubEmitter;
     private TrafficLightsGroupState state;
 
     public OnTrafficLightObservation(BusInformation busInformation,
                                      TrafficLightsGroupState state) {
         this.state = state;
-        messageEmitter = new MessageEmitter(busInformation);
+        pubSubEmitter = new PubSubEmitter(busInformation);
     }
 
     public Consumer<TrafficLightObservationMessage> getAction() {
@@ -59,7 +58,7 @@ public class OnTrafficLightObservation {
         LOGGER.info("- " + message.getMustBecomeRed() + "will become red");
 
         try {
-            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
+            pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
             state.registerSeenCar(trafficLight, car);
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
@@ -111,7 +110,7 @@ public class OnTrafficLightObservation {
         LOGGER.info("- " + resuming + " will resume to their pattern.");
 
         try {
-            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
+            pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHTS_ORDER);
             state.removeCarInfluence(carId);
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);

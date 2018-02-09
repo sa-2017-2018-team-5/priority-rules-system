@@ -3,7 +3,7 @@ package fr.polytech.al.five.actions;
 import fr.polytech.al.five.behaviour.TrafficLightState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageEmitter;
+import fr.polytech.al.five.bus.PubSubEmitter;
 import fr.polytech.al.five.messages.Message;
 import fr.polytech.al.five.messages.TrafficLightOrdersMessage;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
@@ -19,12 +19,12 @@ public class OnOrchestrationOrder {
     private static final Logger LOGGER = Logger.getLogger(OnOrchestrationOrder.class);
 
     private TrafficLightState state;
-    private MessageEmitter messageEmitter;
+    private PubSubEmitter pubSubEmitter;
 
     public OnOrchestrationOrder(BusInformation busInformation,
                                 TrafficLightState state) {
         this.state = state;
-        messageEmitter = new MessageEmitter(busInformation);
+        pubSubEmitter = new PubSubEmitter(busInformation);
     }
 
     public Consumer<TrafficLightOrdersMessage> getAction() {
@@ -115,7 +115,7 @@ public class OnOrchestrationOrder {
         Message message = new TrafficLightStatusMessage(trafficLightId, newStatus);
 
         try {
-            messageEmitter.send(message, BusChannel.TRAFFIC_LIGHT_STATUS);
+            pubSubEmitter.send(message, BusChannel.TRAFFIC_LIGHT_STATUS);
         } catch (IOException | TimeoutException e) {
             LOGGER.error("Exception occurred while sending a message to the bus: " + e);
         }

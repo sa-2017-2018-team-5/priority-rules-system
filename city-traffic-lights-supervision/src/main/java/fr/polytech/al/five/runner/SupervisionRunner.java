@@ -4,7 +4,7 @@ import fr.polytech.al.five.actions.OnTrafficLightStatusUpdate;
 import fr.polytech.al.five.behaviour.SupervisionState;
 import fr.polytech.al.five.bus.BusChannel;
 import fr.polytech.al.five.bus.BusInformation;
-import fr.polytech.al.five.bus.MessageConsumer;
+import fr.polytech.al.five.bus.PubSubConsumer;
 import fr.polytech.al.five.messages.TrafficLightStatusMessage;
 import org.apache.log4j.Logger;
 
@@ -26,8 +26,8 @@ public class SupervisionRunner {
 
         BusInformation busInformation = new BusInformation(busAddress);
 
-        MessageConsumer<TrafficLightStatusMessage> trafficLightStatusConsumer =
-                new MessageConsumer<>(busInformation);
+        PubSubConsumer<TrafficLightStatusMessage> trafficLightStatusConsumer =
+                new PubSubConsumer<>(busInformation);
 
         try {
             trafficLightStatusConsumer.makeConsume(

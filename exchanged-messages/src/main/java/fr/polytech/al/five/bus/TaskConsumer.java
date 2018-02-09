@@ -8,23 +8,21 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
-public class MessageConsumer<T extends Message> extends BusUser {
-
+public class TaskConsumer<T extends Message> extends BusUser {
     private Connection connection;
     private Channel channel;
 
-    public MessageConsumer(BusInformation busInformation) {
+    public TaskConsumer(BusInformation busInformation) {
         super(busInformation);
     }
 
     public void makeConsume(BusChannel on, Consumer<T> action) throws IOException, TimeoutException {
         // Setup the bus connection if not already done.
         setupBusConnection();
+        channel.queueDeclare(on.toString(), true, false, false, null);
 
-        channel.exchangeDeclare(on.toString(), "fanout");
-
-        String queueName = channel.queueDeclare().getQueue();
-        channel.queueBind(queueName, on.toString(), "");
+        // consumes only 1 message at a time
+        channel.basicQos(1);
 
         com.rabbitmq.client.Consumer consumer = new DefaultConsumer(channel) {
             @Override
@@ -35,10 +33,12 @@ public class MessageConsumer<T extends Message> extends BusUser {
                 T message = SerializationUtils.deserialize(body);
 
                 action.accept(message);
+
+                channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
 
-        channel.basicConsume(queueName, true, consumer);
+        channel.basicConsume(on.toString(), false, consumer);
     }
 
     private void setupBusConnection() throws IOException, TimeoutException {
@@ -48,16 +48,6 @@ public class MessageConsumer<T extends Message> extends BusUser {
 
         if (channel == null) {
             channel = connection.createChannel();
-        }
-    }
-
-    public void close() throws IOException, TimeoutException {
-        if (channel != null) {
-            channel.close();
-        }
-
-        if (connection != null) {
-            connection.close();
         }
     }
 }
