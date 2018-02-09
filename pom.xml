@@ -29,5 +29,6 @@
         <module>city-traffic-lights-supervision</module>
         <module>priorities-ws</module>
         <module>routes-ws</module>
+        <module>traffic-lights-ws</module>
     </modules>
 </project>
