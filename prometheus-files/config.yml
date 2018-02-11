@@ -1,0 +1,18 @@
+route:
+  repeat_interval: 5h
+  routes:
+  - match:
+      action: up
+    receiver: "webhook-receiver-up"
+  - match:
+      action: down
+    receiver: "webhook-receiver-down"
+receivers:
+- name: "webhook-receiver-up"
+  webhook_configs:
+  - url: http://10.212.115.182:9191/v1-webhooks/endpoint?key=Rc3LDyGq97eZYARGA380C4orEikm4T2q2U4MAVh6&projectId=1a5
+    send_resolved: true
+- name: "webhook-receiver-down"
+  webhook_configs:
+  - url: http://10.212.115.182:9191/v1-webhooks/endpoint?key=wJ4uNBbXpdSVyAVL51uEr6b91K7JkTXfjK3sx8kM&projectId=1a5
+    send_resolved: true

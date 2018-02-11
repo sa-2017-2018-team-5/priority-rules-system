@@ -1,0 +1,21 @@
+ALERT CpuUsageSpike
+  IF rate(container_cpu_usage_seconds_total{name=~".*traffic-lights-group.*", type="user"}[30s]) * 100 > 70
+  LABELS {
+    severity="critical",
+    action="up"
+  }
+  ANNOTATIONS {
+    summary = "ADDITIONAL CONTAINERS NEEDED",
+    description = "CPU usage is above 80%"
+  }
+
+ALERT CpuUsageLow
+  IF rate(container_cpu_usage_seconds_total{name=~".*traffic-lights-group.*", type="user"}[30s]) * 100 < 30
+  LABELS {
+    severity="critical",
+    action="down"
+  }
+  ANNOTATIONS {
+    summary = "MORE CONTAINERS THAN NEEDED",
+    description = "CPU usage of at least one container is below 30%"
+  }

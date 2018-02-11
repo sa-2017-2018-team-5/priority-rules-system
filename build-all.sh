@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Make a global installation.
-mvn -q clean install
+mvn -q -DskipTests clean install
 
 # Administration client
 cd administration-client/docker
