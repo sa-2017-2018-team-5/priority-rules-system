@@ -16,6 +16,7 @@ services:
     links:
       - priorities_database
       - administration
+      - driver-A
     ports:
       - "8080:8080"
 
@@ -40,5 +41,18 @@ services:
     environment:
       - BACKEND_HOST=priorities-webservice
       - BACKEND_PORT=8080
+    stdin_open: true
+    tty: true
+
+  driver-A:
+    container_name: driverA
+    image: alteamfive/prs-driver-client
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8080
+      - DEFAULT_CAR_TYPE=FIREFIGHTERS
+      - DEFAULT_CAR_ID=1
+      - DEFAULT_CAR_LONGITUDE=1.0
+      - DEFAULT_CAR_LATITUDE=4.0
     stdin_open: true
     tty: true

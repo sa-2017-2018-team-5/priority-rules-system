@@ -1,11 +1,5 @@
 package fr.polytech.al.five.remote;
 
-import stubs.route.RouteWebService;
-import stubs.route.RouteWebServiceImplementationService;
-
-import javax.xml.ws.BindingProvider;
-import java.net.URL;
-
 public class ServiceProvider {
 
     private ServiceProvider() {
@@ -29,21 +23,8 @@ public class ServiceProvider {
         return getEnvironment("BACKEND_PORT", "8080");
     }
 
-    public static RouteWebService getRouteService() {
-        URL wsdlLocation = ServiceProvider.class.getResource("/wsdl/RouteWS.wsdl");
-
-        RouteWebServiceImplementationService factory =
-                new RouteWebServiceImplementationService(wsdlLocation);
-
-        RouteWebService ws = factory.getRouteWebServiceImplementationPort();
-
-        String address = String.format(
-                "http://%s:%s/priority-rules-backend/webservices/RouteWS",
-                getHost(),
-                getPort());
-
-        ((BindingProvider) ws).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, address);
-
-        return ws;
+    public static String getURL() {
+        return "http://" + getHost() + ":" + getPort() + "/prs-routes/routes";
     }
+
 }
