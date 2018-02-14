@@ -41,6 +41,7 @@ public class OnTrafficLightObservation {
                 if (receivedAction == CarAction.SEEN) {
                     handleSeenCar(message.getTrafficLightId(), message.getCarId());
                 } else if (receivedAction == CarAction.PASSED) {
+
                     handlePassedCar(message.getTrafficLightId(), message.getCarId());
                 }
             }

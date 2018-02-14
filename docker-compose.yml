@@ -35,6 +35,16 @@ services:
       - priorities-webservice
       - message-bus
 
+  tls-webservice:
+    container_name: tls
+    image: alteamfive/prs-traffic-lights
+    ports:
+      - "8082:8080"
+    environment:
+      - BUS_ADDRESS=message-bus
+    links:
+      - message-bus
+
   administration:
     container_name: admin
     image: alteamfive/prs-administration-client
@@ -56,3 +66,113 @@ services:
       - DEFAULT_CAR_LATITUDE=4.0
     stdin_open: true
     tty: true
+
+  message-bus:
+      image: rabbitmq
+
+  traffic-light-one:
+      container_name: tl1
+      image: alteamfive/prs-tl
+      links:
+        - message-bus
+      environment:
+        - BUS_ADDRESS=message-bus
+        - TRAFFIC_LIGHT_ID=1
+      depends_on:
+        - message-bus
+      stdin_open: true
+      tty: true
+      command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-two:
+    container_name: tl2
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=2
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-three:
+    container_name: tl3
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=3
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-four:
+    container_name: tl4
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=4
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-light-five:
+    container_name: tl5
+    image: alteamfive/prs-tl
+    links:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+      - TRAFFIC_LIGHT_ID=5
+    depends_on:
+      - message-bus
+    stdin_open: true
+    tty: true
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-light.jar"]
+
+  traffic-lights-group:
+    container_name: tlg
+    image: alteamfive/prs-tl-group-orchestration
+    links:
+      - message-bus
+      - orchestration-db
+    depends_on:
+      - message-bus
+      - orchestration-db
+    environment:
+      - BUS_ADDRESS=message-bus
+      - DB_ADDRESS=orchestration-db
+      - DB_PORT=27017
+      - DB_NAME=orchestrationDB
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./traffic-lights-group-orchestration.jar"]
+
+  traffic-lights-supervision:
+    container_name: supervision
+    image: alteamfive/prs-city-tl-supervision
+    links:
+      - message-bus
+    depends_on:
+      - message-bus
+    environment:
+      - BUS_ADDRESS=message-bus
+    command: ["./wait-for-it.sh", "bus-message:15672", "--", "java", "-jar", "./prs-city-tl-supervision.jar"]
+
+  orchestration-db:
+    image: mongo:latest
+    container_name: "orchestration-db"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - 27017:27017
+    command: mongod --bind_ip 0.0.0.0
